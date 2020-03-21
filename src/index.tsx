@@ -31,7 +31,7 @@ export class App extends st.component implements ILifecycle {
     return (
       <RouteList>
         <Route
-          path={[PATH_START, PATH_WILDCARD, LoginPage.ROUTE]}>
+          path={[PATH_START, PATH_WILDCARD, LoginPage.ROUTE]} displayStyle={'inline'}>
 
           <LoginPage />
 

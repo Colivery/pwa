@@ -20,8 +20,6 @@ export default (component: LoginPage) => (
                                   'email': 'Not an valid email address'
                               }}>
                     </MatInput>
-                </div>
-                <div class="row">
                     <MatInput name="password" label="Password" type="password"
                               class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
                               helperText="Enter here your password "

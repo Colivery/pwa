@@ -2,6 +2,10 @@ loginpage ion-content  {
     --background: url("https://www.transparenttextures.com/patterns/bright-squares.png");
 }
 
+html, body, .login-wrapper{
+    height: 100%;
+}
+
 .login-form {
     opacity: 0.9;
 }
@@ -10,10 +14,7 @@ loginpage ion-content  {
     margin-top: 1em;
 }
 
-.login-card ion-card {
-    --background: #fff;
-}
-  
+
 .login-footer {
     color: #333;
     background-color: #ffffff55;
