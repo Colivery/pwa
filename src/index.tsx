@@ -18,6 +18,8 @@ import { SplashscreenPage } from "./page/splashscreen/splashscreen";
 import { AuthService } from "./service/auth";
 import { RegisterPage } from "./page/register/register";
 import { RegisterUserAddressPage } from "./page/register-user-address/register-user-address";
+import { ConsumerOrderDetailPage } from "./page/consumer-order-detail/consumer-order-detail";
+import { ConsumerOrderAddPage } from "./page/consumer-order-add/consumer-order-add";
 
 st.form = {
   ...st.form,
@@ -50,6 +52,12 @@ export class App extends st.component implements ILifecycle {
         </Route>
         <Route exact={true} path={[RegisterUserAddressPage.ROUTE]} displayStyle={'inline'}>
           <RegisterUserAddressPage />
+        </Route>
+        <Route path={[ConsumerOrderDetailPage.ROUTE]} displayStyle={'inline'}>
+          <ConsumerOrderDetailPage />
+        </Route>
+        <Route path={[ConsumerOrderAddPage.ROUTE]} displayStyle={'inline'}>
+          <ConsumerOrderAddPage />
         </Route>
       </RouteList>
     );

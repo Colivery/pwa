@@ -22,6 +22,7 @@ export class MatModal extends st.component<IAttrMatModal> implements ILifecycle 
 
     @attr
     fixedFooter = true;
+    
     @state
     state: IMatModalState = {
         open: false

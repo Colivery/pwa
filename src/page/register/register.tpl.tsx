@@ -4,10 +4,12 @@ import {email, minLength, required} from "springtype/core/validate";
 import {Form} from "springtype/web/form";
 import {RegisterPage} from "./register";
 import {MatCheckbox} from "../../component/mat/mat-checkbox";
+import { LogoRow } from "../../component/logo-row/logo-row";
 
 export default (component: RegisterPage) => (
     <fragment>
         <div class="container">
+            <LogoRow />
             <Form ref={{formRef: component}} class="col s12">
                 <div class="row">
                     <MatInput name="email" label="Email"
