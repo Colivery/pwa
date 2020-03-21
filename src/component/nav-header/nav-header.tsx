@@ -39,7 +39,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
             <nav class="nav-extended">
                 <div class="nav-wrapper">
                     <a href="javascript:" class="brand-logo">
-                        <img class="nav-brand-logo" src={require('../../../static/assets/icons/favicon.png')} />
+                        <img class="nav-brand-logo" src={require('../../../assets/images/logo.png')} />
                     </a>
                     {this.showBackButton ? <a class='btn btn-flat btn-small' href='javascript:' onClick={this.onBackButtonClick}>
                         <i class="material-icons">arrow_back</i>

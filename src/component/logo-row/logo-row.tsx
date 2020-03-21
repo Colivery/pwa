@@ -7,8 +7,8 @@ import "./logo-row.scss";
 export class LogoRow extends st.component {
 
     render() {
-        return <div class="row">
-            <center><img src={require('../../../static/assets/icons/favicon.png')} /></center>
+        return <div class="logo row">
+            <center><img src={require('../../../assets/images/logo.png')} /></center>
         </div>
     }
 }

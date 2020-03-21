@@ -2,7 +2,6 @@ import "../node_modules/materialize-css/dist/js/materialize.min.js";
 import "../assets/materialize.scss";
 import "../assets/global-styles.scss";
 
-
 import { st } from "springtype/core";
 import { component } from "springtype/web/component";
 import { ILifecycle } from "springtype/web/component/interface";

@@ -3,6 +3,7 @@
 html, body, .wrapper {
   height: 100%;
   font-family: 'Montserrat', sans-serif;
+  background-color: $colivery-background;
 }
 
 /* style for switches */
@@ -13,7 +14,6 @@ html, body, .wrapper {
 .switch input[type="checkbox"].valid + span {
   background-color: $colivery-green !important;
 }
-
 
 /* checkbox style*/
 input[type="checkbox"] + span:not(.lever){
