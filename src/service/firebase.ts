@@ -13,6 +13,7 @@ export class FirebaseService {
     this.initializeApp(firebaseConfig);
   }
 
+  // @ts-ignore
   get SDK_VERSION(): string {
     return firebase.SDK_VERSION;
   }
@@ -48,6 +49,7 @@ export class FirebaseService {
     return firebase.app(name);
   }
 
+  // @ts-ignore
   get apps(): Array<firebase.app.App> {
     return firebase.apps;
   }
