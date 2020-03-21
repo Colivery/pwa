@@ -8,7 +8,7 @@ export class NavHeader extends st.component {
 
     onLogoutClick = () => {
         window.authService.logout();
-    }
+    };
 
     render() {
         return <fragment>

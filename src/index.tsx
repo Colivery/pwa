@@ -2,13 +2,13 @@ import "../node_modules/materialize-css/dist/js/materialize.min.js";
 import "../assets/materialize.scss";
 import "../assets/global-styles.scss";
 
+//import here injectable fix
+import "./service/auth"
 
 import {st} from "springtype/core";
 import {component} from "springtype/web/component";
 import {ILifecycle} from "springtype/web/component/interface";
 import {PATH_START, PATH_WILDCARD, Route, RouteList} from "springtype/web/router";
-import {LoginGuard} from "./guard/login-guard";
-import {inject} from "springtype/core/di";
 import {tsx} from "springtype/web/vdom";
 import {LoginPage} from "./page/login/login";
 import * as serviceWorker from "./service-worker";
@@ -17,6 +17,9 @@ import {ConsumerOrderListPage} from "./page/consumer-order-list/consumer-order-l
 import {SplashscreenPage} from "./page/splashscreen/splashscreen";
 import {RegisterPage} from "./page/register/register";
 import {RegisterUserAddressPage} from "./page/register-user-address/register-user-address";
+import {inject} from "springtype/core/di";
+import {LoginGuard} from "./guard/login-guard";
+import {RegisterGuard} from "./guard/register-guard";
 
 st.form = {
     ...st.form,
@@ -32,28 +35,35 @@ export class App extends st.component implements ILifecycle {
     @inject(LoginGuard)
     loginGuard: LoginGuard;
 
+    @inject(RegisterGuard)
+    registerGuard: RegisterGuard;
+
     render() {
         return (
             <RouteList>
                 <Route path={[PATH_START, PATH_WILDCARD]} displayStyle={'inline'}>
                     <SplashscreenPage/>
                 </Route>
-                <Route cacheGroup="login" path={[LoginPage.ROUTE]} displayStyle={'inline'} guard={LoginPage.GUARD}>
+                <Route cacheGroup="login" path={[LoginPage.ROUTE]} displayStyle={'inline'} guard={this.loginGuard.autoLogin}>
                     <LoginPage/>
                 </Route>
-                <Route path={[ConsumerOrderListPage.ROUTE]} displayStyle={'inline'}>
+                <Route path={[ConsumerOrderListPage.ROUTE]} displayStyle={'inline'} guard={this.loginGuard.loggedIn}>
                     <ConsumerOrderListPage/>
                 </Route>
-                <Route cacheGroup="register" path={[RegisterPage.ROUTE]} displayStyle={'inline'}>
+
+
+                <Route cacheGroup="register" path={[RegisterPage.ROUTE]} displayStyle={'inline'} guard={this.registerGuard.register}>
                     <RegisterPage/>
                 </Route>
-                <Route cacheGroup="register" path={[RegisterUserAddressPage.ROUTE]} displayStyle={'inline'}>
+
+                <Route cacheGroup="register" path={[RegisterUserAddressPage.ROUTE]} displayStyle={'inline'} guard={this.registerGuard.registerComplete}>
                     <RegisterUserAddressPage/>
                 </Route>
             </RouteList>
         );
     }
 }
+
 
 st.enable(pubsub);
 
