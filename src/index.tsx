@@ -38,7 +38,7 @@ export class App extends st.component implements ILifecycle {
                 <Route path={[PATH_START, PATH_WILDCARD]} displayStyle={'inline'}>
                     <SplashscreenPage/>
                 </Route>
-                <Route cacheGroup="login" path={[LoginPage.ROUTE]} displayStyle={'inline'}>
+                <Route cacheGroup="login" path={[LoginPage.ROUTE]} displayStyle={'inline'} guard={LoginPage.GUARD}>
                     <LoginPage/>
                 </Route>
                 <Route path={[ConsumerOrderListPage.ROUTE]} displayStyle={'inline'}>

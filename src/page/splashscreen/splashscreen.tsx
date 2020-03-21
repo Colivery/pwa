@@ -1,25 +1,29 @@
-import { st } from "springtype/core";
-import { inject } from "springtype/core/di";
-import { component } from "springtype/web/component";
-import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
-import { ErrorMessage } from "../../component/error-message/error-message";
-import { ref } from "springtype/core/ref";
-import { AuthService } from "../../service/auth";
+import {st} from "springtype/core";
+import {component} from "springtype/web/component";
+import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
 import tpl from "./splashscreen.tpl";
 import "./splashscreen.scss";
-import { Form } from "springtype/web/form";
+import {ConsumerOrderListPage} from "../consumer-order-list/consumer-order-list";
+import {LoginPage} from "../login/login";
 
 @component({
     tpl
 })
 export class SplashscreenPage extends st.component implements ILifecycle {
-
-    static ROUTE = "splashscreen";
-
-
     constructor() {
         super();
+        this.route();
+    }
 
-        window.authService.autoLogin();
+    async route() {
+        if (await window.authService.autoLogin()) {
+            st.route = {
+                path: ConsumerOrderListPage.ROUTE
+            };
+        } else {
+            st.route = {
+                path: LoginPage.ROUTE
+            };
+        }
     }
 }

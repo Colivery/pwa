@@ -48,19 +48,15 @@ export class AuthService {
         const email = this.getEmail();
         const passwordHash = this.getPasswordHash();
 
-
-        if (email && passwordHash) {
-            await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
-
-            st.route = {
-                path: ConsumerOrderListPage.ROUTE
-            };
-        } else {
-
-            st.route = {
-                path: LoginPage.ROUTE
-            };
+        try {
+            if (email && passwordHash) {
+                await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
+                return true;
+            }
+        } catch (e) {
+            st.debug('error in login', e)
         }
+        return false;
     }
 
     async login(email: string, password: string) {

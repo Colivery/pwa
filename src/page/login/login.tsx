@@ -7,6 +7,10 @@ import tpl from "./login.tpl";
 import "./login.scss";
 import {Form} from "springtype/web/form";
 import {RegisterPage} from "../register/register";
+import {IRouteMatch} from "springtype/web/router/interface/iroute-match";
+import {IRouterGuardResponse} from "springtype/web/router/interface/irouter-guard-response";
+import {tsx} from "springtype/web/vdom";
+import {ConsumerOrderListPage} from "../consumer-order-list/consumer-order-list";
 
 @component({
     tpl
@@ -14,6 +18,13 @@ import {RegisterPage} from "../register/register";
 export class LoginPage extends st.component implements ILifecycle {
 
     static ROUTE = "login";
+
+    static GUARD = async (match: IRouteMatch): Promise<IRouterGuardResponse> => {
+        if (await window.authService.autoLogin()) {
+            return ConsumerOrderListPage.ROUTE
+        }
+        return true;
+    };
 
     @ref
     formRef: Form;
