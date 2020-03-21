@@ -4,6 +4,7 @@ import { FirebaseService } from "./firebase";
 import { FIREBASE_CONFIG } from "../config/firebase";
 import { st } from "springtype/core";
 import { StorageService } from "./storage";
+import {RegisterPage} from "../page/register/register";
 
 @injectable
 export class AuthService {
@@ -71,7 +72,7 @@ export class AuthService {
         this.storeCredentials(email, passwordHash);
 
         st.route = {
-            path: 'TODO'//EditorPage.ROUTE
+            path: RegisterPage.ROUTE
         };
     }
 }

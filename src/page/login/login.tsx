@@ -25,7 +25,7 @@ export class LoginPage extends st.component implements ILifecycle {
     @ref
     errorMessage: ErrorMessage;
 
-    class = ['login-wrapper','valign-wrapper'];
+    class = ['wrapper','valign-wrapper'];
 
     onLoginClick = async () => {
 
