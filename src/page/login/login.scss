@@ -1,0 +1,41 @@
+loginpage ion-content  {
+    --background: url("https://www.transparenttextures.com/patterns/bright-squares.png");
+}
+
+.login-form {
+    opacity: 0.9;
+}
+
+.login-button {
+    margin-top: 1em;
+}
+
+.login-card ion-card {
+    --background: #fff;
+}
+  
+.login-footer {
+    color: #333;
+    background-color: #ffffff55;
+    padding: 1em;
+    text-align: center;
+}
+
+.login-banner-free {
+    color: #333;
+    text-align: center;
+    margin: 1em;
+    font-style: italic;
+}
+
+.login-box {
+    margin-top: 2em;
+}
+
+.login-logo {
+    width: 25%;
+}
+
+.login-forgot-password {
+    font-weight: bold;
+}

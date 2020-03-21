@@ -1,0 +1,77 @@
+import { injectable, inject } from "springtype/core/di";
+import { CryptoService } from "./crypto";
+import { FirebaseService } from "./firebase";
+import { FIREBASE_CONFIG } from "../config/firebase";
+import { st } from "springtype/core";
+import { StorageService } from "./storage";
+
+@injectable
+export class AuthService {
+
+    @inject(CryptoService)
+    cryptoService: CryptoService;
+
+    @inject(StorageService)
+    storageService: StorageService;
+
+    @inject(FirebaseService, FIREBASE_CONFIG)
+    firebaseService: FirebaseService; // leads to: new FirebaseService(FIREBASE_CONFIG)
+
+    constructor() {
+        console.log('AuthService created', this.cryptoService, this.storageService, this.firebaseService)
+        //this.autoLogin();
+    }
+
+    isLoggedIn() {
+        console.log('isLoggedIn?', this.firebaseService.isLoggedIn())
+        return this.firebaseService.isLoggedIn();
+    }
+
+    storeCredentials(email: string, passwordHash: string) {
+        this.storageService.set('email', email);
+        this.storageService.set('password-hash', passwordHash);
+    }
+
+    getPasswordHash() {
+        return this.storageService.get('password-hash') || 'default';
+    }
+
+    getEmail() {
+        return this.storageService.get('email');
+    }
+
+    async autoLogin() {
+        console.log('auto-login')
+
+        const email = this.getEmail();
+        const passwordHash = this.getPasswordHash();
+
+        if (email && passwordHash) {
+            await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
+
+            st.route = {
+                path: 'TODO'//EditorPage.ROUTE
+            };
+        }
+    }
+
+    async login(email: string, password: string) {
+        const passwordHash = this.cryptoService.hash(password);
+        await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
+        this.storeCredentials(email, passwordHash);
+
+        st.route = {
+            path: 'TODO'//EditorPage.ROUTE
+        };
+    }
+
+    async register(email: string, password: string) {
+        const passwordHash = this.cryptoService.hash(password);
+        await this.firebaseService.auth().createUserWithEmailAndPassword(email, passwordHash);
+        this.storeCredentials(email, passwordHash);
+
+        st.route = {
+            path: 'TODO'//EditorPage.ROUTE
+        };
+    }
+}

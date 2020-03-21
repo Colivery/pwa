@@ -1,0 +1,46 @@
+/* https://ionicframework.com/docs/theming/css-variables */
+
+@font-face {font-family: "Sailec Light";
+  src: url("../static/assets/fonts/sailec-light.eot"); /* IE9*/
+  src: url("../static/assets/fonts/sailec-light.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("../static/assets/fonts/sailec-light.woff2") format("woff2"), /* chrome、firefox */
+  url("../static/assets/fonts/sailec-light.woff") format("woff"), /* chrome、firefox */
+  url("../static/assets/fonts/sailec-light.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url("../static/assets/fonts/sailec-light.svg#Sailec Light") format("svg"); /* iOS 4.1- */
+}
+
+:root {
+    /* set SpringType color */
+    --ion-color-primary: #eee;
+    --ion-color-primary-shade: #ddd;
+    --ion-color-primary-tint: #eee;
+
+    /* Set the background of the entire app */
+    --ion-background-color: #fff;
+
+    /* Set the font family of the entire app */
+    --ion-font-family: "Sailec Light", sans-serif;
+
+    --ion-grid-column-padding:        1em;
+    --ion-grid-column-padding-xs:     0.5em;
+    --ion-grid-column-padding-sm:     1em;
+    --ion-grid-column-padding-md:     1em;
+    --ion-grid-column-padding-lg:     1em;
+    --ion-grid-column-padding-xl:     1em;
+
+
+    --ion-grid-padding:        1em;
+    --ion-grid-padding-xs:     1em;
+    --ion-grid-padding-sm:     1em;
+    --ion-grid-padding-md:     1em;
+    --ion-grid-padding-lg:     1em;
+    --ion-grid-padding-xl:     1em;
+  }
+
+ion-button {
+  --color: #555;
+}
+
+a {
+  color: #333;
+}
