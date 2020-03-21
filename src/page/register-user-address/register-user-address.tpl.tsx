@@ -11,9 +11,8 @@ import {ErrorMessage} from "../../component/error-message/error-message";
 export default (component: RegisterUserAddressPage) => (
     <fragment>
         <div class="container">
-
             <LogoRow />
-            <Form ref={{ formRef: component }} class="col s12">
+            <Form ref={{ formRef: component }}>
                 <div class="row">
                     <MatInput name="name" label="Name"
                         class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
