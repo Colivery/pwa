@@ -2,10 +2,11 @@ import "../node_modules/materialize-css/dist/js/materialize.min.js";
 import "../assets/materialize.scss";
 import "../assets/global-styles.scss";
 
+
 import { st } from "springtype/core";
 import { component } from "springtype/web/component";
 import { ILifecycle } from "springtype/web/component/interface";
-import { RouteList, Route, PATH_WILDCARD, PATH_START } from "springtype/web/router";
+import { PATH_START, PATH_WILDCARD, Route, RouteList } from "springtype/web/router";
 import { LoginGuard } from "./guard/login-guard";
 import { inject } from "springtype/core/di";
 import { tsx } from "springtype/web/vdom";
@@ -15,6 +16,8 @@ import { pubsub } from "springtype/core/pubsub/pubsub";
 import { ConsumerOrderListPage } from "./page/consumer-order-list/consumer-order-list";
 import { SplashscreenPage } from "./page/splashscreen/splashscreen";
 import { AuthService } from "./service/auth";
+import { RegisterPage } from "./page/register/register";
+import { RegisterUserAddressPage } from "./page/register-user-address/register-user-address";
 
 st.form = {
   ...st.form,
@@ -41,6 +44,12 @@ export class App extends st.component implements ILifecycle {
         </Route>
         <Route path={[ConsumerOrderListPage.ROUTE]} displayStyle={'inline'}>
           <ConsumerOrderListPage />
+        </Route>
+        <Route exact={true} path={[RegisterPage.ROUTE]} displayStyle={'inline'}>
+          <RegisterPage />
+        </Route>
+        <Route exact={true} path={[RegisterUserAddressPage.ROUTE]} displayStyle={'inline'}>
+          <RegisterUserAddressPage />
         </Route>
       </RouteList>
     );

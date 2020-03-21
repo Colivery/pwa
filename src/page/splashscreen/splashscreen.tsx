@@ -16,12 +16,10 @@ export class SplashscreenPage extends st.component implements ILifecycle {
 
     static ROUTE = "splashscreen";
 
-    @inject(AuthService)
-    authService: AuthService;
 
     constructor() {
         super();
 
-        this.authService.autoLogin();
+        window.authService.autoLogin();
     }
 }

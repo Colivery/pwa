@@ -8,6 +8,7 @@ import { AuthService } from "../../service/auth";
 import tpl from "./login.tpl";
 import "./login.scss";
 import { Form } from "springtype/web/form";
+import { RegisterPage } from "../register/register";
 
 @component({
   tpl
@@ -22,7 +23,7 @@ export class LoginPage extends st.component implements ILifecycle {
   @ref
   errorMessage: ErrorMessage;
 
-  class = ['login-wrapper', 'valign-wrapper'];
+  class = ['wrapper', 'valign-wrapper'];
 
   onLoginClick = async () => {
 
@@ -39,15 +40,9 @@ export class LoginPage extends st.component implements ILifecycle {
 
   onRegisterClick = async () => {
 
-    try {
-      if (await this.formRef.validate()) {
-        const data = this.formRef.getState() as { email: string, password: string };
-        await window.authService.register(data.email, data.password);
-        st.debug('register accomplished')
-      }
-    } catch (e) {
-      this.errorMessage.message = e.message;
-    }
+    st.route = {
+      path: RegisterPage.ROUTE
+    };
   };
 
   onForgotPassword = () => {

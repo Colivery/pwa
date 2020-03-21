@@ -1,3 +1,18 @@
 #user-dropdown {
     width: 200px !important;
 }
+
+.nav-brand-logo {
+    height: 50px;
+  }
+  
+  nav .brand-logo {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+  
+  nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
+    height: 32px;
+    line-height: 32px;
+  }

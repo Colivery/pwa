@@ -6,6 +6,7 @@ import { st } from "springtype/core";
 import { StorageService } from "./storage";
 import { ConsumerOrderListPage } from "../page/consumer-order-list/consumer-order-list";
 import { LoginPage } from "../page/login/login";
+import { RegisterPage } from "../page/register/register";
 
 @injectable
 export class AuthService {
@@ -48,11 +49,18 @@ export class AuthService {
         const email = this.getEmail();
         const passwordHash = this.getPasswordHash();
 
+
+
         if (email && passwordHash) {
             await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
 
             st.route = {
                 path: ConsumerOrderListPage.ROUTE
+            };
+        } else {
+
+            st.route = {
+                path: LoginPage.ROUTE
             };
         }
     }
@@ -82,7 +90,7 @@ export class AuthService {
         this.storeCredentials(email, passwordHash);
 
         st.route = {
-            path: 'TODO'//EditorPage.ROUTE
+            path: RegisterPage.ROUTE
         };
     }
 }
