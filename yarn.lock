@@ -1226,14 +1226,6 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@ionic/core@^5.0.5":
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-5.0.5.tgz#d099b3ccddedb818354a233419671d2ace749a07"
-  integrity sha512-k0O5V/3sFB55E+hKSqio1iDfwibZdlI97PuaI4PcGQDytzUCyGTlGAZn6iLi82NZqBRWWLOpwy+8N/cySiTWKg==
-  dependencies:
-    ionicons "^5.0.1"
-    tslib "^1.10.0"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -4708,11 +4700,6 @@ invert-kv@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
-
-ionicons@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-5.0.1.tgz#fb48475b042b04b3ed2ba9876800687917d4603d"
-  integrity sha512-P9GHr7pgCJcG211W0wute49NZ9AvJZvFJf4OwYybakjX6j7tu0q5t5HNWn9bcb9YjI7SxBblJg8iqQ1Yb59DXw==
 
 ip-regex@^2.1.0:
   version "2.1.0"
@@ -8230,11 +8217,6 @@ st-cp@^2.0.0-alpha.4:
   dependencies:
     chalk "^2.4.2"
 
-st-ionic@2.0.0-alpha.2:
-  version "2.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/st-ionic/-/st-ionic-2.0.0-alpha.2.tgz#552b445d3b8ad2fa7d34bd262dab83861ac70fbf"
-  integrity sha512-jWVDCcfgrX/WQf+UxRMkCzRp2ku6EEZrPm4vS4noKRwvUFRTf8s7au8Si0D0eQpGxvD6O/UVO9dLoxLoe7X5Wg==
-
 st-mkdir@^1.0.0-alpha.4, st-mkdir@^1.0.0-alpha.5:
   version "1.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/st-mkdir/-/st-mkdir-1.0.0-alpha.6.tgz#aeb39d0929846dacbac2e9223ae84125ee19c39c"
@@ -8706,7 +8688,7 @@ tryer@^1.0.1:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
-tslib@1.10.0, tslib@^1.10.0, tslib@^1.9.0:
+tslib@1.10.0, tslib@^1.9.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==

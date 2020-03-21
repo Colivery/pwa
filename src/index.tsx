@@ -13,6 +13,14 @@ import { LoginPage } from "./page/login/login";
 import * as serviceWorker from "./service-worker";
 import { pubsub } from "springtype/core/pubsub/pubsub";
 
+
+st.form = {
+    ...st.form,
+    labelActiveClasses: ['active'],
+    invalidClasses: ['invalid'],
+    validClasses: ['valid']
+};
+
 @component
 export class App extends st.component implements ILifecycle {
 
