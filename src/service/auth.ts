@@ -18,12 +18,12 @@ export class AuthService {
     firebaseService: FirebaseService; // leads to: new FirebaseService(FIREBASE_CONFIG)
 
     constructor() {
-        console.log('AuthService created', this.cryptoService, this.storageService, this.firebaseService)
+        st.debug('AuthService created', this.cryptoService, this.storageService, this.firebaseService)
         //this.autoLogin();
     }
 
     isLoggedIn() {
-        console.log('isLoggedIn?', this.firebaseService.isLoggedIn())
+        st.debug('isLoggedIn?', this.firebaseService.isLoggedIn())
         return this.firebaseService.isLoggedIn();
     }
 
@@ -41,7 +41,7 @@ export class AuthService {
     }
 
     async autoLogin() {
-        console.log('auto-login')
+        st.debug('auto-login');
 
         const email = this.getEmail();
         const passwordHash = this.getPasswordHash();

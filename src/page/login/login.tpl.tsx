@@ -7,10 +7,11 @@ import {Form} from "springtype/web/form";
 
 export default (component: LoginPage) => (
     <fragment>
-        <div class="row">
-            <Form ref={{ formRef: component }}class="col s12">
+        <div class="container">
+            <Form ref={{formRef: component}} class="col s12">
                 <div class="row">
-                    <MatInput name="email" label="Email" class={['col', 's6']}
+                    <MatInput name="email" label="Email"
+                              class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
                               helperText="Enter your email "
                               validators={[required, email]}
                               successMessage={'right'}
@@ -19,7 +20,10 @@ export default (component: LoginPage) => (
                                   'email': 'Not an valid email address'
                               }}>
                     </MatInput>
-                    <MatInput name="password" label="Password" type="password" class={['col', 's6']}
+                </div>
+                <div class="row">
+                    <MatInput name="password" label="Password" type="password"
+                              class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
                               helperText="Enter here your password "
                               validators={[required, minLength(7)]}
                               successMessage={'right'}
@@ -30,20 +34,24 @@ export default (component: LoginPage) => (
                     </MatInput>
                 </div>
                 <div class="row">
-                    <ErrorMessage ref={{errorMessage: component}}/>
+                    <ErrorMessage ref={{errorMessage: component}}
+                                  class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}/>
                 </div>
                 <div class="row">
-                    <a class="waves-effect waves-light btn" onClick={component.onLoginClick}>Login</a>
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
+                       onClick={component.onLoginClick}>Login</a>
                 </div>
                 <div class="row">
-                    <a class="waves-effect waves-light btn" onClick={component.onRegisterClick}>Register</a>
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
+                       onClick={component.onRegisterClick}>Register</a>
                 </div>
-                <div class="row">
-                    <a href="javascript:" class="login-forgot-password" onClick={component.onForgotPassword}>I forgot my
-                        password</a>
+                <div class="row center-align">
+                    <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
+                        <a href="javascript:" class="login-forgot-password" onClick={component.onForgotPassword}>I
+                            forgot my password</a>
+                    </div>
                 </div>
             </Form>
         </div>
-
     </fragment>
 )
