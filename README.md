@@ -2,6 +2,10 @@
 
 MVP
 
+### Favicons
+
+https://app-manifest.firebaseapp.com/
+
 ### Install and run (development mode)
 
     yarn

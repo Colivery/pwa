@@ -35,12 +35,12 @@
 // ==========================================================================
 
 // custom SpringType blue
-$primary-color: color("grey", "lighten-2") !default;
+$primary-color: color("yellow", "darken-2") !default;
 $primary-color-light: lighten($primary-color, 15%) !default;
 $primary-color-dark: darken($primary-color, 15%) !default;
 
 // custom SpringType light-blue
-$secondary-color: color("grey", "lighten-1") !default;
+$secondary-color: color("red", "accent-3") !default;
 $success-color: color("green", "base") !default;
 $error-color: color("red", "base") !default;
 $link-color: color("light-blue", "darken-1") !default;
