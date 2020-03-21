@@ -1,12 +1,11 @@
-import { injectable, inject } from "springtype/core/di";
-import { CryptoService } from "./crypto";
-import { FirebaseService } from "./firebase";
-import { FIREBASE_CONFIG } from "../config/firebase";
-import { st } from "springtype/core";
-import { StorageService } from "./storage";
-import { ConsumerOrderListPage } from "../page/consumer-order-list/consumer-order-list";
-import { LoginPage } from "../page/login/login";
-import { RegisterPage } from "../page/register/register";
+import {inject, injectable} from "springtype/core/di";
+import {CryptoService} from "./crypto";
+import {FirebaseService} from "./firebase";
+import {FIREBASE_CONFIG} from "../config/firebase";
+import {st} from "springtype/core";
+import {StorageService} from "./storage";
+import {ConsumerOrderListPage} from "../page/consumer-order-list/consumer-order-list";
+import {LoginPage} from "../page/login/login";
 
 @injectable
 export class AuthService {
@@ -50,7 +49,6 @@ export class AuthService {
         const passwordHash = this.getPasswordHash();
 
 
-
         if (email && passwordHash) {
             await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
 
@@ -76,27 +74,25 @@ export class AuthService {
     }
 
     logout() {
-
         this.storeCredentials('', '');
-
         st.route = {
             path: LoginPage.ROUTE
         };
     }
 
-    async register(email: string, password: string) {
+    async register(email: string, password: string): Promise<firebase.auth.UserCredential> {
         const passwordHash = this.cryptoService.hash(password);
-        await this.firebaseService.auth().createUserWithEmailAndPassword(email, passwordHash);
+        const result = await this.firebaseService.auth().createUserWithEmailAndPassword(email, passwordHash);
         this.storeCredentials(email, passwordHash);
-
-        st.route = {
-            path: RegisterPage.ROUTE
-        };
+        return result;
     }
 }
 
 // quick & dirty hack because DI has a bug
 window.authService = new AuthService();
+
 declare global {
-    interface Window { authService: AuthService; }
+    interface Window {
+        authService: AuthService;
+    }
 }

@@ -9,12 +9,13 @@ import "./register-user-address.scss";
 import tpl, {IRegisterUserAddressForm} from "./register-user-address.tpl";
 import {context} from "springtype/core/context";
 import {getRegisterContext, IRegisterContext, REGISTER_CONTEXT} from "../../context/register";
+import {LoginPage} from "../login/login";
 
 @component({
     tpl
 })
 export class RegisterUserAddressPage extends st.component implements ILifecycle {
-    static ROUTE = "register/user-address";
+    static ROUTE = "register-user-address";
 
 
     @context(REGISTER_CONTEXT)
@@ -29,17 +30,17 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     class = ['wrapper', 'valign-wrapper'];
 
     async onNextClick() {
-
         if (await this.formRef.validate()) {
             const data = this.formRef.getState() as any as IRegisterUserAddressForm;
             this.formRef.reset();
+
             this.context = {
                 ...this.context,
                 ...data
             }            ;
             st.debug('register user address data', data, this.context);
             st.route = {
-                path: RegisterUserAddressPage.ROUTE
+                path: LoginPage.ROUTE
             };
         }
 

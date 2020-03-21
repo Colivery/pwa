@@ -4,6 +4,7 @@ import {email, minLength, required} from "springtype/core/validate";
 import {Form} from "springtype/web/form";
 import {RegisterPage} from "./register";
 import {MatCheckbox} from "../../component/mat/mat-checkbox";
+import {ErrorMessage} from "../../component/error-message/error-message";
 
 export default (component: RegisterPage) => (
     <fragment>
@@ -33,11 +34,15 @@ export default (component: RegisterPage) => (
                 </div>
                 <div class="row">
                     <div class={[ 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <MatCheckbox name="acceptedTermOfUse" label="Terms" required={true}/>
+                        <MatCheckbox name="accepted_terms_of_use" label="Terms of use" required={true}/>
                     </div>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <MatCheckbox name="acceptedPrivacyPolicy" label="AGB" required={true}/>
+                        <MatCheckbox name="accepted_privacy_policy" label="Privacy policy" required={true}/>
                     </div>
+                </div>
+                <div class="row">
+                    <ErrorMessage ref={{ errorMessage: component }}
+                                  class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']} />
                 </div>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
@@ -50,7 +55,7 @@ export default (component: RegisterPage) => (
 
 export interface IRegisterForm {
     email: string;
-    password: string,
-    acceptedTermOfUse: boolean;
-    acceptedPrivacyPolicy: boolean;
+    password: string;
+    accepted_privacy_policy: boolean;
+    accepted_terms_of_use: boolean;
 }
