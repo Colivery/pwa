@@ -3,30 +3,34 @@ import {st} from "springtype/core";
 export interface IRegisterContext {
 
     // first step
+    user_id: string;
     email: string;
-    password: string,
-    acceptedTermOfUse: boolean;
-    acceptedPrivacyPolicy: boolean;
+    accepted_privacy_policy: boolean;
+    accepted_terms_of_use: boolean;
 
     // second step
-    username: string;
-    address: string,
-    acceptedPoneCalls: boolean;
+    name: string;
+    address: string;
+    phone: string;
+    geo_location: Array<string>
+    accepted_support_inquiry: boolean;
 
 
 }
 
 export const INITIAL_REGISTER_CONTEXT_STATE: IRegisterContext = {
     // first sept
+    user_id: null,
     email: null,
-    password: null,
-    acceptedTermOfUse: false,
-    acceptedPrivacyPolicy: false,
+    accepted_privacy_policy: false,
+    accepted_terms_of_use: false,
 
     // second step
-    username: null,
+    name: null,
     address: null,
-    acceptedPoneCalls: false
+    phone: null,
+    geo_location: [],
+    accepted_support_inquiry: false
 };
 
 export const REGISTER_CONTEXT = 'register';

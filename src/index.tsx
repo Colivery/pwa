@@ -15,7 +15,6 @@ import * as serviceWorker from "./service-worker";
 import { pubsub } from "springtype/core/pubsub/pubsub";
 import { ConsumerOrderListPage } from "./page/consumer-order-list/consumer-order-list";
 import { SplashscreenPage } from "./page/splashscreen/splashscreen";
-import { AuthService } from "./service/auth";
 import { RegisterPage } from "./page/register/register";
 import { RegisterUserAddressPage } from "./page/register-user-address/register-user-address";
 import { ConsumerOrderDetailPage } from "./page/consumer-order-detail/consumer-order-detail";
@@ -41,16 +40,16 @@ export class App extends st.component implements ILifecycle {
         <Route path={[PATH_START, PATH_WILDCARD]} displayStyle={'inline'}>
           <SplashscreenPage />
         </Route>
-        <Route path={[LoginPage.ROUTE]} displayStyle={'inline'}>
+        <Route cacheGroup="login" path={[LoginPage.ROUTE]} displayStyle={'inline'}>
           <LoginPage />
         </Route>
         <Route path={[ConsumerOrderListPage.ROUTE]} displayStyle={'inline'}>
           <ConsumerOrderListPage />
         </Route>
-        <Route exact={true} path={[RegisterPage.ROUTE]} displayStyle={'inline'}>
+        <Route cacheGroup="register" path={[RegisterPage.ROUTE]} displayStyle={'inline'}>
           <RegisterPage />
         </Route>
-        <Route exact={true} path={[RegisterUserAddressPage.ROUTE]} displayStyle={'inline'}>
+        <Route cacheGroup="register" path={[RegisterUserAddressPage.ROUTE]} displayStyle={'inline'}>
           <RegisterUserAddressPage />
         </Route>
         <Route path={[ConsumerOrderDetailPage.ROUTE]} displayStyle={'inline'}>
