@@ -11,7 +11,6 @@ import { inject } from "springtype/core/di";
 import { tsx } from "springtype/web/vdom";
 import { LoginPage } from "./page/login/login";
 import * as serviceWorker from "./service-worker";
-import { EditorPage } from "./page/editor/editor";
 import { pubsub } from "springtype/core/pubsub/pubsub";
 
 @component
