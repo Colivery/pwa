@@ -4,6 +4,8 @@ import { FirebaseService } from "./firebase";
 import { FIREBASE_CONFIG } from "../config/firebase";
 import { st } from "springtype/core";
 import { StorageService } from "./storage";
+import { ConsumerOrderListPage } from "../page/consumer-order-list/consumer-order-list";
+import { LoginPage } from "../page/login/login";
 
 @injectable
 export class AuthService {
@@ -33,7 +35,7 @@ export class AuthService {
     }
 
     getPasswordHash() {
-        return this.storageService.get('password-hash') || 'default';
+        return this.storageService.get('password-hash') || 'default';
     }
 
     getEmail() {
@@ -50,7 +52,7 @@ export class AuthService {
             await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
 
             st.route = {
-                path: 'TODO'//EditorPage.ROUTE
+                path: ConsumerOrderListPage.ROUTE
             };
         }
     }
@@ -61,7 +63,16 @@ export class AuthService {
         this.storeCredentials(email, passwordHash);
 
         st.route = {
-            path: 'TODO'//EditorPage.ROUTE
+            path: ConsumerOrderListPage.ROUTE
+        };
+    }
+
+    logout() {
+
+        this.storeCredentials('', '');
+
+        st.route = {
+            path: LoginPage.ROUTE
         };
     }
 
@@ -74,4 +85,10 @@ export class AuthService {
             path: 'TODO'//EditorPage.ROUTE
         };
     }
+}
+
+// quick & dirty hack because DI has a bug
+window.authService = new AuthService();
+declare global {
+    interface Window { authService: AuthService; }
 }

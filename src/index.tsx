@@ -12,14 +12,17 @@ import { tsx } from "springtype/web/vdom";
 import { LoginPage } from "./page/login/login";
 import * as serviceWorker from "./service-worker";
 import { pubsub } from "springtype/core/pubsub/pubsub";
-
+import { ConsumerOrderListPage } from "./page/consumer-order-list/consumer-order-list";
+import { SplashscreenPage } from "./page/splashscreen/splashscreen";
+import { AuthService } from "./service/auth";
 
 st.form = {
-    ...st.form,
-    labelActiveClasses: ['active'],
-    invalidClasses: ['invalid'],
-    validClasses: ['valid']
+  ...st.form,
+  labelActiveClasses: ['active'],
+  invalidClasses: ['invalid'],
+  validClasses: ['valid']
 };
+
 
 @component
 export class App extends st.component implements ILifecycle {
@@ -30,11 +33,14 @@ export class App extends st.component implements ILifecycle {
   render() {
     return (
       <RouteList>
-        <Route
-          path={[PATH_START, PATH_WILDCARD, LoginPage.ROUTE]} displayStyle={'inline'}>
-
+        <Route path={[PATH_START, PATH_WILDCARD]} displayStyle={'inline'}>
+          <SplashscreenPage />
+        </Route>
+        <Route path={[LoginPage.ROUTE]} displayStyle={'inline'}>
           <LoginPage />
-
+        </Route>
+        <Route path={[ConsumerOrderListPage.ROUTE]} displayStyle={'inline'}>
+          <ConsumerOrderListPage />
         </Route>
       </RouteList>
     );

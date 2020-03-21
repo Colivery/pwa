@@ -2,9 +2,9 @@ import { injectable, inject } from "springtype/core/di";
 import { FirebaseService } from "./firebase";
 import { FIREBASE_CONFIG } from "../config/firebase";
 import { StorageService } from "./storage";
+import { Profile } from "../types/profile";
 
-const SCALE_FACTOR = 'scale-factor';
-const THEME_COLOR = 'theme-color';
+const PROFILE = 'profile';
 
 @injectable
 export class PreferenceService {
@@ -28,19 +28,11 @@ export class PreferenceService {
         // fetch localStorage
     }
 
-    getFontSizeScaleFactor() {
-        return this.storageService.get(SCALE_FACTOR) || 100;
+    getProfile() {
+        return this.storageService.get(PROFILE) || 'consumer';
     }
 
-    setFontSizeScaleFactor(scaleFactor: number) {
-        this.storageService.set(SCALE_FACTOR, scaleFactor);
-    }
-
-    setThemeColor(hexColor: string) {
-        this.storageService.set(THEME_COLOR, hexColor);
-    }
-
-    getThemeColor() {
-        return this.storageService.get(THEME_COLOR);
+    setProfile(profile: Profile) {
+        this.storageService.set(PROFILE, profile);
     }
 }
