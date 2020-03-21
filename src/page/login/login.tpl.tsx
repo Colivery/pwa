@@ -5,12 +5,13 @@ import { MatInput } from "../../component/mat/mat-input";
 import { email, minLength, required } from "springtype/core/validate";
 import { Form } from "springtype/web/form";
 import { LogoRow } from "../../component/logo-row/logo-row";
+import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 
 export default (component: LoginPage) => (
     <fragment>
         <div class="container">
             <LogoRow />
-            <Form ref={{ formRef: component }} class="col s12">
+            <Form ref={{ formRef: component }}>
                 <div class="row">
                     <MatInput name="email" label="Email"
                         class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}

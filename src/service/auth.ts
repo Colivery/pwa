@@ -6,6 +6,8 @@ import {st} from "springtype/core";
 import {StorageService} from "./storage";
 import {ConsumerOrderListPage} from "../page/consumer-order-list/consumer-order-list";
 import {LoginPage} from "../page/login/login";
+import {context} from "springtype/core/context";
+import {getUserContext, INITIAL_USER_CONTEXT_STATE, IUserContext, USER_CONTEXT} from "../context/user";
 
 @injectable
 export class AuthService {
@@ -19,13 +21,15 @@ export class AuthService {
     @inject(FirebaseService, FIREBASE_CONFIG)
     firebaseService: FirebaseService; // leads to: new FirebaseService(FIREBASE_CONFIG)
 
+    @context(USER_CONTEXT)
+    userContext: IUserContext = getUserContext();
+
     constructor() {
         st.debug('AuthService created', this.cryptoService, this.storageService, this.firebaseService)
-        //this.autoLogin();
     }
 
-    isLoggedIn() {
-        st.debug('isLoggedIn?', this.firebaseService.isLoggedIn())
+    async isLoggedIn() {
+        await this.autoLogin();
         return this.firebaseService.isLoggedIn();
     }
 
@@ -48,24 +52,24 @@ export class AuthService {
         const email = this.getEmail();
         const passwordHash = this.getPasswordHash();
 
-
-        if (email && passwordHash) {
-            await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
-
-            st.route = {
-                path: ConsumerOrderListPage.ROUTE
-            };
-        } else {
-
-            st.route = {
-                path: LoginPage.ROUTE
-            };
+        try {
+            if (email && passwordHash) {
+                const result = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
+                this.userContext = {userId: result.user.uid, email: email};
+                st.debug('result.user.uid this.userContext', result.user.uid, this.userContext);
+                return true;
+            }
+        } catch (e) {
+            st.debug('error in login', e)
         }
+        return false;
     }
 
     async login(email: string, password: string) {
         const passwordHash = this.cryptoService.hash(password);
-        await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
+        const result = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
+        this.userContext = {userId: result.user.uid, email: email};
+        st.debug('result.user.uid this.userContext', result.user.uid, this.userContext);
         this.storeCredentials(email, passwordHash);
 
         st.route = {
@@ -73,8 +77,10 @@ export class AuthService {
         };
     }
 
-    logout() {
+    async logout() {
+        await this.firebaseService.logout();
         this.storeCredentials('', '');
+        this.userContext = INITIAL_USER_CONTEXT_STATE;
         st.route = {
             path: LoginPage.ROUTE
         };
@@ -83,6 +89,7 @@ export class AuthService {
     async register(email: string, password: string): Promise<firebase.auth.UserCredential> {
         const passwordHash = this.cryptoService.hash(password);
         const result = await this.firebaseService.auth().createUserWithEmailAndPassword(email, passwordHash);
+        this.userContext = {userId: result.user.uid, email: email};
         this.storeCredentials(email, passwordHash);
         return result;
     }

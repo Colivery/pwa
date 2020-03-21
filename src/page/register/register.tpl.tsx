@@ -55,7 +55,7 @@ export default (component: RegisterPage) => (
     </fragment>
 )
 
-export interface IRegisterForm {
+export interface IRegisterFormState {
     email: string;
     password: string;
     accepted_privacy_policy: boolean;

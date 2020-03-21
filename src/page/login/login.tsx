@@ -7,6 +7,7 @@ import tpl from "./login.tpl";
 import "./login.scss";
 import {Form} from "springtype/web/form";
 import {RegisterPage} from "../register/register";
+import {tsx} from "springtype/web/vdom";
 
 @component({
     tpl

@@ -6,13 +6,13 @@ import { RegisterUserAddressPage } from "./register-user-address";
 import { MatTextarea } from "../../component/mat/mat-textarea";
 import { MatCheckbox } from "../../component/mat/mat-checkbox";
 import { LogoRow } from "../../component/logo-row/logo-row";
+import {ErrorMessage} from "../../component/error-message/error-message";
 
 export default (component: RegisterUserAddressPage) => (
     <fragment>
         <div class="container">
-
             <LogoRow />
-            <Form ref={{ formRef: component }} class="col s12">
+            <Form ref={{ formRef: component }}>
                 <div class="row">
                     <MatInput name="name" label="Name"
                         class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
@@ -49,7 +49,10 @@ export default (component: RegisterUserAddressPage) => (
                         <MatCheckbox name="accepted_support_inquiry" label="Accept support inquiry" />
                     </div>
                 </div>
-
+                <div class="row">
+                    <ErrorMessage ref={{ errorMessage: component }}
+                                  class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']} />
+                </div>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
                         onClick={() => component.onNextClick()}>Next</a>
@@ -59,7 +62,7 @@ export default (component: RegisterUserAddressPage) => (
     </fragment>
 )
 
-export interface IRegisterUserAddressForm {
+export interface IRegisterUserAddressFormState {
     name: string;
     address: string;
     phone: string;

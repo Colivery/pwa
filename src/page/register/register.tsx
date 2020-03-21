@@ -1,16 +1,14 @@
 import {st} from "springtype/core";
-import {inject} from "springtype/core/di";
 import {component} from "springtype/web/component";
 import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
 import {ref} from "springtype/core/ref";
-import {AuthService} from "../../service/auth";
 import {Form} from "springtype/web/form";
 import "./register.scss";
-import tpl, {IRegisterForm} from "./register.tpl";
-import {context} from "springtype/core/context";
-import {getRegisterContext, IRegisterContext, REGISTER_CONTEXT} from "../../context/register";
+import tpl, {IRegisterFormState} from "./register.tpl";
 import {RegisterUserAddressPage} from "../register-user-address/register-user-address";
 import {ErrorMessage} from "../../component/error-message/error-message";
+import {inject} from "springtype/core/di";
+import {RegisterService} from "../../service/register";
 
 @component({
     tpl
@@ -18,9 +16,8 @@ import {ErrorMessage} from "../../component/error-message/error-message";
 export class RegisterPage extends st.component implements ILifecycle {
     static ROUTE = "register";
 
-
-    @context(REGISTER_CONTEXT)
-    context: IRegisterContext = getRegisterContext();
+    @inject(RegisterService)
+    registerService: RegisterService;
 
     @ref
     formRef: Form;
@@ -33,13 +30,13 @@ export class RegisterPage extends st.component implements ILifecycle {
     async onNextClick() {
         try {
             if (await this.formRef.validate()) {
-                const data = this.formRef.getState() as any as IRegisterForm;
-                const response = await window.authService.register(data.email, data.password);
+                const data = this.formRef.getState() as any as IRegisterFormState;
+                const userCredential = await window.authService.register(data.email, data.password);
                 delete data.password;
+                await this.registerService.createUserProfile(userCredential.user.uid, data);
                 this.formRef.reset();
 
                 st.debug('register data', data);
-                this.context = {...this.context, ...data, user_id: response.user.uid};
 
                 st.route = {
                     path: RegisterUserAddressPage.ROUTE

@@ -1,96 +1,101 @@
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import { injectable } from "springtype/core/di";
+import "firebase/database";
+import "firebase/firestore";
+import {injectable} from "springtype/core/di";
 
 @injectable
 export class FirebaseService {
 
-  isInitialized: boolean = false;
-  firebaseConfig: Object;
+    isInitialized: boolean = false;
+    firebaseConfig: Object;
 
-  // injected via second @inject() arg: @inject(FirebaseService, FIREBASE_CONFIG)
-  constructor(firebaseConfig: Object) {
-    this.initializeApp(firebaseConfig);
-  }
-
-  // @ts-ignore
-  get SDK_VERSION(): string {
-    return firebase.SDK_VERSION;
-  }
-
-  async initializeApp(firebaseConfig: Object, name?: string): Promise<void> {
-
-    if (firebaseConfig) {
-      this.firebaseConfig = firebaseConfig;
+    // injected via second @inject() arg: @inject(FirebaseService, FIREBASE_CONFIG)
+    constructor(firebaseConfig: Object) {
+        this.initializeApp(firebaseConfig);
     }
 
-    if (!this.isInitialized) {
-      firebase.initializeApp(firebaseConfig, name);
-      this.isInitialized = true;
+    // @ts-ignore
+    get SDK_VERSION(): string {
+        return firebase.SDK_VERSION;
     }
-  }
 
-  async isLoggedIn(): Promise<boolean> {
-    if (firebase.auth().currentUser) {
-      return true;
+    async initializeApp(firebaseConfig: Object, name?: string): Promise<void> {
+
+        if (firebaseConfig) {
+            this.firebaseConfig = firebaseConfig;
+        }
+
+        if (!this.isInitialized) {
+            firebase.initializeApp(firebaseConfig, name);
+            this.isInitialized = true;
+        }
     }
-    return false;
-  }
 
-  getLoggedInUserId(): string {
-    return firebase.auth().currentUser.uid;
-  }
+    async isLoggedIn(): Promise<boolean> {
+        if (firebase.auth().currentUser) {
+            return true;
+        }
+        return false;
+    }
 
-  analytics(app?: firebase.app.App): firebase.analytics.Analytics {
-    return firebase.analytics(app);
-  }
+    async logout(){
+        await firebase.auth().signOut();
+    }
+    getLoggedInUserId(): string {
+        return firebase.auth().currentUser.uid;
+    }
 
-  app(name?: string): firebase.app.App {
-    return firebase.app(name);
-  }
+    analytics(app?: firebase.app.App): firebase.analytics.Analytics {
+        return firebase.analytics(app);
+    }
 
-  // @ts-ignore
-  get apps(): Array<firebase.app.App> {
-    return firebase.apps;
-  }
+    app(name?: string): firebase.app.App {
+        return firebase.app(name);
+    }
 
-  auth(persistenceMode: firebase.auth.Auth.Persistence = firebase.auth.Auth.Persistence.SESSION, app?: firebase.app.App): firebase.auth.Auth {
+    // @ts-ignore
+    get apps(): Array<firebase.app.App> {
+        return firebase.apps;
+    }
 
-    // solves the common pitfall of not setting the persistence mode ideomatically
-    firebase.auth().setPersistence(persistenceMode);
+    auth(persistenceMode: firebase.auth.Auth.Persistence = firebase.auth.Auth.Persistence.SESSION, app?: firebase.app.App): firebase.auth.Auth {
 
-    return firebase.auth(app);
-  }
+        // solves the common pitfall of not setting the persistence mode ideomatically
+        firebase.auth().setPersistence(persistenceMode);
 
-  database(app?: firebase.app.App): firebase.database.Database {
-    return firebase.database(app);
-  }
+        return firebase.auth(app);
+    }
 
-  firestore(app?: firebase.app.App): firebase.firestore.Firestore {
-    return firebase.firestore(app);
-  }
+    database(app?: firebase.app.App): firebase.database.Database {
+        return firebase.database(app);
+    }
 
-  functions(app?: firebase.app.App): firebase.functions.Functions {
-    return firebase.functions(app);
-  }
+    firestore(app?: firebase.app.App): firebase.firestore.Firestore {
+        return firebase.firestore(app);
+    }
 
-  messaging(app?: firebase.app.App): firebase.messaging.Messaging {
-    return firebase.messaging(app);
-  }
+    functions(app?: firebase.app.App): firebase.functions.Functions {
+        return firebase.functions(app);
+    }
 
-  performance(app?: firebase.app.App): firebase.performance.Performance {
-    return firebase.performance(app);
-  }
+    messaging(app?: firebase.app.App): firebase.messaging.Messaging {
+        return firebase.messaging(app);
+    }
 
-  registerVersion(library: string, version: string, variant?: string): void {
-    return firebase.registerVersion(library, version, variant);
-  }
+    performance(app?: firebase.app.App): firebase.performance.Performance {
+        return firebase.performance(app);
+    }
 
-  remoteConfig(app?: firebase.app.App): firebase.remoteConfig.RemoteConfig {
-    return firebase.remoteConfig(app);
-  }
+    registerVersion(library: string, version: string, variant?: string): void {
+        return firebase.registerVersion(library, version, variant);
+    }
 
-  storage(app?: firebase.app.App): firebase.storage.Storage {
-    return firebase.storage(app);
-  }
+    remoteConfig(app?: firebase.app.App): firebase.remoteConfig.RemoteConfig {
+        return firebase.remoteConfig(app);
+    }
+
+    storage(app?: firebase.app.App): firebase.storage.Storage {
+        return firebase.storage(app);
+    }
 }

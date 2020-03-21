@@ -12,38 +12,26 @@ import {FirebaseService} from "../service/firebase";
 import {FIREBASE_CONFIG} from "../config/firebase";
 
 @injectable
-export class LoginGuard {
-
+export class RegisterGuard {
 
     @inject(AuthService)
-    authService: AuthService;
-
-    @inject(FirebaseService, FIREBASE_CONFIG)
-    firebaseService: FirebaseService;
+    private authService: AuthService;
 
     @inject(RegisterService)
-    registerService: RegisterService;
+    private registerService: RegisterService;
 
-
-    autoLogin = async (match: IRouteMatch): Promise<IRouterGuardResponse> => {
-        if (await this.authService.autoLogin()) {
-            return ConsumerOrderListPage.ROUTE
+    register = async (match: IRouteMatch): Promise<IRouterGuardResponse> => {
+        if (await this.authService.isLoggedIn()) {
+            return RegisterUserAddressPage.ROUTE
         }
         return true;
     };
-
-    loggedIn = async (match: IRouteMatch): Promise<IRouterGuardResponse> => {
+    registerComplete = async (match: IRouteMatch): Promise<IRouterGuardResponse> => {
         if (!await this.authService.isLoggedIn()) {
             return LoginPage.ROUTE;
         }
-        const loggedInUserId = this.firebaseService.getLoggedInUserId();
-        st.debug('guardLoggedIn loggedInUserId', loggedInUserId);
-
-        const userProfile = await this.registerService.isUserProfileCompleted(loggedInUserId);
-        if (!userProfile) {
-            return RegisterUserAddressPage.ROUTE;
-        }
         return true;
     };
+
 }
 

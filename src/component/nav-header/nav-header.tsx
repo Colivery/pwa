@@ -24,7 +24,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     onLogoutClick = () => {
         window.authService.logout();
-    }
+    };
 
     onAddClick = () => {
         this.dispatchEvent('addButtonClick');
@@ -41,12 +41,13 @@ export class NavHeader extends st.component<NavHeaderProps> {
                     <a href="javascript:" class="brand-logo">
                         <img class="nav-brand-logo" src={require('../../../assets/images/logo.png')} />
                     </a>
+
+                    <a class='dropdown-trigger btn btn-flat btn-small' href='javascript:' data-target='user-dropdown'><i class="material-icons">menu</i></a>
+
                     {this.showBackButton ? <a class='btn btn-flat btn-small' href='javascript:' onClick={this.onBackButtonClick}>
                         <i class="material-icons">arrow_back</i>
                     </a> : ''}
                     
-                    <a class='dropdown-trigger btn btn-flat btn-small' href='javascript:' data-target='user-dropdown'><i class="material-icons">menu</i></a>
-
                 </div>
                 <div class="nav-content">
                     {this.showAddButton ? <a onClick={this.onAddClick} class="btn-floating btn-large halfway-fab waves-effect waves-light red">
