@@ -64,8 +64,6 @@ export class FirebaseService {
         // solves the common pitfall of not setting the persistence mode ideomatically
         firebase.auth().setPersistence(persistenceMode);
 
-        firebase.storage
-
         return firebase.auth(app);
     }
 

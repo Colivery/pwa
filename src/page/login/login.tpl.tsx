@@ -4,13 +4,12 @@ import { ErrorMessage } from "../../component/error-message/error-message";
 import { MatInput } from "../../component/mat/mat-input";
 import { email, minLength, required } from "springtype/core/validate";
 import { Form } from "springtype/web/form";
+import { LogoRow } from "../../component/logo-row/logo-row";
 
 export default (component: LoginPage) => (
     <fragment>
         <div class="container">
-            <div class="row">
-                <center><img src={require('../../../static/assets/icons/favicon.png')} /></center>
-            </div>
+            <LogoRow />
             <Form ref={{ formRef: component }} class="col s12">
                 <div class="row">
                     <MatInput name="email" label="Email"

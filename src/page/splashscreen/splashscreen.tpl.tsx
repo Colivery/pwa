@@ -1,8 +1,10 @@
-import {SplashscreenPage} from "./splashscreen";
-import {tsx} from "springtype/web/vdom";
+import { SplashscreenPage } from "./splashscreen";
+import { tsx } from "springtype/web/vdom";
+import { LogoRow } from "../../component/logo-row/logo-row";
 
 export default (component: SplashscreenPage) => (
-    <div class="container">
-        <center><img src={require('../../../static/assets/icons/favicon.png')}/></center>
-    </div>
+    <fragment>
+        <br /><br /><br />
+        <LogoRow />
+    </fragment>
 )

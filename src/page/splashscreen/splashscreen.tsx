@@ -10,6 +10,9 @@ import {LoginPage} from "../login/login";
     tpl
 })
 export class SplashscreenPage extends st.component implements ILifecycle {
+
+    static ROUTE = "splashscreen";
+
     constructor() {
         super();
         this.route();
