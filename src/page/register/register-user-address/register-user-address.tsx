@@ -1,18 +1,18 @@
 import "./register-user-address.scss";
 
-import { st } from "springtype/core";
-import { inject } from "springtype/core/di";
-import { component } from "springtype/web/component";
-import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
-import { ref } from "springtype/core/ref";
-import { Form } from "springtype/web/form";
-import tpl, { IRegisterUserAddressFormState } from "./register-user-address.tpl";
-import { LoginPage } from "../login/login";
-import { RegisterService } from "../../service/register";
-import { ErrorMessage } from "../../component/error-message/error-message";
-import { FirebaseService } from "../../service/firebase";
-import { GeoService } from "../../service/geocoding";
-import { MatTextarea } from "../../component/mat/mat-textarea";
+import { GeoService } from "../../../service/geocoding";
+import { MatTextarea } from "../../../component/mat/mat-textarea";
+import {st} from "springtype/core";
+import {inject} from "springtype/core/di";
+import {component} from "springtype/web/component";
+import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
+import {ref} from "springtype/core/ref";
+import {Form} from "springtype/web/form";
+import tpl, {IRegisterUserAddressFormState} from "./register-user-address.tpl";
+import {RegisterChooseProfile} from "../register-choose-profile/register-choose-profile";
+import {RegisterService} from "../../../service/register";
+import {FirebaseService} from "../../../service/firebase";
+import {ErrorMessage} from "../../../component/error-message/error-message";
 
 @component({
     tpl
@@ -91,7 +91,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
                 st.debug('register user address data', data);
                 st.route = {
-                    path: LoginPage.ROUTE
+                    path: RegisterChooseProfile.ROUTE
                 };
             }
         } catch (e) {

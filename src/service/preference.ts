@@ -29,7 +29,7 @@ export class PreferenceService {
     }
 
     getProfile() {
-        return this.storageService.get(PROFILE) || 'consumer';
+        return this.storageService.get(PROFILE);
     }
 
     setProfile(profile: Profile) {
