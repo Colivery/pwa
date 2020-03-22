@@ -1,7 +1,7 @@
 @import "../../../assets/components/color-variables";
 
 #user-dropdown {
-    width: 200px !important;
+  width: 200px !important;
 }
 
 nav {
@@ -22,4 +22,12 @@ nav .brand-logo {
 nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
     height: 32px;
     line-height: 32px;
+}
+
+.dropdown-content.show {
+  display: block;
+  opacity: 1;
+  transform-origin: 100% 0;
+  width: 220px;
+  transform: scaleX(1) scaleY(1);
 }
