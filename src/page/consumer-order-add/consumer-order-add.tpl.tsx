@@ -9,7 +9,7 @@ import { MatModal } from "../../component/mat/mat-modal";
 
 export default (component: ConsumerOrderAddPage) => (
     <fragment>
-        <NavHeader showAddButton={false} />
+        <NavHeader showBackButton={true} showAddButton={false} />
 
         <div class="container">
             <h4 class="header">Was brauchst Du?</h4>
@@ -111,18 +111,22 @@ export default (component: ConsumerOrderAddPage) => (
 
             <h5 class="header">Einkaufszettel</h5>
 
-            <div class="row">
+            <div>
+                {component.orderItems.length ? component.orderItems.map((orderItem, index) => <div data-index={index} class="row">
+                    <div class="col s11">
+                        {orderItem.description}
+                    </div><div class="col s1">
+                        <a class="btn-floating btn-large waves-effect waves-light red" onClick={component.onOrderItemRemoveClick}><i class="material-icons">remove</i></a>
+                    </div></div>) : 'Noch keine Einträge.'}
+            </div>
 
-                <MatInput
-                    name="articleDescription"
-                    ref={{ articleDescription: component }}
-                    label="Artikelbeschreibung"
-                    class={['col', 's11']}
-                    helperText="z.B. 3 Äpfel, die grünen (sehr wichtig!)">
-                </MatInput>
+            <div class="row">
+                <div class="col s11">
+                    <input ref={{ articleDescription: component }} />
+                </div>
 
                 <div class="col s1">
-                    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+                    <a class="btn-floating btn-large waves-effect waves-light red" onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
                 </div>
             </div>
 

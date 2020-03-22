@@ -8,18 +8,18 @@ import {OlMap} from "../../component/ol-map/ol-map";
 
 export default (component: ConsumerOrderDetailPage) => (
     <fragment>
-        <NavHeader showAddButton={false} />
+        <NavHeader showBackButton={true} showAddButton={false} />
 
         <div class="container">
 
             <div class="row">
-                <h4 class="header center">Auftrag</h4>
+                <h4 class="header">Auftrag</h4>
                 <table class="striped">
                     <tbody>
                         <tr>
                             <td width="30%"><strong>Wo</strong></td>
-                            <td width="70%">{component.orderContext.shop_name} <br />
-                            <OlMap ref={{mapRef: component}} />
+                            <td width="70%">{component.orderContext.shop_name}<br />
+                            {/*<OlMap ref={{mapRef: component}} />*/}
                             </td>
                         </tr>
                         <tr>
@@ -35,7 +35,7 @@ export default (component: ConsumerOrderDetailPage) => (
             </div>
 
             <div class="row">
-                <h5 class="center">Dein Fahrer</h5>
+                <h5 class="">Dein Fahrer</h5>
 
                 {component.orderContext.driver_user_id ?
                     <table class="striped">
@@ -59,7 +59,7 @@ export default (component: ConsumerOrderDetailPage) => (
 
             <div class="row">
 
-                <h5 class="center">Artikel</h5>
+                <h5 class="">Artikel</h5>
 
                 <table class="striped highlight">
                     <tbody>
@@ -75,7 +75,7 @@ export default (component: ConsumerOrderDetailPage) => (
             </div>
 
             <div class="row">
-                <h5 class="center">Hinweise</h5>
+                <h5 class="">Hinweise</h5>
 
                 <span>
                 {component.orderContext.hint}

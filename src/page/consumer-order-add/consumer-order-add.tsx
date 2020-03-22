@@ -27,16 +27,8 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     @ref
     locationField: MatInput;
 
-    lookupTimeout: any;
-
-    pickupLat = 0;
-    pickupLon = 0;
-
-    locationOptions = [];
-
-    isLoading: boolean = false;
-    selectedLocationType: string = '';
-    oldMarker: Feature;
+    @ref
+    articleDescription: HTMLInputElement;
 
     @ref
     olMapRef: OlMap;
@@ -44,11 +36,20 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     @ref
     dontCareForLocationSwitch: HTMLInputElement;
 
+    @ref
+    confirmCreateOrderModal: MatModal
+
+    lookupTimeout: any;
+    pickupLat = 0;
+    pickupLon = 0;
+    locationOptions = [];
+    isLoading: boolean = false;
+    selectedLocationType: string = '';
+    oldMarker: Feature;
     doesNotCareForLocation: boolean = false;
     selectedLocation: any;
 
-    @ref
-    confirmCreateOrderModal: MatModal;
+    orderItems = [];
 
     buffer = (fn: Function, buffer: number = 1000): Function => {
         return () => {
@@ -116,11 +117,31 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         this.confirmCreateOrderModal.toggle();
     }
 
+    onOrderItemAddClick = () => {
+
+        this.orderItems.push({
+            description: this.articleDescription.value
+        });
+
+        this.doRender();
+    }
+
+    onOrderItemRemoveClick = (evt: MouseEvent) => {
+
+        const orderItemIndex = parseInt((evt.target as HTMLElement).closest('.row').getAttribute('data-index'), 10);
+
+        this.orderItems.splice(orderItemIndex, 1);
+
+        this.doRender();
+
+        console.log('remove', orderItemIndex)
+    }
+
     onReallyCreateOrderClick = () => {
 
         // close modal
         this.confirmCreateOrderModal.toggle();
-        
+
         // TODO: OrderService.create(...)
 
         st.route = {

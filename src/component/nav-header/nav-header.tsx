@@ -83,7 +83,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
             <ul class="dropdown-content" ref={{dropDownContentRef: this}} tabindex="0">
                 <li><
                     a href="javascript:" onClick={this.onUserProfileClick}>
-                    <i class="material-icons">account_circle</i> Profil</a>
+                    <i class="material-icons">account_circle</i> Mein Profil</a>
                 </li>
                 <li>
                     {this.getActiveMode()}
@@ -91,7 +91,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 <li class="divider" tabindex="-1"/>
                 <li>
                     <a href="javascript:" onclick={this.onLogoutClick}>
-                        <i class="material-icons">directions_run</i> Logout</a>
+                        <i class="material-icons">directions_run</i> Ausloggen</a>
                 </li>
             </ul>
 
@@ -131,14 +131,14 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 this.onModeSwitch('consumer')
             }}>
                 <i class="material-icons">local_mall</i>
-                Consumer-Mode
+                Konsument-Modus
             </a>
         } else {
             return <a href="javascript:" onclick={() => {
                 this.onModeSwitch('driver')
             }}>
                 <i class="material-icons">time_to_leave</i>
-                Driver-Mode
+                Fahrer-Modus
             </a>
         }
     }
