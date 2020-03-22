@@ -32,10 +32,11 @@ export default (component: RegisterUserAddressPage) => (
                             required: 'This field is required'
                         }}>
                     </MatInput>
-                    <MatTextarea name="address" label="Address"
+                    <MatTextarea ref={{addressField: component}} name="address" label="Address"
                         class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
                         helperText="Enter your full address here"
                         validators={[required]}
+                        onKeyUp={component.onAddressKeyUp}
                         successMessage={'right'}
                         errorMessage={{
                             required: 'This field is required'
