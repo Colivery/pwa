@@ -12,6 +12,7 @@ import { ref } from "springtype/core/ref";
 import { inject } from "springtype/core/di";
 import { EngineService } from "../../../service/engine";
 import { GeoService } from "../../../service/geocoding";
+import { DriverOrderDetailPage } from "../../driver-order-detail/driver-order-detail";
 
 @component({
     tpl
@@ -24,7 +25,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
 
     @context(ORDER_CONTEXT)
     orderContext: any = getOrderContext();
-    
+
     @ref
     loadingIndicator: MatLoadingIndicator;
 
@@ -34,23 +35,18 @@ export class DriverOrderList extends st.component implements ILifecycle {
     @inject(GeoService)
     geoService: GeoService;
 
-    range: number = 20;
+    range: number = 5;
 
     async onRouteEnter() {
 
-        const currentPosition = await this.geoService.getCurrentLocation();
-        const serviceResonse = await this.engineService.search(currentPosition.latitude, currentPosition.longitude, this.range);
+        this.updateList();
 
-        console.log('engine serviceResonse', serviceResonse);
-
-        this.loadingIndicator.setVisible(false);
-        
         // mock: TODO: get data from firebase
         this.displayData = [{
-            order_id: 'woEIqAywu7SkD3M6ijip',
+            id: 'woEIqAywu7SkD3M6ijip',
             shop_name: 'Hr. Baumann / Edeka Sabitz',
             distance: '10 km',
-            products: [{
+            items: [{
                 id: 'asdasd8',
                 description: "Brot",
                 status: "todo"
@@ -59,11 +55,11 @@ export class DriverOrderList extends st.component implements ILifecycle {
             hint: 'Hintere Haustür',
             date: '2020-03-21'
         }, {
-            order_id: 'woEIqAywu7SkD3M6ijip3',
+            id: 'woEIqAywu7SkD3M6ijip3',
             shop_name: 'Fr. Holle / Apotheke am Hart',
             distance: '8 km',
             driver_user_id: 'adasdasd323423',
-            products: [{
+            items: [{
                 id: 'asdasd1',
                 description: "Paracetamol 25mg",
                 status: "todo"
@@ -76,11 +72,11 @@ export class DriverOrderList extends st.component implements ILifecycle {
             status: 'accepted',
             date: '2020-03-20'
         }, {
-            order_id: 'woEIqAywu7SkD3M6ijip2',
+            id: 'woEIqAywu7SkD3M6ijip2',
             shop_name: 'Fr. Wassermann / Rossmann',
             distance: '3 km',
             hint: 'Hintere Haustür',
-            products: [{
+            items: [{
                 id: 'asdasd3',
                 description: "Shampoo",
                 status: "todo"
@@ -93,8 +89,24 @@ export class DriverOrderList extends st.component implements ILifecycle {
             date: '2020-03-20'
         }];
 
-
         this.doRender();
+    }
+
+    async updateList() {
+
+        this.loadingIndicator.setVisible(true);
+
+        const currentPosition = await this.geoService.getCurrentLocation();
+        const serviceResonse = await this.engineService.search(currentPosition.latitude, currentPosition.longitude, this.range);
+
+        console.log('engine serviceResonse', serviceResonse);
+
+        this.loadingIndicator.setVisible(false);
+        this.doRender();
+    }
+
+    onRefreshButtonClick() {
+        this.updateList();
     }
 
     onRangeChange = (evt: MouseEvent) => {
@@ -111,13 +123,13 @@ export class DriverOrderList extends st.component implements ILifecycle {
         const id = ((evt.target as HTMLElement).closest('tr') as HTMLElement).getAttribute('data-id');
 
         for (let item of this.displayData) {
-            if (item.order_id === id) {
+            if (item.id === id) {
                 this.orderContext = item;
             }
         }
 
         st.route = {
-            path: ConsumerOrderDetailPage.ROUTE,
+            path: DriverOrderDetailPage.ROUTE,
             params: {
                 id
             }

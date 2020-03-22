@@ -7,7 +7,7 @@ import { MatLoadingIndicator } from "../../../component/mat/mat-loading-indicato
 
 export default (component: DriverOrderList) => (
     <fragment>
-        <NavHeader showBackButton={false} showAddButton={false} showRefreshButton={true} />
+        <NavHeader showBackButton={false} showAddButton={false} showRefreshButton={true} onRefreshButtonClick={component.onRefreshButtonClick} />
 
         <MatLoadingIndicator ref={{loadingIndicator: component}} />
         
@@ -32,10 +32,10 @@ export default (component: DriverOrderList) => (
 
                 <tbody>
                     {component.displayData.length > 0 ? component.displayData.filter((order: any) => order.status === 'to_be_delivered').map((order: any) =>
-                        <tr data-id={order.order_id}
+                        <tr data-id={order.id}
                             onclick={component.onRowClick}>
                             <td>{order.shop_name}</td>
-                            <td>{order.products.length}</td>
+                            <td>{order.items.length}</td>
                             <td class={[getOrderStatusTextColorClass(order.status)]}>{getOrderStatusText(order.status)}</td>
                             <td>{order.date}</td>
                             <td><a href="javascript:" class="btn grey">Anzeigen</a></td>

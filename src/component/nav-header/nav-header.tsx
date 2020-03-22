@@ -12,6 +12,7 @@ import {DriverOrderList} from "../../page/driver/driver-order-list/driver-order-
 
 export interface NavHeaderProps {
     onAddButtonClick?: Function;
+    onRefreshButtonClick?: Function;
     showAddButton?: boolean;
     showBackButton?: boolean;
     showRefreshButton?: boolean;
@@ -25,6 +26,9 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     @event
     onAddButtonClick: MouseEvent;
+
+    @event
+    onRefreshButtonClick: MouseEvent;
 
     @ref
     dropDownContentRef: HTMLUListElement;
@@ -40,7 +44,6 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     @attr
     showRefreshButton: boolean = false;
-
 
     onLogoutClick = () => {
         console.log('logout click');
