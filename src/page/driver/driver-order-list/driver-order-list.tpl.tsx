@@ -6,7 +6,7 @@ import {DriverOrderList} from "./driver-order-list";
 
 export default (component: DriverOrderList) => (
     <fragment>
-        <NavHeader showBackButton={false} showAddButton={true} showRefreshButton={true} />
+        <NavHeader showBackButton={false} showAddButton={false} showRefreshButton={true} />
 
         <div class="container">
             <h5 class="header">Offene Aufträge</h5>
@@ -23,20 +23,17 @@ export default (component: DriverOrderList) => (
             </thead>
 
             <tbody>
-            {component.displayData.length > 0 ? component.displayData.map((order: any) => <tr data-id={order.order_id}
+            {component.displayData.length > 0 ? component.displayData.filter((order: any)=> order.status === 'to_be_delivered').map((order: any) => <tr data-id={order.order_id}
                                                                                               onclick={component.onRowClick}>
                 <td>{order.shop_name}</td>
                 <td>{order.products.length}</td>
                 <td class={[getOrderStatusTextColorClass(order.status)]}>{getOrderStatusText(order.status)}</td>
                 <td>{order.date}</td>
                 <td><a href="javascript:" class="btn grey">Anzeigen</a></td>
-            </tr>) : 'Noch kein Auftrag'}
+            </tr>) : 'Keine offene Aufträg'}
             </tbody>
 
         </table>
-            <a               class="btn-floating btn-small waves-effect waves-light red pulse">
-                <i class="material-icons">refresh</i>
-            </a>
         </div>
     </fragment>
 )

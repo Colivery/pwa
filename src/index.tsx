@@ -22,8 +22,7 @@ import {RegisterGuard} from "./guard/register-guard";
 import {MatLoadingIndicator} from "./component/mat/mat-loading-indicator";
 import {RegisterRoute} from "./page/register/register-route";
 import {UserProfile} from "./page/user-profile/user-profile";
-import {DriverOrderList} from "./page/driver/driver-order-list/driver-order-list";
-import {DriverRoute} from "./page/driver/driverRoutes";
+import {DriverRoute} from "./page/driver/driver-routes";
 
 st.form = {
     ...st.form,

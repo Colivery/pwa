@@ -35,10 +35,10 @@ export class NavHeader extends st.component<NavHeaderProps> {
     showAddButton: boolean = false;
 
     @attr
-    showBackButton: boolean = true;
+    showBackButton: boolean = false;
 
     @attr
-    showRefreshButton: boolean = true;
+    showRefreshButton: boolean = false;
 
 
     onLogoutClick = () => {
@@ -47,6 +47,10 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     onAddClick = () => {
         this.dispatchEvent('addButtonClick');
+    };
+
+    onRefreshClick = () => {
+        this.dispatchEvent('refreshButtonClick');
     };
 
     onBackButtonClick = () => {
@@ -141,14 +145,14 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     private getButton() {
         const comp = [];
-        if (this.showAddButton && !this.showRefreshButton) {
+        if (this.showAddButton) {
             comp.push(<a onClick={this.onAddClick}
                          class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
                 <i class="material-icons">add</i>
             </a>)
         }
-        if (this.showAddButton && this.showRefreshButton) {
-            comp.push(<a onClick={this.onAddClick}
+        if (this.showRefreshButton) {
+            comp.push(<a onClick={this.onRefreshClick}
                          class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
                 <i class="material-icons">refresh</i>
             </a>)
