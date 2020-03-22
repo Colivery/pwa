@@ -4,8 +4,8 @@ import {FirebaseService} from "./firebase";
 import {IUserProfile} from "../datamodel/user";
 import {FIREBASE_CONFIG} from "../config/firebase";
 import {st} from "springtype/core";
-import {IRegisterUserAddressFormState} from "../page/register/register-user-address/register-user-address.tpl";
 import {IRegisterFormState} from "../page/register/register-account/register.tpl";
+
 const GeoPoint = firebase.firestore.GeoPoint;
 
 @injectable
@@ -23,14 +23,9 @@ export class RegisterService {
         })
     }
 
-    async createUserProfileComplete(userAddressFrom: IRegisterUserAddressFormState) {
-        st.debug('createUserProfile', userAddressFrom);
-        const location = userAddressFrom.geo_location;
-        delete userAddressFrom.geo_location;
-        await this.getUserCollection().update({
-            ...userAddressFrom,
-            geo_location: new GeoPoint(parseFloat(location.lat), parseFloat(location.lng))
-        })
+    async createUserProfileComplete(userProfileComplete: UserProfileComplete) {
+        st.debug('createUserProfile', userProfileComplete);
+        await this.getUserCollection().update(userProfileComplete)
     }
 
     async updateProfile(userProfile: IUserProfile) {
@@ -56,7 +51,19 @@ export class RegisterService {
         return this.firebaseService.firestore().collection('user').doc(this.getUserId());
     }
 
+    getGeoPoint(lat: string, lng: string) {
+        return new GeoPoint(parseFloat(lat), parseFloat(lng));
+    }
+
     getUserId() {
         return this.firebaseService.getLoggedInUserId();
     }
+}
+
+export interface UserProfileComplete {
+    name: string;
+    address: string;
+    phone: string;
+    accepted_support_inquiry: boolean;
+    geo_location: any;
 }

@@ -1,7 +1,7 @@
 import {tsx} from "springtype/web/vdom";
 import {NavHeader} from "../../component/nav-header/nav-header";
 import {UserProfile} from "./user-profile";
-import {Form} from "springtype/web/form";
+import {Form, Input} from "springtype/web/form";
 import {MatInput} from "../../component/mat/mat-input";
 import {email, required} from "springtype/core/validate";
 import {MatTextarea} from "../../component/mat/mat-textarea";
@@ -78,15 +78,22 @@ const getFormInputs = (component: UserProfile) => {
             <MatTextarea ref={{addressRef: component}} name="address" label="Address"
                          class={['col', 's12', 'm6']}
                          helperText="Enter your full address here"
-                         validators={[required]}
+                         validators={[required, component.addressValidator]}
                          successMessage={'right'}
                          value={component.state.address}
                          errorMessage={{
-                             required: 'This field is required'
+                             required: 'This field is required',
+                             address: 'Invalid address'
                          }}>
             </MatTextarea>
-            <OlMap ref={{mapRef:component}}/>
-            <div class={['col', 's12', 'm6']} >
+            <Form name='geo_location'>
+                <input ref={{latInputRef: component}} name="lat"  hidden />
+                <input ref={{lngInputRef: component}} name="lng"  hidden />
+            </Form>
+            <div class={['col', 's12']}>
+                <OlMap ref={{olMapRef: component}} hideZoom={false}/>
+            </div>
+            <div class={['col', 's12', 'm6']}  style={{marginTop: '15px'}}>
                 <MatCheckbox checked={component.state.accepted_support_inquiry} ref={{supportInquiryRef: component}}  name="accepted_support_inquiry" label="Accept support inquiry"/>
             </div>
         </fragment>

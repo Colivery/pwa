@@ -66,6 +66,7 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     @ref
     mapRef: HTMLDivElement;
+
     olMap!: Map;
 
     view!: View;
@@ -74,13 +75,15 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
 
     render() {
-        return <div style={`height: ${this.height}px;`}>
+        return <div style={`height: ${this.height}px;`} novdom>
             {this.splash ? <div class="ol-splash" ref={{overlayRef: this}}/> : <fragment/>}
             <div ref={{mapRef: this}} class={['map', 'ol-map']} style={`height: ${this.height}px;`}/>
         </div>;
     }
 
     init(): void {
+
+        if(!this.olMap){
 
         const language = 'de';
         const country = 'DE';
@@ -124,6 +127,7 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
         this.addListeners();
 
+        }
     }
 
 
@@ -156,7 +160,10 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     removeMarker(marker: Feature) {
         if (marker) {
+            try {
             this.markerLayer.getSource().removeFeature(marker);
+            }catch (e) {
+            }
         }
     }
 }

@@ -15,7 +15,6 @@ import {ErrorMessage} from "../../../component/error-message/error-message";
 import {OlMap} from "../../../component/ol-map/ol-map";
 import {validatorNameFactory} from "springtype/core/validate/function/validator-name-factory";
 import {Feature} from "ol";
-import {MatInput} from "../../../component/mat/mat-input";
 
 @component({
     tpl
@@ -56,7 +55,6 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
     onAfterRender(hasDOMChanged: boolean): void {
         this.olMapRef.init();
-
     }
 
     buffer = (fn: Function, buffer: number = 500): Function => {
@@ -73,7 +71,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     addressValidator = validatorNameFactory(async (value: string) => {
         const geocodeBuffered = this.buffer(async (callback: Function) => {
             const sanitizedValue = value.split('\n').join(' ');
-            st.debug('address value sanitizedValue', value, sanitizedValue );
+            st.debug('address value sanitizedValue', value, sanitizedValue);
             const geoCoordinates = await this.geoService.forwardGeoCode(sanitizedValue);
 
             if (geoCoordinates && geoCoordinates[0]) {
@@ -84,10 +82,10 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
                 st.debug('userGeoLocation', this.userGeoLocation);
 
-                st.debug('lat lng',this.userGeoLocation.lat,this.userGeoLocation.lon);
-                this.olMapRef.setCenter(this.userGeoLocation.lat,this.userGeoLocation.lon);
+                st.debug('lat lng', this.userGeoLocation.lat, this.userGeoLocation.lon);
+                this.olMapRef.setCenter(this.userGeoLocation.lat, this.userGeoLocation.lon);
                 this.olMapRef.removeMarker(this.oldMarker);
-                this.oldMarker = this.olMapRef.setMarker(this.userGeoLocation.lat,this.userGeoLocation.lon);
+                this.oldMarker = this.olMapRef.setMarker(this.userGeoLocation.lat, this.userGeoLocation.lon);
                 this.latInputRef.value = this.userGeoLocation.lat;
                 this.lngInputRef.value = this.userGeoLocation.lon;
                 callback(true);
@@ -112,7 +110,10 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
                 this.formRef.reset();
 
-                await this.registerService.createUserProfileComplete(data);
+                const location = this.registerService.getGeoPoint(data.geo_location.lat, data.geo_location.lng);
+                delete data.geo_location;
+
+                await this.registerService.createUserProfileComplete({...data, geo_location: location});
 
                 st.debug('register user address data', data);
                 st.route = {
