@@ -2,70 +2,99 @@ import { ConsumerOrderDetailPage } from "./consumer-order-detail";
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { MatModal } from "../../component/mat/mat-modal";
+import { getOrderStatusText } from "../../function/get-order-status-text";
+import { getOrderStatusTextColorClass } from "../../function/get-order-status-text-color-class";
 
 export default (component: ConsumerOrderDetailPage) => (
     <fragment>
         <NavHeader showAddButton={false} />
 
         <div class="container">
-            <h5>Auftrag <span class="badge"># {component.orderContext.order_id}</span></h5>
 
-            <table class="striped">
-                <tbody>
-                    <tr>
-                        <td>Wo</td>
-                        <td>{component.orderContext.shop_name}</td>
-                    </tr>
-                    <tr>
-                        <td>Wann</td>
-                        <td>{component.orderContext.date}</td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
-                        <td><span class={["badge", component.getBadgeColorForStatus(component.orderContext.status)]}>{component.getStatusText(component.orderContext.status)}</span></td>
-                    </tr>
-                    <tr>
-                        <td>Hinweis</td>
-                        <td>{component.orderContext.hint}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h5>Fahrer</h5>
-
-            {component.orderContext.driver_user_id ?
+            <div class="row">
+                <h4 class="header center">Auftrag</h4>
                 <table class="striped">
                     <tbody>
                         <tr>
-                            <td>Name</td>
-                            <td>{component.driverContext.name}</td>
+                            <td width="30%"><strong>Wo</strong></td>
+                            <td width="70%">{component.orderContext.shop_name} <br />TODO: Map</td>
                         </tr>
                         <tr>
-                            <td>Telefon</td>
-                            <td><a href={`tel:${component.driverContext.phone}`}>{component.driverContext.phone}</a></td>
+                            <td width="30%"><strong>Wann</strong></td>
+                            <td width="70%">{component.orderContext.date}</td>
                         </tr>
                         <tr>
-                            <td>E-Mail</td>
-                            <td><a href={`mailto:${component.driverContext.email}`}>{component.driverContext.email}</a></td>
+                            <td width="30%"><strong>Status</strong></td>
+                            <td width="70%"><span class={["badge", getOrderStatusTextColorClass(component.orderContext.status)]}>{getOrderStatusText(component.orderContext.status)}</span></td>
                         </tr>
                     </tbody>
-                </table> : 'Leider hat sich noch kein Fahrer für die Fahrt gemeldet.'}
+                </table>
+            </div>
 
+            <div class="row">
+                <h5 class="center">Dein Fahrer</h5>
 
-            <h5>Artikel <span class="badge blue-text text-darken-2">{component.orderContext.products.length}</span></h5>
+                {component.orderContext.driver_user_id ?
+                    <table class="striped">
+                        <tbody>
+                            <tr>
+                                <td width="30%">Name</td>
+                                <td width="70%">{component.driverContext.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Telefon</td>
+                                <td><a href={`tel:${component.driverContext.phone}`}>{component.driverContext.phone}</a></td>
+                            </tr>
+                            <tr>
+                                <td>E-Mail</td>
+                                <td><a href={`mailto:${component.driverContext.email}`}>{component.driverContext.email}</a></td>
+                            </tr>
+                        </tbody>
+                    </table> : 'Leider hat sich noch kein Fahrer für die Fahrt gemeldet.'}
 
-            <table class="striped highlight">
+            </div>
 
-                <tbody>
-                    {component.orderContext.products.map((item: any) => <tr data-id={item.id}>
-                        <td>{component.getStatusEmoji(item.status)}</td>
-                        <td>{item.description}</td>
-                        <td><a class="waves-effect btn red" href="javascript:" onClick={component.onDeleteButtonClick}>
-                            <i class="material-icons">delete</i>
-                        </a></td>
-                    </tr>)}
-                </tbody>
-            </table>
+            <div class="row">
+
+                <h5 class="center">Artikel</h5>
+
+                <table class="striped highlight">
+                    <tbody>
+                        {component.orderContext.products.map((item: any) => <tr data-id={item.id}>
+                            <td width="5%">{component.getStatusEmoji(item.status)}</td>
+                            <td width="90%" class="truncate">{item.description}</td>
+                            <td width="5%"><a class={["waves-effect", "btn", "red", component.orderContext.status != 'to_be_delivered' ? 'disabled' : '']} href="javascript:" onClick={component.onDeleteButtonClick}>
+                                <i class="material-icons">delete</i>
+                            </a></td>
+                        </tr>)}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <h5 class="center">Hinweise</h5>
+
+                <span>
+                {component.orderContext.hint}
+                </span>
+            </div>
+
+            {component.orderContext.status == 'to_be_delivered' ?
+                <div class="card red darken-2">
+                    <div class="card-content white-text">
+                        <span class="card-title">Achtung</span>
+                        <p>Du kannst diesen Auftrag noch abbrechen.</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#">Auftrag abbrechen</a>
+                    </div>
+                </div> : <div class="card red darken-2">
+                    <div class="card-content white-text">
+                        <span class="card-title">Achtung</span>
+                        <p>Dieser Auftrag kann nicht mehr abgebrochen werden.</p>
+                    </div>
+                </div>
+            }
         </div>
 
         <MatModal ref={{ confirmDeleteItemModal: component }}>

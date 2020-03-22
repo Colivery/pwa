@@ -36,7 +36,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     render() {
         return <fragment>
-            <nav class="nav-extended">
+            <nav class="nav-extended z-depth-3">
                 <div class="nav-wrapper">
                     <a href="javascript:" class="brand-logo">
                         <img class="nav-brand-logo" src={require('../../../assets/images/logo.png')} />
@@ -50,7 +50,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
                     
                 </div>
                 <div class="nav-content">
-                    {this.showAddButton ? <a onClick={this.onAddClick} class="btn-floating btn-large halfway-fab waves-effect waves-light red">
+                    {this.showAddButton ? <a onClick={this.onAddClick} class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
                         <i class="material-icons">add</i>
                     </a> : ''}
                 </div>

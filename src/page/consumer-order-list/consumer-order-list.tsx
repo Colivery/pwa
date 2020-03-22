@@ -81,7 +81,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
     }
 
     onRowClick = (evt: MouseEvent) => {
-        const id = ((evt.target as HTMLElement).parentNode as HTMLElement).getAttribute('data-id');
+        const id = ((evt.target as HTMLElement).closest('tr') as HTMLElement).getAttribute('data-id');
 
         for (let item of this.displayData) {
             if (item.order_id === id) {

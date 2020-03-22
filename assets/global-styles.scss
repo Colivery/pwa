@@ -6,6 +6,11 @@ html, body, .wrapper {
   background-color: $colivery-background;
 }
 
+.header {
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
 /* style for switches */
 .switch input[type="checkbox"].invalid + span {
   background-color: $colivery-orange !important;

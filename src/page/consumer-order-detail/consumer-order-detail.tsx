@@ -7,7 +7,6 @@ import { context } from "springtype/core/context/context";
 import { ORDER_CONTEXT, getOrderContext } from "../../context/order";
 import { MatModal } from "../../component/mat/mat-modal";
 import { ref } from "springtype/core/ref";
-import { NavHeader } from "../../component/nav-header/nav-header";
 
 @component({
     tpl
@@ -65,17 +64,6 @@ export class ConsumerOrderDetailPage extends st.component implements ILifecycle 
                 return "⏳";
             case "done":
                 return "✅";
-        }
-    }
-
-    getBadgeColorForStatus(status: string) {
-        switch (status) {
-            default:
-            case "accepted":
-            case "open":
-                return "green";
-            case "to_be_delivered":
-                return "red";
         }
     }
 }
