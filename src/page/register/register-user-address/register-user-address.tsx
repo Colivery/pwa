@@ -7,7 +7,7 @@ import {inject} from "springtype/core/di";
 import {component} from "springtype/web/component";
 import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
 import {ref} from "springtype/core/ref";
-import {Form} from "springtype/web/form";
+import {Form, Input} from "springtype/web/form";
 import tpl, {IRegisterUserAddressFormState} from "./register-user-address.tpl";
 import {RegisterChooseProfile} from "../register-choose-profile/register-choose-profile";
 import {RegisterService} from "../../../service/register";
@@ -36,9 +36,9 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     olMapRef: OlMap;
 
     @ref
-    latInputRef: MatInput;
+    latInputRef: Input;
     @ref
-    lngInputRef: MatInput;
+    lngInputRef: Input;
 
     @ref
     errorMessage: ErrorMessage;
@@ -88,8 +88,8 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
                 this.olMapRef.setCenter(this.userGeoLocation.lat,this.userGeoLocation.lon);
                 this.olMapRef.removeMarker(this.oldMarker);
                 this.oldMarker = this.olMapRef.setMarker(this.userGeoLocation.lat,this.userGeoLocation.lon);
-                this.latInputRef.inputRef.value = this.userGeoLocation.lat;
-                this.lngInputRef.inputRef.value = this.userGeoLocation.lon;
+                this.latInputRef.value = this.userGeoLocation.lat;
+                this.lngInputRef.value = this.userGeoLocation.lon;
                 callback(true);
             } else {
 
