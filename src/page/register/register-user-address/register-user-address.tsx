@@ -1,5 +1,7 @@
 import "./register-user-address.scss";
 
+import { GeoService } from "../../../service/geocoding";
+import { MatTextarea } from "../../../component/mat/mat-textarea";
 import {st} from "springtype/core";
 import {inject} from "springtype/core/di";
 import {component} from "springtype/web/component";
@@ -20,18 +22,65 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     @inject(RegisterService)
     registerService: RegisterService;
 
+    @inject(GeoService)
+    geoService: GeoService;
+
     @ref
     formRef: Form;
 
     @ref
     errorMessage: ErrorMessage;
 
+    @ref
+    addressField: MatTextarea;
+
     class = ['wrapper', 'valign-wrapper'];
+
+    lookupTimeout: any;
+
+    userGeoLocation: any;
+
+    buffer = (fn: Function, buffer: number = 500): Function => {
+        return () => {
+            clearTimeout(this.lookupTimeout);
+            this.lookupTimeout = setTimeout(fn, buffer);
+        };
+    }
+
+    onAddressKeyUp = async () => {
+
+        const geocodeBuffered = this.buffer(async () => {
+
+            const geoCoordinates = await this.geoService.forwardGeoCode(this.getFormData().address);
+
+            if (geoCoordinates && geoCoordinates[0]) {
+                this.userGeoLocation = {
+                    lat: geoCoordinates[0].lat,
+                    lon: geoCoordinates[0].lon
+                };
+
+                console.log('userGeoLocation', this.userGeoLocation)
+                //this.addressField.inputRef.state.valid = true;
+                // TODO: Validator
+            } else {
+
+                console.log('invalid')
+                // TODO: Validator
+            }
+        });
+        geocodeBuffered();
+    }
+
+    getFormData(): IRegisterUserAddressFormState {
+        return this.formRef.getState() as any as IRegisterUserAddressFormState;
+    }
 
     async onNextClick() {
         try {
+
             if (await this.formRef.validate()) {
-                const data = this.formRef.getState() as any as IRegisterUserAddressFormState;
+                const data = this.getFormData();
+
                 this.formRef.reset();
 
                 await this.registerService.createUserProfileComplete(data);
