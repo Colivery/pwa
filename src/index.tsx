@@ -79,7 +79,7 @@ export class App extends st.component implements ILifecycle {
                         </template>
                         <ConsumerOrderAddPage/>
                     </Route>
-                    <Route path={[UserProfile.ROUTE]} displayStyle={'inline'} guard={this.loginGuard.loggedIn}>
+                    <Route cacheGroup={'profile'} path={[UserProfile.ROUTE]} displayStyle={'inline'} guard={this.loginGuard.loggedIn}>
                         <template slot={Route.SLOT_NAME_LOADING_COMPONENT}>
                             <MatLoadingIndicator/>
                         </template>
