@@ -8,6 +8,11 @@ import { ORDER_CONTEXT, getOrderContext } from "../../context/order";
 import { inject } from "springtype/core/di";
 import { GeoService } from "../../service/geocoding";
 import { ref } from "springtype/core/ref";
+import { OlMap } from "../../component/ol-map/ol-map";
+import { Feature } from "ol";
+import { MatInput } from "../../component/mat/mat-input";
+import { MatModal } from "../../component/mat/mat-modal";
+import { ConsumerOrderListPage } from "../consumer-order-list/consumer-order-list";
 
 @component({
     tpl
@@ -20,7 +25,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     geoService: GeoService;
 
     @ref
-    locationField: HTMLInputElement;
+    locationField: MatInput;
 
     lookupTimeout: any;
 
@@ -31,11 +36,19 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
     isLoading: boolean = false;
     selectedLocationType: string = '';
+    oldMarker: Feature;
+
+    @ref
+    olMapRef: OlMap;
 
     @ref
     dontCareForLocationSwitch: HTMLInputElement;
 
     doesNotCareForLocation: boolean = false;
+    selectedLocation: any;
+
+    @ref
+    confirmCreateOrderModal: MatModal;
 
     buffer = (fn: Function, buffer: number = 1000): Function => {
         return () => {
@@ -45,9 +58,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     }
 
     onToggleDontCareForLocationSwitch = () => {
-
-        this.doesNotCareForLocation = this.dontCareForLocationSwitch.checked
-        this.doRender();
+        this.doesNotCareForLocation = this.dontCareForLocationSwitch.checked;
     }
 
     onLocationKeyUp = () => {
@@ -68,6 +79,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
                 return locationOption;
             });
+
             this.isLoading = false;
             this.doRender();
         });
@@ -81,8 +93,45 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         this.locationOptions = [];
 
         this.selectedLocationType = locationOption.tags.shop;
-        this.doRender();
+        this.selectedLocation = locationOption;
 
-        console.log('locationOption', locationOption);
+        this.doRender();
+        this.updateMapMarker();
+    }
+
+    updateMapMarker() {
+        if (this.selectedLocation && this.olMapRef) {
+
+            this.olMapRef.setCenter(this.selectedLocation.lat, this.selectedLocation.lon);
+            try {
+                this.olMapRef.removeMarker(this.oldMarker);
+            } catch (e) { }
+            this.oldMarker = this.olMapRef.setMarker(this.selectedLocation.lat, this.selectedLocation.lon);
+        }
+    }
+
+    onCreateOrderButtonClick = () => {
+
+        // open modal
+        this.confirmCreateOrderModal.toggle();
+    }
+
+    onReallyCreateOrderClick = () => {
+
+        // close modal
+        this.confirmCreateOrderModal.toggle();
+        
+        // TODO: OrderService.create(...)
+
+        st.route = {
+            path: ConsumerOrderListPage.ROUTE
+        }
+    }
+
+    onAfterRender(): void {
+        if (this.olMapRef) {
+            this.olMapRef.init();
+            this.updateMapMarker();
+        }
     }
 }

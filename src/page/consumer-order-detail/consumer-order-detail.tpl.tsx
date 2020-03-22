@@ -63,7 +63,7 @@ export default (component: ConsumerOrderDetailPage) => (
                         {component.orderContext.products.map((item: any) => <tr data-id={item.id}>
                             <td width="5%">{component.getStatusEmoji(item.status)}</td>
                             <td width="90%" class="truncate">{item.description}</td>
-                            <td width="5%"><a class={["waves-effect", "btn", "red", component.orderContext.status != 'to_be_delivered' ? 'disabled' : '']} href="javascript:" onClick={component.onDeleteButtonClick}>
+                            <td width="5%"><a class={["waves-effect", "btn-floating", "red", component.orderContext.status != 'to_be_delivered' ? 'disabled' : '']} href="javascript:" onClick={component.onDeleteButtonClick}>
                                 <i class="material-icons">delete</i>
                             </a></td>
                         </tr>)}

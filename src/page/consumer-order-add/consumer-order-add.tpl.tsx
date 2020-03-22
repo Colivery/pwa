@@ -4,6 +4,8 @@ import { NavHeader } from "../../component/nav-header/nav-header";
 import { MatInput } from "../../component/mat/mat-input";
 import { OlMap } from "../../component/ol-map/ol-map";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import { MatTextarea } from "../../component/mat/mat-textarea";
+import { MatModal } from "../../component/mat/mat-modal";
 
 export default (component: ConsumerOrderAddPage) => (
     <fragment>
@@ -15,7 +17,7 @@ export default (component: ConsumerOrderAddPage) => (
             {component.isLoading ? <MatLoadingIndicator /> : ''}
 
             <MatInput
-                disabled={component.doesNotCareForLocation}
+                name="von"
                 ref={{ locationField: component }}
                 label="Von"
                 class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
@@ -37,12 +39,25 @@ export default (component: ConsumerOrderAddPage) => (
                         </div>
                     </a>)}
             </ul> : ''}
+
+            {component.isLoading ? <h5>Einen Moment bitte...</h5> : ''}
+
+            {component.selectedLocation ? <OlMap ref={{ olMapRef: component }} hideZoom={false} /> : ''}
+
+            {component.selectedLocation ? <div>
+                {component.selectedLocation.tags.name}<br />
+                {component.selectedLocation.tags['addr:street']} {component.selectedLocation.tags['addr:housenumber']}<br />
+                {component.selectedLocation.tags['addr:postcode']} {component.selectedLocation.tags['addr:city']}
+                <span class="secondary-content">
+                    <i class="material-icons">send</i> ~{Math.round(component.selectedLocation.distance * 1000)} km
+                        </span><br /><br /></div> : ''}
+
             <div class="switch">
                 <label>
                     <input ref={{ dontCareForLocationSwitch: component }} onChange={component.onToggleDontCareForLocationSwitch} type="checkbox" />
-                    <span class="lever"></span>
-                Mir ist egal, wo genau eingekauft wird.
+                    <span class="lever"></span> Aber der Ort ist nicht so wichtig.
                 </label>
+                <br />
             </div>
 
             <p>
@@ -94,9 +109,67 @@ export default (component: ConsumerOrderAddPage) => (
                 </div>
             </div>
 
-            <OlMap latitude={component.pickupLat} longitude={component.pickupLon} />
+            <h5 class="header">Einkaufszettel</h5>
 
+            <div class="row">
+
+                <MatInput
+                    name="articleDescription"
+                    ref={{ articleDescription: component }}
+                    label="Artikelbeschreibung"
+                    class={['col', 's11']}
+                    helperText="z.B. 3 Äpfel, die grünen (sehr wichtig!)">
+                </MatInput>
+
+                <div class="col s1">
+                    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+                </div>
+            </div>
+
+            <div class="row">
+                <MatInput
+                    name="maxPrice"
+                    ref={{ maxPriceField: component }}
+                    label="Maximalbetrag in €"
+                    class={['col', 's12']}
+                    helperText="Alles zusammen darf maximal so viel kosten.">
+                </MatInput>
+            </div>
+
+            <h5 class="header">Lieferhinweise</h5>
+
+            <div class="row">
+
+                <MatTextarea
+                    name="hint"
+                    label="Hinweise für die Fahrer*in"
+                    class={['col', 's12']}
+                    helperText="Was sollte die Fahrer*in noch wissen, damit alles klappt?">
+                </MatTextarea>
+            </div>
+
+            <div class="card green darken-2">
+                <div class="card-content white-text">
+                    <span class="card-title">In Auftrag geben</span>
+                    <p>Bitte beachte, dass nachdem ein Fahrer Deinen Auftrag angenommen hat, Du ihn nicht mehr ändern kannst.
+                        Die Bezahlung erfolgt in bar.</p>
+                </div>
+                <div class="card-action">
+                    <a href="javascript:" onClick={component.onCreateOrderButtonClick}><i class="material-icons">done</i> Auftrag aufgeben</a>
+                </div>
+            </div>
         </div>
+
+        <MatModal ref={{ confirmCreateOrderModal: component }}>
+
+            <h4 class={'center'}>Auftrag aufgeben</h4>
+
+            Hast Du geprüft, dass Du genug Bargeld zuhause hast? Bist Du Dir sicher?
+
+            <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
+                <a href="javascript:" onclick={component.onReallyCreateOrderClick} class="modal-close waves-effect waves-green btn-flat green-text darken-2"><i class="material-icons">done_all</i> Ja, Auftrag jetzt verbindlich aufgeben</a>
+            </template>
+        </MatModal>
 
     </fragment>
 )
