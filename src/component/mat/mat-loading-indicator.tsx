@@ -5,8 +5,18 @@ import { st } from "springtype/core";
 
 @component
 export class MatLoadingIndicator extends st.component {
+
+    visible: boolean = true;
+
+    toggle() {
+        this.visible = !this.visible;
+
+        console.log('asds toggle', this.visible)
+        this.doRender();
+    }
+
     render() {
-        return <div class="progress mat-loading-indicator">
+        return <div class={["progress", "mat-loading-indicator", !this.visible ? "hide" : '']}>
             <div class="indeterminate"></div>
         </div>
     }

@@ -27,6 +27,10 @@ export class RegisterPage extends st.component implements ILifecycle {
 
     class = ['wrapper', 'valign-wrapper'];
 
+    onBackClick() {
+        history.back();
+    }
+
     async onNextClick() {
         try {
             if (await this.formRef.validate()) {

@@ -16,6 +16,8 @@ import {Feature} from "ol";
 import {GeoService} from "../../service/geocoding";
 import {OlMap} from "../../component/ol-map/ol-map";
 import {TextArea} from "../../component/mat/mat-textarea";
+import { MatModal } from "../../component/mat/mat-modal";
+import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 
 @component({
     tpl
@@ -45,8 +47,14 @@ export class UserProfile extends st.component implements ILifecycle {
     @ref
     errorMessage: ErrorMessage;
 
+    @ref
+    afterSaveModal: MatModal;
+
     @state
     state: IUserProfile;
+
+    @ref
+    loadingIndicator: MatLoadingIndicator;
 
     userId!: string;
 
@@ -116,15 +124,19 @@ export class UserProfile extends st.component implements ILifecycle {
     };
     updateUserProfile = async () => {
         try {
-
+            this.loadingIndicator.toggle();
             if ( await this.formRef.validate()) {
                 const formState = this.formRef.getState() as any;
                 st.debug('userProfile', formState);
 
                 delete formState.id;
                 await this.registerService.updateProfile(formState as IUserProfile);
+
+                this.loadingIndicator.toggle();
+                this.afterSaveModal.toggle();
             }
         } catch (e) {
+            this.loadingIndicator.toggle();
             this.errorMessage.message = e.message;
         }
     };
@@ -133,5 +145,9 @@ export class UserProfile extends st.component implements ILifecycle {
         this.userId = this.registerService.getUserId();
         this.state = await this.registerService.getUserProfile();
         console.log('profile',);
+    }
+
+    onAfterInitialRender() {
+        this.loadingIndicator.toggle();
     }
 }

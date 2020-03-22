@@ -12,24 +12,22 @@ export default (component: LoginPage) => (
             <LogoRow/>
             <Form ref={{formRef: component}}>
                 <div class="row">
-                    <MatInput name="email" label="Email"
+                    <MatInput name="email" label="E-Mail"
                               class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                              helperText="Enter your email "
+                              helperText="Deine E-Mail-Adresse"
                               validators={[required, email]}
-                              successMessage={'right'}
                               errorMessage={{
-                                  required: 'This field is required',
-                                  'email': 'Not an valid email address'
+                                  required: 'Das ist ein Pflichtfeld',
+                                  'email': 'Keine gültige E-Mail'
                               }}>
                     </MatInput>
-                    <MatInput name="password" label="Password" type="password"
+                    <MatInput name="password" label="Passwort" type="password"
                               class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                              helperText="Enter here your password "
+                              helperText="Dein Passwort"
                               validators={[required, minLength(7)]}
-                              successMessage={'right'}
                               errorMessage={{
-                                  required: 'This field is required',
-                                  'min-length': 'Minimum password length is 7'
+                                  required: 'Das ist ein Pflichtfeld',
+                                  'min-length': 'Bitte mindestens 7 Zeichen'
                               }}>
                     </MatInput>
                 </div>
@@ -39,16 +37,17 @@ export default (component: LoginPage) => (
                 </div>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                       onClick={component.onLoginClick}>Login</a>
+                       onClick={component.onLoginClick}>Einloggen</a>
                 </div>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                       onClick={component.onRegisterClick}>Register</a>
+                       onClick={component.onRegisterClick}>Registrieren</a>
                 </div>
                 <div class="row center-align">
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <a href="javascript:" class="login-forgot-password" onClick={component.onForgotPassword}>I
-                            forgot my password</a>
+                        <a href="javascript:" class="login-forgot-password" onClick={component.onForgotPassword}>
+                            Ich habe mein Passwort vergessen
+                        </a>
                     </div>
                 </div>
             </Form>
