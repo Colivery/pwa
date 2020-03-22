@@ -36,22 +36,22 @@ export default (component: ConsumerOrderDetailPage) => (
                 <h5 class="">Dein Fahrer</h5>
 
                 {component.orderContext.driver_user_id ?
-                <table class="striped">
-                    <tbody>
-                        <tr>
-                            <td width="30%">Name</td>
-                            <td width="70%">{component.driverContext.name}</td>
-                        </tr>
-                        <tr>
-                            <td>Telefon</td>
-                            <td><a href={`tel:${component.driverContext.phone}`}>{component.driverContext.phone}</a></td>
-                        </tr>
-                        <tr>
-                            <td>E-Mail</td>
-                            <td><a href={`mailto:${component.driverContext.email}`}>{component.driverContext.email}</a></td>
-                        </tr>
-                    </tbody>
-                </table> : 'Leider hat sich noch kein Fahrer für die Fahrt gemeldet.'}
+                    <table class="striped">
+                        <tbody>
+                            <tr>
+                                <td width="30%">Name</td>
+                                <td width="70%">{component.driverContext.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Telefon</td>
+                                <td><a href={`tel:${component.driverContext.phone}`}>{component.driverContext.phone}</a></td>
+                            </tr>
+                            <tr>
+                                <td>E-Mail</td>
+                                <td><a href={`mailto:${component.driverContext.email}`}>{component.driverContext.email}</a></td>
+                            </tr>
+                        </tbody>
+                    </table> : 'Leider hat sich noch kein Fahrer für die Fahrt gemeldet.'}
             </div>
 
             <div class="row">
@@ -62,10 +62,12 @@ export default (component: ConsumerOrderDetailPage) => (
                     <tbody>
                         {component.orderContext.items.map((item: any) => <tr data-id={item.id}>
                             <td width="5%">{component.getStatusEmoji(item.status)}</td>
-                            <td width="90%" class="truncate">{item.description}</td>
+                            <td width="95%" class="truncate">{item.description}</td>
+
+                            {/*
                             <td width="5%"><a class={["waves-effect", "btn-floating", "red", component.orderContext.status != 'to_be_delivered' ? 'disabled' : '']} href="javascript:" onClick={component.onDeleteButtonClick}>
                                 <i class="material-icons">delete</i>
-                            </a></td>
+                            </a></td>*/}
                         </tr>)}
                     </tbody>
                 </table>
@@ -79,6 +81,7 @@ export default (component: ConsumerOrderDetailPage) => (
                 </span>
             </div>
 
+            {/*
             {component.orderContext.status == 'to_be_delivered' ?
                 <div class="card red darken-2">
                     <div class="card-content white-text">
@@ -94,7 +97,7 @@ export default (component: ConsumerOrderDetailPage) => (
                         <p>Dieser Auftrag kann nicht mehr abgebrochen werden.</p>
                     </div>
                 </div>
-            }
+            } */}
         </div>
 
         <MatModal ref={{ confirmDeleteItemModal: component }}>
