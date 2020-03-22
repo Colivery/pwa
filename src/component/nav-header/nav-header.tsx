@@ -44,12 +44,12 @@ export class NavHeader extends st.component<NavHeaderProps> {
     render() {
         return <fragment>
             <nav class="nav-extended z-depth-3">
-                <div class="nav-wrapper">
+                <div class="nav-wrapper"  ref={{dropDownLiRef: this}} >
                     <a href="javascript:" class="brand-logo">
                         <img class="nav-brand-logo" src={require('../../../assets/images/logo.png')}/>
                     </a>
 
-                    <a class='dropdown-trigger btn btn-flat btn-small' ref={{dropDownLiRef: this}} onclick={() => {
+                    <a class='dropdown-trigger btn btn-flat btn-small' onclick={() => {
                         this.toggle()
                     }} href='javascript:'><i class="material-icons">menu</i></a>
 
@@ -80,7 +80,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     toggle() {
         const boundingDropdown = this.dropDownLiRef.getBoundingClientRect();
-        this.dropDownContentRef.setAttribute('style', `left: ${boundingDropdown.left}px; top:  ${64}px;`);
+        this.dropDownContentRef.setAttribute('style', `left: ${boundingDropdown.left}px; top:  ${boundingDropdown.bottom}px;`);
         this.dropDownContentRef.classList.toggle('show');
     }
 }

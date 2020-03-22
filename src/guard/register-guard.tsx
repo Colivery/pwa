@@ -5,7 +5,7 @@ import {IRouteMatch} from "springtype/web/router/interface/iroute-match";
 import {IRouterGuardResponse} from "springtype/web/router/interface/irouter-guard-response";
 import {ConsumerOrderListPage} from "../page/consumer-order-list/consumer-order-list";
 import {st} from "springtype/core";
-import {RegisterUserAddressPage} from "../page/register-user-address/register-user-address";
+import {RegisterUserAddressPage} from "../page/register/register-user-address/register-user-address";
 import {RegisterService} from "../service/register";
 import {LoginPage} from "../page/login/login";
 import {FirebaseService} from "../service/firebase";

@@ -4,7 +4,7 @@ import {FirebaseService} from "./firebase";
 import {IUserProfile} from "../datamodel/user";
 import {FIREBASE_CONFIG} from "../config/firebase";
 import {st} from "springtype/core";
-import {IRegisterUserAddressFormState} from "../page/register-user-address/register-user-address.tpl";
+import {IRegisterUserAddressFormState} from "../page/register/register-user-address/register-user-address.tpl";
 import {IRegisterFormState} from "../page/register/register.tpl";
 
 @injectable

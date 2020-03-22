@@ -8,7 +8,7 @@ import tpl, {IRegisterFormState} from "./register.tpl";
 import {RegisterUserAddressPage} from "../register-user-address/register-user-address";
 import {ErrorMessage} from "../../component/error-message/error-message";
 import {inject} from "springtype/core/di";
-import {RegisterService} from "../../service/register";
+import {RegisterService} from "../../../service/register";
 
 @component({
     tpl

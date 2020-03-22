@@ -1,11 +1,11 @@
 import { tsx } from "springtype/web/vdom";
-import { MatInput } from "../../component/mat/mat-input";
+import { MatInput } from "../../../component/mat/mat-input";
 import { email, minLength, required } from "springtype/core/validate";
 import { Form } from "springtype/web/form";
 import { RegisterPage } from "./register";
-import { MatCheckbox } from "../../component/mat/mat-checkbox";
-import { LogoRow } from "../../component/logo-row/logo-row";
-import { ErrorMessage } from "../../component/error-message/error-message";
+import { MatCheckbox } from "../../../component/mat/mat-checkbox";
+import { LogoRow } from "../../../component/logo-row/logo-row";
+import { ErrorMessage } from "../../../component/error-message/error-message";
 
 export default (component: RegisterPage) => (
     <fragment>
