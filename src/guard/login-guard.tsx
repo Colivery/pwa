@@ -8,8 +8,6 @@ import {st} from "springtype/core";
 import {RegisterUserAddressPage} from "../page/register/register-user-address/register-user-address";
 import {RegisterService} from "../service/register";
 import {LoginPage} from "../page/login/login";
-import {FirebaseService} from "../service/firebase";
-import {FIREBASE_CONFIG} from "../config/firebase";
 import {PreferenceService} from "../service/preference";
 import {RegisterChooseProfile} from "../page/register/register-choose-profile/register-choose-profile";
 
@@ -20,8 +18,6 @@ export class LoginGuard {
     @inject(AuthService)
     authService: AuthService;
 
-    @inject(FirebaseService, FIREBASE_CONFIG)
-    firebaseService: FirebaseService;
 
     @inject(RegisterService)
     registerService: RegisterService;
@@ -40,10 +36,8 @@ export class LoginGuard {
         if (!await this.authService.isLoggedIn()) {
             return LoginPage.ROUTE;
         }
-        const loggedInUserId = this.firebaseService.getLoggedInUserId();
-        st.debug('guard loggedIn loggedInUserId', loggedInUserId);
 
-        const userProfile = await this.registerService.isUserProfileCompleted(loggedInUserId);
+        const userProfile = await this.registerService.isUserProfileCompleted();
         st.debug('guard loggedIn userProfile', userProfile);
 
         if (!userProfile) {

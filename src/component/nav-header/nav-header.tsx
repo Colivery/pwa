@@ -4,6 +4,7 @@ import {attr, component} from "springtype/web/component";
 import {tsx} from "springtype/web/vdom";
 import "./nav-header.scss";
 import {ref} from "springtype/core/ref";
+import {UserProfile} from "../../page/user-profile/user-profile";
 
 export interface NavHeaderProps {
     onAddButtonClick?: Function;
@@ -44,7 +45,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
     render() {
         return <fragment>
             <nav class="nav-extended z-depth-3">
-                <div class="nav-wrapper"  ref={{dropDownLiRef: this}} >
+                <div class="nav-wrapper" ref={{dropDownLiRef: this}}>
                     <a href="javascript:" class="brand-logo">
                         <img class="nav-brand-logo" src={require('../../../assets/images/logo.png')}/>
                     </a>
@@ -68,15 +69,30 @@ export class NavHeader extends st.component<NavHeaderProps> {
             </nav>
 
             <ul class="dropdown-content" ref={{dropDownContentRef: this}} tabindex="0">
-                <li><a href="javascript:"><i class="material-icons">account_circle</i> Profil</a></li>
-                <li><a href="javascript:"><i class="material-icons">time_to_leave</i> Fahrer-Modus</a></li>
+                <li><
+                    a href="javascript:" onClick={this.onUserProfileClick}>
+                    <i class="material-icons">account_circle</i> Profil</a>
+                </li>
+                <li><a href="javascript:">
+                    <i class="material-icons">time_to_leave</i> Driver-Mode</a>
+                </li>
                 <li class="divider" tabindex="-1"/>
-                <li><a href="javascript:" onclick={this.onLogoutClick}><i
-                    class="material-icons">directions_run</i> Logout</a></li>
+                <li>
+                    <a href="javascript:" onclick={this.onLogoutClick}>
+                        <i class="material-icons">directions_run</i> Logout</a>
+                </li>
             </ul>
 
         </fragment>
     }
+
+    onUserProfileClick = () => {
+        //close menu
+        this.toggle();
+        st.route = {
+            path: UserProfile.ROUTE
+        }
+    };
 
     toggle() {
         const boundingDropdown = this.dropDownLiRef.getBoundingClientRect();

@@ -9,7 +9,6 @@ import {Form} from "springtype/web/form";
 import tpl, {IRegisterUserAddressFormState} from "./register-user-address.tpl";
 import {RegisterChooseProfile} from "../register-choose-profile/register-choose-profile";
 import {RegisterService} from "../../../service/register";
-import {FirebaseService} from "../../../service/firebase";
 import {ErrorMessage} from "../../../component/error-message/error-message";
 
 @component({
@@ -20,9 +19,6 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
     @inject(RegisterService)
     registerService: RegisterService;
-
-    @inject(FirebaseService)
-    firebaseService: FirebaseService;
 
     @ref
     formRef: Form;
@@ -38,7 +34,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
                 const data = this.formRef.getState() as any as IRegisterUserAddressFormState;
                 this.formRef.reset();
 
-                await this.registerService.createUserProfileComplete(this.firebaseService.getLoggedInUserId(), data);
+                await this.registerService.createUserProfileComplete(data);
 
                 st.debug('register user address data', data);
                 st.route = {
