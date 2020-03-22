@@ -26,6 +26,9 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     locationField: HTMLInputElement;
 
     lookupTimeout: any;
+
+    pickupLat = 0;
+    pickupLon = 0;
     
     buffer = (fn: Function, buffer: number = 1000): Function => {
         return () => {
@@ -39,7 +42,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         const searchForPlacesBuffered = this.buffer(() => {
             console.log('location keybup', value)
 
-            this.geoService.forwardLocalPlacesSearch(value, 20);
+            this.geoService.forwardLocalPlacesSearch(value, 5);
         });
         searchForPlacesBuffered();
     }
