@@ -7,6 +7,7 @@ import {email, required} from "springtype/core/validate";
 import {MatTextarea} from "../../component/mat/mat-textarea";
 import {MatCheckbox} from "../../component/mat/mat-checkbox";
 import {ErrorMessage} from "../../component/error-message/error-message";
+import {OlMap} from "../../component/ol-map/ol-map";
 
 export default (component: UserProfile) => (
     <fragment>
@@ -84,6 +85,7 @@ const getFormInputs = (component: UserProfile) => {
                              required: 'This field is required'
                          }}>
             </MatTextarea>
+            <OlMap ref={{mapRef:component}}/>
             <div class={['col', 's12', 'm6']} >
                 <MatCheckbox checked={component.state.accepted_support_inquiry} ref={{supportInquiryRef: component}}  name="accepted_support_inquiry" label="Accept support inquiry"/>
             </div>

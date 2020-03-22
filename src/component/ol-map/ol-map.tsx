@@ -22,19 +22,21 @@ export interface OlMapClickDetail {
 }
 
 export interface IAttrOlMap {
-    latitude: number;
-    longitude: number;
+    latitude?: number;
+    longitude?: number;
     height?: number;
     hideZoom?: boolean;
-    onOlMapClick: (evt: OlMapClickEvent) => void
+    onOlMapClick?: (evt: OlMapClickEvent) => void
 }
 
-@component
+@component({tag:'div'})
 export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     @attr
     latitude: number = 0;
 
+    @attr
+    height: number= 250;
     @attr
     longitude: number = 0;
 
@@ -43,9 +45,6 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     @attr
     splash: boolean = false;
-
-    @attr
-    height: number = 250;
 
     @event
     onOlMapClick!: IEventListener<Event>;
@@ -69,13 +68,13 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
 
     render() {
-        return <div style={{height: `${this.height}px`}}>
+        return <div style={`height: ${this.height}px;`}>
             {this.splash ? <div class="ol-splash" ref={{overlayRef: this}}/> : <fragment/>}
-            <div ref={{mapRef: this}} class={['map', 'ol-map']}/>
+            <div ref={{mapRef: this}} class={['map', 'ol-map']} style={`height: ${this.height}px;`}/>
         </div>;
     }
 
-    onAfterRender(): void {
+    init(): void {
 
         const language = 'de';
         const country = 'DE';
