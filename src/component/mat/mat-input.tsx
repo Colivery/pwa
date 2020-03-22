@@ -13,6 +13,7 @@ export interface IAttrMatInput {
     type?: string;
     value?: string;
     disabled?: boolean;
+    hidden?: boolean;
     helperText?: string;
     validators?: Array<(value: string) => Promise<boolean>>;
     successMessage?: string;
@@ -42,6 +43,9 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
     disabled: boolean = false;
 
     @attr
+    hidden: boolean = false;
+
+    @attr
     label: string;
 
     @attr
@@ -65,7 +69,7 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
         return <div class={['input-field']}>
             {this.renderSlot(MatInput.MAT_INPUT_BEFORE_INPUT_SLOT_NAME)}
             <Input ref={{inputRef: this}} id={id} type={this.type} name={this.name} validators={this.validators}
-                   disabled={this.disabled} value={this.value}
+                   disabled={this.disabled} value={this.value} hidden={this.hidden}
                    onStValidation={(evt) => {
                        this.onChange(evt)
                    }}/>

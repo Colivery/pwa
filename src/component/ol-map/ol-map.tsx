@@ -4,13 +4,17 @@ import {IEvent, IEventListener, ILifecycle} from "springtype/web/component/inter
 import {attr, component, event} from "springtype/web/component";
 import {tsx} from "springtype/web/vdom";
 
-import {Map, MapBrowserPointerEvent, View} from "ol";
+import {Feature, Map, MapBrowserPointerEvent, View} from "ol";
 import {Coordinate} from "ol/coordinate";
-import {transform} from "ol/proj";
+import {fromLonLat, transform} from "ol/proj";
 import TileLayer from "ol/layer/Tile";
 import {TileImage} from "ol/source";
 import {ref} from "springtype/core/ref";
 import {defaults} from "ol/control";
+import {Vector} from "ol/layer";
+import {Icon, Style} from "ol/style";
+import {Point} from "ol/geom";
+import VectorSource from "ol/source/Vector";
 
 
 export interface OlMapClickEvent extends IEvent<OlMapClickDetail> {
@@ -22,19 +26,21 @@ export interface OlMapClickDetail {
 }
 
 export interface IAttrOlMap {
-    latitude: number;
-    longitude: number;
+    latitude?: number;
+    longitude?: number;
     height?: number;
     hideZoom?: boolean;
-    onOlMapClick: (evt: OlMapClickEvent) => void
+    onOlMapClick?: (evt: OlMapClickEvent) => void
 }
 
-@component
+@component({tag: 'div'})
 export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     @attr
     latitude: number = 0;
 
+    @attr
+    height: number = 250;
     @attr
     longitude: number = 0;
 
@@ -43,9 +49,6 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     @attr
     splash: boolean = false;
-
-    @attr
-    height: number = 250;
 
     @event
     onOlMapClick!: IEventListener<Event>;
@@ -67,15 +70,22 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     view!: View;
 
+    features: Array<Feature> = [new Feature({
+        geometry: new Point(fromLonLat([-2, 53])),
+        name: 'Somewhere near Nottingham',
+    })];
+
+    markerLayer: Vector;
+
 
     render() {
-        return <div style={{height: `${this.height}px`}}>
+        return <div style={`height: ${this.height}px;`}>
             {this.splash ? <div class="ol-splash" ref={{overlayRef: this}}/> : <fragment/>}
-            <div ref={{mapRef: this}} class={['map', 'ol-map']}/>
+            <div ref={{mapRef: this}} class={['map', 'ol-map']} style={`height: ${this.height}px;`}/>
         </div>;
     }
 
-    onAfterRender(): void {
+    init(): void {
 
         const language = 'de';
         const country = 'DE';
@@ -86,18 +96,30 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
             source: new TileImage({
                 wrapX: true,
                 url: `http://maps.google.de/maps/vt?pb=!1m5!1m4!1i{z}!2i{x}!3i{y}!4i256!2m3!1e0!2sm!3i375060738!3m9!2s${language}!3s${country.toUpperCase()}!5e18!12m1!1e47!12m3!1e37!2m1!1ssmartmaps!4e0`
-
             })
         });
 
+        this.markerLayer = new Vector({
+            source: new VectorSource({
+                features: []
+            }),
+            style: new Style({
+                image: new Icon({
+                    anchor: [0.5, 46],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+                })
+            })
+        });
         this.view = new View({
-            center: this.transformToOl([this.longitude, this.latitude]),
+            center: fromLonLat([this.longitude, this.latitude]),
             zoom: 15,
         });
 
         this.olMap = new Map({
             target: this.mapRef,
-            layers: [olLayer],
+            layers: [olLayer, this.markerLayer],
             view: this.view,
             controls: defaults({
                 zoom: !this.hideZoom,
@@ -117,26 +139,30 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
         });
     }
 
-    transformToOl(coordinate: Coordinate): Array<number> {
-        return transform(coordinate, 'EPSG:4326', 'EPSG:3857');
-    };
 
     transformToGps(coordinate: Coordinate): Array<number> {
         return transform([coordinate[0], coordinate[1]], 'EPSG:3857', 'EPSG:4326');
     }
 
     setCenter(latitude: number, longitude: number) {
-        this.view.setCenter(this.transformToOl([longitude, latitude]))
+        this.view.setCenter(fromLonLat([longitude, latitude]))
     }
 
-    setLatitude(latitude: number) {
-        const lonLat = this.view.getCenter();
-        this.view.setCenter([lonLat[0], this.transformToOl([0, latitude])[1]])
+
+    setMarker(lat: number, lng: number) {
+        const newMarker = new Feature({
+            geometry: new Point(fromLonLat([lng, lat])),
+        });
+
+        this.markerLayer.getSource().addFeature(newMarker);
+        st.debug(this.features);
+        return newMarker;
     }
 
-    setLongitude(longitude: number) {
-        const lonLat = this.view.getCenter();
-        this.view.setCenter([this.transformToOl([longitude, 0])[0], lonLat[1]])
+    removeMarker(marker: Feature) {
+        if (marker) {
+            this.markerLayer.getSource().removeFeature(marker);
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 import "./register-user-address.scss";
 
-import { GeoService } from "../../../service/geocoding";
-import { MatTextarea } from "../../../component/mat/mat-textarea";
+import {GeoService} from "../../../service/geocoding";
+import {MatTextarea} from "../../../component/mat/mat-textarea";
 import {st} from "springtype/core";
 import {inject} from "springtype/core/di";
 import {component} from "springtype/web/component";
@@ -11,8 +11,11 @@ import {Form} from "springtype/web/form";
 import tpl, {IRegisterUserAddressFormState} from "./register-user-address.tpl";
 import {RegisterChooseProfile} from "../register-choose-profile/register-choose-profile";
 import {RegisterService} from "../../../service/register";
-import {FirebaseService} from "../../../service/firebase";
 import {ErrorMessage} from "../../../component/error-message/error-message";
+import {OlMap} from "../../../component/ol-map/ol-map";
+import {validatorNameFactory} from "springtype/core/validate/function/validator-name-factory";
+import {Feature} from "ol";
+import {MatInput} from "../../../component/mat/mat-input";
 
 @component({
     tpl
@@ -23,14 +26,19 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     @inject(RegisterService)
     registerService: RegisterService;
 
-    @inject(FirebaseService)
-    firebaseService: FirebaseService;
-
     @inject(GeoService)
     geoService: GeoService;
 
     @ref
     formRef: Form;
+
+    @ref
+    olMapRef: OlMap;
+
+    @ref
+    latInputRef: MatInput;
+    @ref
+    lngInputRef: MatInput;
 
     @ref
     errorMessage: ErrorMessage;
@@ -44,18 +52,29 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
     userGeoLocation: any;
 
-    buffer = (fn: Function, buffer: number = 500): Function => {
-        return () => {
-            clearTimeout(this.lookupTimeout);
-            this.lookupTimeout = setTimeout(fn, buffer);
-        };
+    oldMarker: Feature;
+
+    onAfterRender(hasDOMChanged: boolean): void {
+        this.olMapRef.init();
+
     }
 
-    onAddressKeyUp = async () => {
+    buffer = (fn: Function, buffer: number = 500): Function => {
+        return () => {
+            return new Promise((resolve => {
+                clearTimeout(this.lookupTimeout);
+                this.lookupTimeout = setTimeout(() => {
+                    fn(resolve)
+                }, buffer);
+            }))
+        };
+    };
 
-        const geocodeBuffered = this.buffer(async () => {
-
-            const geoCoordinates = await this.geoService.forwardGeoCode(this.getFormData().address);
+    addressValidator = validatorNameFactory(async (value: string) => {
+        const geocodeBuffered = this.buffer(async (callback: Function) => {
+            const sanitizedValue = value.split('\n').join(' ');
+            st.debug('address value sanitizedValue', value, sanitizedValue );
+            const geoCoordinates = await this.geoService.forwardGeoCode(sanitizedValue);
 
             if (geoCoordinates && geoCoordinates[0]) {
                 this.userGeoLocation = {
@@ -63,17 +82,23 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
                     lon: geoCoordinates[0].lon
                 };
 
-                console.log('userGeoLocation', this.userGeoLocation)
-                //this.addressField.inputRef.state.valid = true;
-                // TODO: Validator
-            } else {
+                st.debug('userGeoLocation', this.userGeoLocation);
 
-                console.log('invalid')
-                // TODO: Validator
+                st.debug('lat lng',this.userGeoLocation.lat,this.userGeoLocation.lon);
+                this.olMapRef.setCenter(this.userGeoLocation.lat,this.userGeoLocation.lon);
+                this.olMapRef.removeMarker(this.oldMarker);
+                this.oldMarker = this.olMapRef.setMarker(this.userGeoLocation.lat,this.userGeoLocation.lon);
+                this.latInputRef.inputRef.value = this.userGeoLocation.lat;
+                this.lngInputRef.inputRef.value = this.userGeoLocation.lon;
+                callback(true);
+            } else {
+
+                st.debug('invalid');
+                callback(false);
             }
         });
-        geocodeBuffered();
-    }
+        return geocodeBuffered();
+    }, 'address');
 
     getFormData(): IRegisterUserAddressFormState {
         return this.formRef.getState() as any as IRegisterUserAddressFormState;
@@ -87,7 +112,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
                 this.formRef.reset();
 
-                await this.registerService.createUserProfileComplete(this.firebaseService.getLoggedInUserId(), data);
+                await this.registerService.createUserProfileComplete(data);
 
                 st.debug('register user address data', data);
                 st.route = {

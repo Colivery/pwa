@@ -75,6 +75,10 @@ export class MatTextarea extends st.component<IAttrMatTextarea> implements ILife
         </div>
     }
 
+    onAfterRender(hasDOMChanged: boolean): void {
+        (this.inputRef.el as HTMLAreaElement).innerText = this.value;
+    }
+
     onChange(evt: StValidationEvent) {
         this.helperSpanRef.removeAttribute(MAT_SPAN_ERROR_ATTRIBUTE);
         if (!evt.detail.valid) {

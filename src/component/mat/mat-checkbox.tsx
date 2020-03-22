@@ -11,6 +11,7 @@ export interface IAttrMatInput {
     disabled?: boolean;
     label?: string;
     required?: boolean;
+    checked?: boolean;
 }
 
 
@@ -32,13 +33,20 @@ export class MatCheckbox extends st.component<IAttrMatInput> implements ILifecyc
     @attr
     required: boolean = false;
 
+    @attr
+    checked: boolean = false;
+
 
     render() {
         return <fragment>
             <Input ref={{inputRef: this}} name={this.name} type="checkbox" disabled={this.disabled}
-                   validators={this.getValidators()}/>
+                   validators={this.getValidators()} checked={this.checked}/>
             <span>{this.label}</span>
         </fragment>
+    }
+
+    onAfterRender(hasDOMChanged: boolean): void {
+        (this.inputRef.el as HTMLInputElement).checked = this.checked;
     }
 
     private getValidators() {
