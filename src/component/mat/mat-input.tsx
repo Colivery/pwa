@@ -32,6 +32,9 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
     @ref
     helperSpanRef: HTMLSpanElement;
 
+    @ref
+    labelRef: HTMLLabelElement;
+
     @attr
     name: string;
 
@@ -45,7 +48,7 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
     label: string;
 
     @attr
-    type: string= 'text';
+    type: string = 'text';
 
     @attr
     validators: Array<(value: string) => Promise<boolean>> = [];
@@ -59,6 +62,7 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
     @attr
     errorMessage: { [error: string]: string } = {};
 
+    internalValue: string;
 
     render() {
         const id = getUniqueHTMLId();
@@ -69,13 +73,20 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
                    onStValidation={(evt) => {
                        this.onChange(evt)
                    }}/>
-            <label for={id} class={this.getLabelClasses()} >{this.label}</label>
+            <label ref={{labelRef: this}} for={id} class={this.getLabelClasses()}>{this.label}</label>
             <span ref={{helperSpanRef: this}} class="helper-text"
                   data-success={this.successMessage}>{this.helperText}</span>
         </div>
     }
 
+    onAfterRender(hasDOMChanged: boolean): void {
+        if(this.internalValue){
+           this.labelRef.classList.add(...this.inputRef.getActiveLabelClasses());
+        }
+    }
+
     onChange(evt: StValidationEvent) {
+        this.internalValue = evt.detail.value;
         this.helperSpanRef.removeAttribute(MAT_SPAN_ERROR_ATTRIBUTE);
         if (!evt.detail.valid) {
             const error = this.getError(evt.detail.errors);

@@ -11,13 +11,11 @@ import {IUserProfile} from "../../datamodel/user";
 import {ref} from "springtype/core/ref";
 import {Form, Input} from "springtype/web/form";
 import {ErrorMessage} from "../../component/error-message/error-message";
-import {validatorNameFactory} from "springtype/core/validate/function/validator-name-factory";
-import {Feature} from "ol";
 import {GeoService} from "../../service/geocoding";
 import {OlMap} from "../../component/ol-map/ol-map";
-import {TextArea} from "../../component/mat/mat-textarea";
-import { MatModal } from "../../component/mat/mat-modal";
-import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import {MatModal} from "../../component/mat/mat-modal";
+import {MatLoadingIndicator} from "../../component/mat/mat-loading-indicator";
+import {address} from "../../validatoren/address";
 
 @component({
     tpl
@@ -62,60 +60,26 @@ export class UserProfile extends st.component implements ILifecycle {
 
     userGeoLocation: any;
 
-    oldMarker: Feature;
-
     constructor() {
         super();
         this.loadData()
     }
 
-    buffer = (fn: Function, buffer: number = 500): Function => {
-        return () => {
-            return new Promise((resolve => {
-                clearTimeout(this.lookupTimeout);
-                this.lookupTimeout = setTimeout(() => {
-                    fn(resolve)
-                }, buffer);
-            }))
-        };
-    };
-
-    addressValidator = validatorNameFactory(async (value: string) => {
-        const geocodeBuffered = this.buffer(async (callback: Function) => {
-            const sanitizedValue = value.split('\n').join(' ');
-            st.debug('address value sanitizedValue', value, sanitizedValue);
-            const geoCoordinates = await this.geoService.forwardGeoCode(sanitizedValue);
-
-            if (geoCoordinates && geoCoordinates[0]) {
-                this.userGeoLocation = {
-                    lat: geoCoordinates[0].lat,
-                    lon: geoCoordinates[0].lon
-                };
-
-                st.debug('userGeoLocation', this.userGeoLocation);
-
-                st.debug('lat lng', this.userGeoLocation.lat, this.userGeoLocation.lon);
-                this.olMapRef.setCenter(this.userGeoLocation.lat, this.userGeoLocation.lon);
-                this.olMapRef.removeMarker(this.oldMarker);
-                this.oldMarker = this.olMapRef.setMarker(this.userGeoLocation.lat, this.userGeoLocation.lon);
-                this.latInputRef.value = this.userGeoLocation.lat;
-                this.lngInputRef.value = this.userGeoLocation.lon;
-                callback(true);
-            } else {
-
-                st.debug('invalid');
-                callback(false);
-            }
-        });
-        return geocodeBuffered();
-    }, 'address');
-
     onAfterRender(hasDOMChanged: boolean): void {
         if (this.state) {
             this.olMapRef.init();
-            this.addressValidator(this.state.address)
+            this.addressValidator()(this.state.address)
         }
     }
+
+    addressValidator = () => {
+        return address(this.geoService, this, (geolocation) => {
+            this.olMapRef.removeAllMarker();
+            this.olMapRef.setCenter(parseFloat(geolocation.lat), parseFloat(geolocation.lon));
+            this.olMapRef.setMarker(parseFloat(geolocation.lat), parseFloat(geolocation.lon));
+            this.userGeoLocation = geolocation;
+        });
+    };
 
     onAddButtonClick = () => {
         st.route = {
@@ -125,20 +89,21 @@ export class UserProfile extends st.component implements ILifecycle {
     updateUserProfile = async () => {
         try {
             this.loadingIndicator.toggle();
-            if ( await this.formRef.validate()) {
+            if (await this.formRef.validate()) {
                 const formState = this.formRef.getState() as any;
                 st.debug('userProfile', formState);
 
                 delete formState.id;
-                await this.registerService.updateProfile(formState as IUserProfile);
+                const location = this.registerService.getGeoPoint(this.userGeoLocation.lat, this.userGeoLocation.lon);
 
-                this.loadingIndicator.toggle();
+                await this.registerService.updateProfile({...formState as IUserProfile, geo_location: location});
+
                 this.afterSaveModal.toggle();
             }
         } catch (e) {
-            this.loadingIndicator.toggle();
             this.errorMessage.message = e.message;
         }
+        this.loadingIndicator.toggle();
     };
 
     private async loadData() {

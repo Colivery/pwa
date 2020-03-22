@@ -35,7 +35,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
     showAddButton: boolean = false;
 
     @attr
-    showBackButton: boolean = false;
+    showBackButton: boolean = true;
 
     @attr
     showRefreshButton: boolean = false;
