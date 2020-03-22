@@ -6,8 +6,6 @@ import {Form} from "springtype/web/form";
 import "./register.scss";
 import tpl, {IRegisterFormState} from "./register.tpl";
 import {RegisterUserAddressPage} from "../register-user-address/register-user-address";
-import {inject} from "springtype/core/di";
-import {RegisterService} from "../../../service/register";
 import {ErrorMessage} from "../../../component/error-message/error-message";
 
 @component({
@@ -16,8 +14,6 @@ import {ErrorMessage} from "../../../component/error-message/error-message";
 export class RegisterPage extends st.component implements ILifecycle {
     static ROUTE = "register";
 
-    @inject(RegisterService)
-    registerService: RegisterService;
 
     @ref
     formRef: Form;
@@ -37,7 +33,6 @@ export class RegisterPage extends st.component implements ILifecycle {
                 const data = this.formRef.getState() as any as IRegisterFormState;
                 await window.authService.register(data.email, data.password);
                 delete data.password;
-                await this.registerService.createUserProfile(data);
                 this.formRef.reset();
 
                 st.debug('register data', data);
