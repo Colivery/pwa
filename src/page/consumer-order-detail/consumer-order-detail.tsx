@@ -7,6 +7,7 @@ import { context } from "springtype/core/context/context";
 import { ORDER_CONTEXT, getOrderContext } from "../../context/order";
 import { MatModal } from "../../component/mat/mat-modal";
 import { ref } from "springtype/core/ref";
+import {OlMap} from "../../component/ol-map/ol-map";
 
 @component({
     tpl
@@ -17,6 +18,8 @@ export class ConsumerOrderDetailPage extends st.component implements ILifecycle 
 
     @ref
     confirmDeleteItemModal: MatModal;
+    @ref
+    mapRef: OlMap;
 
     @state
     orderState: any = {};
@@ -42,6 +45,10 @@ export class ConsumerOrderDetailPage extends st.component implements ILifecycle 
 
         this.confirmDeleteItemModal.toggle();
 
+    }
+
+    onAfterRender(hasDOMChanged: boolean): void {
+        this.mapRef.init();
     }
 
     getStatusText(status: string) {

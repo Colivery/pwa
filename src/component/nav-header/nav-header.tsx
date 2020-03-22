@@ -5,15 +5,22 @@ import {tsx} from "springtype/web/vdom";
 import "./nav-header.scss";
 import {ref} from "springtype/core/ref";
 import {UserProfile} from "../../page/user-profile/user-profile";
+import {inject} from "springtype/core/di";
+import {PreferenceService} from "../../service/preference";
+import {Profile} from "../../types/profile";
 
 export interface NavHeaderProps {
     onAddButtonClick?: Function;
     showAddButton?: boolean;
     showBackButton?: boolean;
+    showRefreshButton?: boolean;
 }
 
 @component
 export class NavHeader extends st.component<NavHeaderProps> {
+
+    @inject(PreferenceService)
+    preferenceService: PreferenceService;
 
     @event
     onAddButtonClick: MouseEvent;
@@ -30,13 +37,17 @@ export class NavHeader extends st.component<NavHeaderProps> {
     @attr
     showBackButton: boolean = true;
 
+    @attr
+    showRefreshButton: boolean = true;
+
+
     onLogoutClick = () => {
         window.authService.logout();
     };
 
     onAddClick = () => {
         this.dispatchEvent('addButtonClick');
-    }
+    };
 
     onBackButtonClick = () => {
         window.history.back();
@@ -61,10 +72,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
                 </div>
                 <div class="nav-content">
-                    {this.showAddButton ? <a onClick={this.onAddClick}
-                                             class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
-                        <i class="material-icons">add</i>
-                    </a> : ''}
+                    {this.getButton()}
                 </div>
             </nav>
 
@@ -73,8 +81,8 @@ export class NavHeader extends st.component<NavHeaderProps> {
                     a href="javascript:" onClick={this.onUserProfileClick}>
                     <i class="material-icons">account_circle</i> Profil</a>
                 </li>
-                <li><a href="javascript:">
-                    <i class="material-icons">time_to_leave</i> Driver-Mode</a>
+                <li>
+                    {this.getActiveMode()}
                 </li>
                 <li class="divider" tabindex="-1"/>
                 <li>
@@ -94,9 +102,57 @@ export class NavHeader extends st.component<NavHeaderProps> {
         }
     };
 
+
+    onModeSwitch = (profile: Profile) => {
+        //close menu
+        this.toggle();
+        this.preferenceService.setProfile(profile);
+        const route = profile + '-order-list';
+        st.debug('switch mode -> route', route);
+        st.route = {
+            path: route
+        }
+
+    };
+
     toggle() {
         const boundingDropdown = this.dropDownLiRef.getBoundingClientRect();
         this.dropDownContentRef.setAttribute('style', `left: ${boundingDropdown.left}px; top:  ${boundingDropdown.bottom}px;`);
         this.dropDownContentRef.classList.toggle('show');
+    }
+
+    private getActiveMode() {
+        if (this.preferenceService.getProfile() === 'driver') {
+            return <a href="javascript:" onclick={() => {
+                this.onModeSwitch('consumer')
+            }}>
+                <i class="material-icons">local_mall</i>
+                Consumer-Mode
+            </a>
+        } else {
+            return <a href="javascript:" onclick={() => {
+                this.onModeSwitch('driver')
+            }}>
+                <i class="material-icons">time_to_leave</i>
+                Driver-Mode
+            </a>
+        }
+    }
+
+    private getButton() {
+        const comp = [];
+        if (this.showAddButton && !this.showRefreshButton) {
+            comp.push(<a onClick={this.onAddClick}
+                         class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+                <i class="material-icons">add</i>
+            </a>)
+        }
+        if (this.showAddButton && this.showRefreshButton) {
+            comp.push(<a onClick={this.onAddClick}
+                         class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+                <i class="material-icons">refresh</i>
+            </a>)
+        }
+        return comp;
     }
 }

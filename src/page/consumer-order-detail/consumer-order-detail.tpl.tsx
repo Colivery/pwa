@@ -4,6 +4,7 @@ import { NavHeader } from "../../component/nav-header/nav-header";
 import { MatModal } from "../../component/mat/mat-modal";
 import { getOrderStatusText } from "../../function/get-order-status-text";
 import { getOrderStatusTextColorClass } from "../../function/get-order-status-text-color-class";
+import {OlMap} from "../../component/ol-map/ol-map";
 
 export default (component: ConsumerOrderDetailPage) => (
     <fragment>
@@ -17,7 +18,9 @@ export default (component: ConsumerOrderDetailPage) => (
                     <tbody>
                         <tr>
                             <td width="30%"><strong>Wo</strong></td>
-                            <td width="70%">{component.orderContext.shop_name} <br />TODO: Map</td>
+                            <td width="70%">{component.orderContext.shop_name} <br />
+                            <OlMap ref={{mapRef: component}} />
+                            </td>
                         </tr>
                         <tr>
                             <td width="30%"><strong>Wann</strong></td>

@@ -12,8 +12,8 @@ import {OlMap} from "../../../component/ol-map/ol-map";
 export default (component: RegisterUserAddressPage) => (
     <fragment>
         <div class="container">
-            <LogoRow/>
             <Form ref={{formRef: component}}>
+            <LogoRow/>
                 <div class="row">
                     <MatInput name="name" label="Name"
                               class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}

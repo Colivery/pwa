@@ -7,7 +7,6 @@ import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
 import tpl from "./register-choose-profile.tpl";
 import {PreferenceService} from "../../../service/preference";
 import {Profile} from "../../../types/profile";
-import {ConsumerOrderListPage} from "../../consumer-order-list/consumer-order-list";
 
 @component({
     tpl
@@ -25,7 +24,7 @@ export class RegisterChooseProfile extends st.component implements ILifecycle {
 
         st.debug('register user address data', profile);
         st.route = {
-            path: ConsumerOrderListPage.ROUTE
+            path: profile + '-order-list'
         };
     }
 
