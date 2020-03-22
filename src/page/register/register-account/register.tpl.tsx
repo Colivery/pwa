@@ -13,33 +13,31 @@ export default (component: RegisterPage) => (
             <LogoRow />
             <Form ref={{ formRef: component }} class="col s12">
                 <div class="row">
-                    <MatInput name="email" label="Email"
+                    <MatInput name="email" label="E-Mail"
                         class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                        helperText="Enter your email "
+                        helperText="Deine E-Mail-Adresse"
                         validators={[required, email]}
-                        successMessage={'right'}
                         errorMessage={{
-                            required: 'This field is required',
-                            'email': 'Not an valid email address'
+                            required: 'Das ist ein Pflichtfeld',
+                            'email': 'Keine gültige E-Mail'
                         }}>
                     </MatInput>
-                    <MatInput name="password" label="Password" type="password"
+                    <MatInput name="password" label="Passwort" type="password"
                         class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                        helperText="Enter here your password "
+                        helperText="Bitte wähle ein Passwort"
                         validators={[required, minLength(7)]}
-                        successMessage={'right'}
                         errorMessage={{
-                            required: 'This field is required',
-                            'min-length': 'Minimum password length is 7'
+                            required: 'Das ist ein Pflichtfeld',
+                            'min-length': 'Bitte mindestens 7 Zeichen'
                         }}>
                     </MatInput>
                 </div>
                 <div class="row">
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <MatCheckbox name="accepted_terms_of_use" label="Terms of use" required={true} />
+                        <MatCheckbox name="accepted_terms_of_use" label="Ich habe die AGB gelesen, verstanden und akzeptiere sie." required={true} />
                     </div>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <MatCheckbox name="accepted_privacy_policy" label="Privacy policy" required={true} />
+                        <MatCheckbox name="accepted_privacy_policy" label="Ich habe die Datenschutzerklärung gelesen, verstanden und bin damit einverstanden." required={true} />
                     </div>
                 </div>
                 <div class="row">
@@ -47,8 +45,10 @@ export default (component: RegisterPage) => (
                         class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']} />
                 </div>
                 <div class="row">
-                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                        onClick={() => component.onNextClick()}>Next</a>
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's6', 'offset-l4', 'l2']}
+                        onClick={() => component.onBackClick()}>Zurück</a>
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's6', 'l2']}
+                        onClick={() => component.onNextClick()}>Weiter</a>
                 </div>
             </Form>
         </div>

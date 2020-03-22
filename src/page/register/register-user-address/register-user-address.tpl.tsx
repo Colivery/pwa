@@ -15,32 +15,29 @@ export default (component: RegisterUserAddressPage) => (
             <LogoRow/>
             <Form ref={{formRef: component}}>
                 <div class="row">
-                    <MatInput name="name" label="Name"
+                    <MatInput name="name" label="Dein Name"
                               class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                              helperText="Enter your full name here"
+                              helperText="z.B. Max Mustermann"
                               validators={[required]}
-                              successMessage={'right'}
                               errorMessage={{
-                                  required: 'This field is required'
+                                  required: 'Das ist ein Pflichtfeld'
                               }}>
                     </MatInput>
-                    <MatInput name="phone" label="Phone"
+                    <MatInput name="phone" label="Telefonnummer"
                               class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                              helperText="Enter your phone number here"
+                              helperText="z.B. 0170 11 22 33 44"
                               validators={[required]}
-                              successMessage={'right'}
                               errorMessage={{
-                                  required: 'This field is required'
+                                  required: 'Das ist ein Pflichtfeld'
                               }}>
                     </MatInput>
-                    <MatTextarea name="address" label="Address"
+                    <MatTextarea name="address" label="Wohn/Lieferadresse"
                                  class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                                 helperText="Enter your full address here"
+                                 helperText="Wohin die Fahrer*in kommen soll"
                                  validators={[required, component.addressValidator]}
-                                 successMessage={'right'}
                                  errorMessage={{
-                                     required: 'This field is required',
-                                     address: 'Invalid address'
+                                     required: 'Das ist ein Pflichtfeld',
+                                     address: 'Diese Adresse können wir nicht verstehen'
                                  }}>
                     </MatTextarea>
                     <Form name='geo_location'>
@@ -51,11 +48,12 @@ export default (component: RegisterUserAddressPage) => (
                         <OlMap ref={{olMapRef: component}} hideZoom={false}/>
                     </div>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <p>Since there are a lot of old people in this country who are not so afine with computers,
-                            people will need you to answer the phone calls. </p>
+                        <p>Für unsere Telefon-Hotline suchen wir tatkräftige Hilfe, denn viele Menschen rufen uns lieber an,
+                            als Apps zu nutzen. Könntest Du Dir vorstellen, stundenweise auszuhelfen?
+                        </p>
                     </div>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <MatCheckbox name="accepted_support_inquiry" label="Accept support inquiry"/>
+                        <MatCheckbox name="accepted_support_inquiry" label="Ja, ich biete meine Hilfe für die Telefon-Hotline an."/>
                     </div>
                 </div>
                 <div class="row">
@@ -64,7 +62,7 @@ export default (component: RegisterUserAddressPage) => (
                 </div>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                       onClick={() => component.onNextClick()}>Next</a>
+                       onClick={() => component.onNextClick()}>Weiter</a>
                 </div>
             </Form>
         </div>
