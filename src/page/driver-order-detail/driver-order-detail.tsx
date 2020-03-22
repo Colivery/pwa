@@ -10,6 +10,7 @@ import { ref } from "springtype/core/ref";
 import {OlMap} from "../../component/ol-map/ol-map";
 import { inject } from "springtype/core/di";
 import { OrderService } from "../../service/order";
+import { DriverOrderList } from "../driver/driver-order-list/driver-order-list";
 
 @component({
     tpl
@@ -65,9 +66,13 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
         this.doRender();
     };
 
-    onCancelOrderClick = () => {
+    onDeclideOrderClick = async() => {
         
-        console.log('onCancelOrderClick')
+        await this.orderService.declide(this.orderContext.id);
+
+        st.route = {
+            path: DriverOrderList.ROUTE
+        }
     }
 
     getStatusText(status: string) {

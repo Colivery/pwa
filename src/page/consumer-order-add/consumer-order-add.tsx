@@ -175,8 +175,6 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             })
           });
 
-          debugger;
-
         st.route = {
             path: ConsumerOrderListPage.ROUTE
         }

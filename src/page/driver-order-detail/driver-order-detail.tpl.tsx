@@ -95,14 +95,15 @@ export default (component: DriverOrderDetailPage) => (
                     <div class="card-action">
                         <a href="javascript:" onClick={component.onAcceptOrderClick}>Auftrag übernehmen</a>
                     </div>
-                </div> : <div class="card red darken-2">
+                </div> : <div><div class="card red darken-2">
                     <div class="card-content white-text">
                         <span class="card-title">Achtung</span>
                         <p>Falls Du den Auftrag doch nicht erfüllen kannst, kannst Du ihn abgeben.</p>
                     </div>
                     <div class="card-action">
-                        <a href="javascript:" onClick={component.onCancelOrderClick}>Auftrag abbrechen</a>
+                        <a href="javascript:" onClick={component.onDeclideOrderClick}>Auftrag abbrechen</a>
                     </div>
+                </div>
                 </div>
             }
         </div>

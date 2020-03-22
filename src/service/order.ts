@@ -3,8 +3,8 @@ import { injectable } from "springtype/core/di";
 @injectable
 export class OrderService {
 
-    async decline(id: string) {
-        const response = await fetch(`https://colivery-api.s0ra.de/order/decline?order_id=${id}`, {
+    async declide(id: string) {
+        const response = await fetch(`https://colivery-api.s0ra.de/order/declide?order_id=${id}`, {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
