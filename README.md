@@ -65,6 +65,12 @@ thrilled to give back.
 - Apply the beautiful UI design 
 - Optimize the networking and algorithms to scale (performance)
 
+As the team grows:
+- Switching to a GitFlow process
+- Switching to Test Coverage and metrics driven code quality management
+- Switching to conventional commits policy
+- Adding git hooks etc.
+
 ### Favicon generator
 
 https://app-manifest.firebaseapp.com/

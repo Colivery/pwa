@@ -25,7 +25,7 @@ export default (component: DriverOrderList) => (
                         <th>Name</th>
                         <th>Artikel</th>
                         <th>Status</th>
-                        <th>Wann?</th>
+                        <th>Route</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -38,7 +38,7 @@ export default (component: DriverOrderList) => (
                             <td>{order.shop_name}</td>
                             <td>{order.items.length}</td>
                             <td class={[getOrderStatusTextColorClass(order.status)]}>{getOrderStatusText(order.status)}</td>
-                            <td>{order.date}</td>
+                            <td>~{Math.round(parseInt(order.distance_km))} km</td>
                             <td><a href="javascript:" class="btn grey">Anzeigen</a></td>
                         </tr>)}
 

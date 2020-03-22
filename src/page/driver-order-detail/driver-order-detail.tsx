@@ -8,6 +8,8 @@ import { ORDER_CONTEXT, getOrderContext } from "../../context/order";
 import { MatModal } from "../../component/mat/mat-modal";
 import { ref } from "springtype/core/ref";
 import {OlMap} from "../../component/ol-map/ol-map";
+import { inject } from "springtype/core/di";
+import { OrderService } from "../../service/order";
 
 @component({
     tpl
@@ -28,13 +30,10 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
     @context(ORDER_CONTEXT)
     orderContext: any = getOrderContext();
 
-    // TODO: UserService get
-    customerContext: any = {
-        name: 'Aron Homberg',
-        phone: '+49 170 54 7 44 55',
-        email: 'info@aron-homberg.de',
-        address: ''
-    };
+    @inject(OrderService)
+    orderService: OrderService;
+
+    customerContext: any = null;
 
     onCheckboxDoneChance(evt: MouseEvent) {
 
@@ -57,9 +56,13 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
         this.confirmDeleteItemModal.toggle();
     }
 
-    onAcceptOrderClick = () => {
+    onAcceptOrderClick = async() => {
 
-        console.log('onAcceptOrderClick')
+        const user = await this.orderService.accept(this.orderContext.id);
+
+        this.customerContext = user;
+
+        this.doRender();
     };
 
     onCancelOrderClick = () => {

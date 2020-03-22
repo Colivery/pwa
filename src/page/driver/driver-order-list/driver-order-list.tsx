@@ -69,6 +69,8 @@ export class DriverOrderList extends st.component implements ILifecycle {
         }
         this.displayData = unionOrders;
 
+
+            console.log('this.displayData ', this.displayData )
         this.loadingIndicator.setVisible(false);
 
         this.isLoading = false;
