@@ -9,14 +9,14 @@ export default (component: DriverOrderList) => (
     <fragment>
         <NavHeader showBackButton={false} showAddButton={false} showRefreshButton={true} onRefreshButtonClick={component.onRefreshButtonClick} />
 
-        <MatLoadingIndicator ref={{loadingIndicator: component}} />
-        
+        <MatLoadingIndicator ref={{ loadingIndicator: component }} />
+
         <div class="container">
             <h5 class="header"><i class="material-icons">time_to_leave</i> Offene Aufträge</h5>
 
             <p class="range-field">
                 <h6>In welchem Umkreis möchtest Du gerne fahren?<span class="badge">{component.range} km</span></h6>
-                <input type="range" min="1" max="50" value="20" onChange={component.onRangeChange} />
+                <input type="range" min="1" max="50" value={component.range} onChange={component.onRangeChange} />
             </p>
 
             <table class="consumer-order-list striped highlight">
@@ -30,8 +30,9 @@ export default (component: DriverOrderList) => (
                     </tr>
                 </thead>
 
-                <tbody>
-                    {component.displayData.length > 0 ? component.displayData.filter((order: any) => order.status === 'to_be_delivered').map((order: any) =>
+                {!component.isLoading ? <tbody>
+
+                    {component.displayData.map((order: any) =>
                         <tr data-id={order.id}
                             onclick={component.onRowClick}>
                             <td>{order.shop_name}</td>
@@ -39,8 +40,11 @@ export default (component: DriverOrderList) => (
                             <td class={[getOrderStatusTextColorClass(order.status)]}>{getOrderStatusText(order.status)}</td>
                             <td>{order.date}</td>
                             <td><a href="javascript:" class="btn grey">Anzeigen</a></td>
-                        </tr>) : 'Keine offene Aufträg'}
-                </tbody>
+                        </tr>)}
+
+                </tbody> : <p>Bitte warten, Daten werden abgerufen...</p>}
+
+                {component.displayData.length === 0 ? <p>Keine offene Auftrag</p> : ''}
 
             </table>
         </div>

@@ -90,10 +90,10 @@ export default (component: DriverOrderDetailPage) => (
                 <div class="card blue darken-2">
                     <div class="card-content white-text">
                         <span class="card-title">Achtung</span>
-                        <p>Du kannst diesen Auftrag übernehmen.</p>
+                        <p>Du kannst diesen Auftrag übernehmen. Sobald Du den Auftrag übernommen hast, erscheinen hier die genauen Kontaktdaten Deines Auftraggebers.</p>
                     </div>
                     <div class="card-action">
-                        <a href="#">Auftrag übernehmen</a>
+                        <a href="javascript:" onClick={component.onAcceptOrderClick}>Auftrag übernehmen</a>
                     </div>
                 </div> : <div class="card red darken-2">
                     <div class="card-content white-text">
@@ -101,7 +101,7 @@ export default (component: DriverOrderDetailPage) => (
                         <p>Falls Du den Auftrag doch nicht erfüllen kannst, kannst Du ihn abgeben.</p>
                     </div>
                     <div class="card-action">
-                        <a href="#">Auftrag abgeben</a>
+                        <a href="javascript:" onClick={component.onCancelOrderClick}>Auftrag abbrechen</a>
                     </div>
                 </div>
             }

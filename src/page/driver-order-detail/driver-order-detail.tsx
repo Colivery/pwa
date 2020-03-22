@@ -42,7 +42,6 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
         const checked = (evt.target as HTMLInputElement).checked;
         
         console.log('onCheckboxDoneChance', id, checked);
-
     }
 
     onRouteEnter() {
@@ -56,6 +55,16 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
         console.log('Delete item', orderItemId);
 
         this.confirmDeleteItemModal.toggle();
+    }
+
+    onAcceptOrderClick = () => {
+
+        console.log('onAcceptOrderClick')
+    };
+
+    onCancelOrderClick = () => {
+        
+        console.log('onCancelOrderClick')
     }
 
     getStatusText(status: string) {
