@@ -70,11 +70,6 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     view!: View;
 
-    features: Array<Feature> = [new Feature({
-        geometry: new Point(fromLonLat([-2, 53])),
-        name: 'Somewhere near Nottingham',
-    })];
-
     markerLayer: Vector;
 
 
@@ -155,7 +150,7 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
         });
 
         this.markerLayer.getSource().addFeature(newMarker);
-        st.debug(this.features);
+
         return newMarker;
     }
 

@@ -1,7 +1,7 @@
 import {tsx} from "springtype/web/vdom";
 import {MatInput} from "../../../component/mat/mat-input";
 import {required} from "springtype/core/validate";
-import {Form} from "springtype/web/form";
+import {Form, Input} from "springtype/web/form";
 import {RegisterUserAddressPage} from "./register-user-address";
 import {MatTextarea} from "../../../component/mat/mat-textarea";
 import {MatCheckbox} from "../../../component/mat/mat-checkbox";
@@ -44,8 +44,8 @@ export default (component: RegisterUserAddressPage) => (
                                  }}>
                     </MatTextarea>
                     <Form name='geo_location'>
-                        <MatInput ref={{latInputRef: component}} name="lat" label="latitude" hidden={true}/>
-                        <MatInput ref={{lngInputRef: component}} name="lng" label="longitude" hidden={true}/>
+                        <Input ref={{latInputRef: component}} name="lat"  hidden={true}/>
+                        <Input ref={{lngInputRef: component}} name="lng"  hidden={true}/>
                     </Form>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
                         <OlMap ref={{olMapRef: component}} hideZoom={false}/>
