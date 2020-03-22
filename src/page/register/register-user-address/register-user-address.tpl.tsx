@@ -33,7 +33,7 @@ export default (component: RegisterUserAddressPage) => (
                                   required: 'This field is required'
                               }}>
                     </MatInput>
-                    <MatTextarea ref={{addressField: component}} name="address" label="Address"
+                    <MatTextarea name="address" label="Address"
                                  class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
                                  helperText="Enter your full address here"
                                  validators={[required, component.addressValidator]}
@@ -43,6 +43,10 @@ export default (component: RegisterUserAddressPage) => (
                                      address: 'Invalid address'
                                  }}>
                     </MatTextarea>
+                    <Form name='geo_location'>
+                        <MatInput ref={{latInputRef: component}} name="lat" label="latitude" hidden={true}/>
+                        <MatInput ref={{lngInputRef: component}} name="lng" label="longitude" hidden={true}/>
+                    </Form>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
                         <OlMap ref={{olMapRef: component}} hideZoom={false}/>
                     </div>
@@ -72,4 +76,5 @@ export interface IRegisterUserAddressFormState {
     address: string;
     phone: string;
     accepted_support_inquiry: boolean;
+    geo_location: {lat: string, lng: string}
 }

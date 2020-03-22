@@ -14,6 +14,8 @@ import {RegisterService} from "../../../service/register";
 import {ErrorMessage} from "../../../component/error-message/error-message";
 import {OlMap} from "../../../component/ol-map/ol-map";
 import {validatorNameFactory} from "springtype/core/validate/function/validator-name-factory";
+import {Feature} from "ol";
+import {MatInput} from "../../../component/mat/mat-input";
 
 @component({
     tpl
@@ -34,6 +36,11 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     olMapRef: OlMap;
 
     @ref
+    latInputRef: MatInput;
+    @ref
+    lngInputRef: MatInput;
+
+    @ref
     errorMessage: ErrorMessage;
 
     @ref
@@ -44,6 +51,8 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     lookupTimeout: any;
 
     userGeoLocation: any;
+
+    oldMarker: Feature;
 
     onAfterRender(hasDOMChanged: boolean): void {
         this.olMapRef.init();
@@ -74,10 +83,13 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
                 };
 
                 st.debug('userGeoLocation', this.userGeoLocation);
-                //this.addressField.inputRef.state.valid = true;
-                this.olMapRef.setLatitude(this.userGeoLocation.lat);
-                this.olMapRef.setLongitude(this.userGeoLocation.lon);
 
+                st.debug('lat lng',this.userGeoLocation.lat,this.userGeoLocation.lon);
+                this.olMapRef.setCenter(this.userGeoLocation.lat,this.userGeoLocation.lon);
+                this.olMapRef.removeMarker(this.oldMarker);
+                this.oldMarker = this.olMapRef.setMarker(this.userGeoLocation.lat,this.userGeoLocation.lon);
+                this.latInputRef.inputRef.value = this.userGeoLocation.lat;
+                this.lngInputRef.inputRef.value = this.userGeoLocation.lon;
                 callback(true);
             } else {
 
