@@ -1,12 +1,12 @@
 import "./driver-order-list.scss";
 
-import {st} from "springtype/core";
-import {component} from "springtype/web/component";
-import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
+import { st } from "springtype/core";
+import { component } from "springtype/web/component";
+import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import tpl from "./driver-order-list.tpl";
-import {context} from "springtype/core/context/context";
-import {getOrderContext, ORDER_CONTEXT} from "../../../context/order";
-import {ConsumerOrderDetailPage} from "../../consumer-order-detail/consumer-order-detail";
+import { context } from "springtype/core/context/context";
+import { getOrderContext, ORDER_CONTEXT } from "../../../context/order";
+import { ConsumerOrderDetailPage } from "../../consumer-order-detail/consumer-order-detail";
 
 @component({
     tpl
@@ -20,13 +20,16 @@ export class DriverOrderList extends st.component implements ILifecycle {
     @context(ORDER_CONTEXT)
     orderContext: any = getOrderContext();
 
+    range: number = 20;
+
     onRouteEnter() {
         console.log('Route enter: TODO: Load from firebase');
 
         // mock: TODO: get data from firebase
         this.displayData = [{
             order_id: 'woEIqAywu7SkD3M6ijip',
-            shop_name: 'Edeka Sabitz',
+            shop_name: 'Hr. Baumann / Edeka Sabitz',
+            distance: '10 km',
             products: [{
                 id: 'asdasd8',
                 description: "Brot",
@@ -37,7 +40,8 @@ export class DriverOrderList extends st.component implements ILifecycle {
             date: '2020-03-21'
         }, {
             order_id: 'woEIqAywu7SkD3M6ijip3',
-            shop_name: 'Apotheke am Hart',
+            shop_name: 'Fr. Holle / Apotheke am Hart',
+            distance: '8 km',
             driver_user_id: 'adasdasd323423',
             products: [{
                 id: 'asdasd1',
@@ -53,7 +57,8 @@ export class DriverOrderList extends st.component implements ILifecycle {
             date: '2020-03-20'
         }, {
             order_id: 'woEIqAywu7SkD3M6ijip2',
-            shop_name: 'Rossmann',
+            shop_name: 'Fr. Wassermann / Rossmann',
+            distance: '3 km',
             hint: 'Hintere Haustür',
             products: [{
                 id: 'asdasd3',
@@ -71,6 +76,16 @@ export class DriverOrderList extends st.component implements ILifecycle {
 
         this.doRender();
     }
+
+    onRangeChange = (evt: MouseEvent) => {
+
+        const rangeValue = parseInt((evt.target as HTMLInputElement).value);
+
+        console.log('rangeValue', rangeValue);
+
+        this.range = rangeValue;
+        this.doRender();
+    };
 
     onRowClick = (evt: MouseEvent) => {
         const id = ((evt.target as HTMLElement).closest('tr') as HTMLElement).getAttribute('data-id');
