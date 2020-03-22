@@ -10,10 +10,10 @@ import {ref} from "springtype/core/ref";
 import {Form, Input} from "springtype/web/form";
 import tpl, {IRegisterUserAddressFormState} from "./register-user-address.tpl";
 import {RegisterChooseProfile} from "../register-choose-profile/register-choose-profile";
-import {RegisterService} from "../../../service/register";
 import {ErrorMessage} from "../../../component/error-message/error-message";
 import {OlMap} from "../../../component/ol-map/ol-map";
 import {address} from "../../../validatoren/address";
+import {UserService} from "../../../service/user";
 
 @component({
     tpl
@@ -21,8 +21,8 @@ import {address} from "../../../validatoren/address";
 export class RegisterUserAddressPage extends st.component implements ILifecycle {
     static ROUTE = "register-user-address";
 
-    @inject(RegisterService)
-    registerService: RegisterService;
+    @inject(UserService)
+    userService: UserService;
 
     @inject(GeoService)
     geoService: GeoService;
@@ -48,7 +48,11 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
     lookupTimeout: any;
 
-    userGeoLocation: any;
+    userGeoLocation: {
+        latitude: number;
+        longitude: number;
+    };
+
 
     onAfterRender(hasDOMChanged: boolean): void {
         this.olMapRef.init();
@@ -57,9 +61,12 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     addressValidator = () => {
         return address(this.geoService, this, (geolocation) => {
             this.olMapRef.removeAllMarker();
-            this.olMapRef.setCenter(parseFloat(geolocation.lat),parseFloat(geolocation.lon));
-            this.olMapRef.setMarker(parseFloat(geolocation.lat),parseFloat(geolocation.lon));
-           this.userGeoLocation = geolocation;
+            const latitude = parseFloat(geolocation.lat);
+            const longitude = parseFloat(geolocation.lon);
+            this.olMapRef.setCenter(latitude, longitude);
+            this.olMapRef.setMarker(latitude, longitude);
+            this.userGeoLocation = {latitude, longitude};
+
         });
     };
 
@@ -71,15 +78,21 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
         try {
 
             if (await this.formRef.validate()) {
-                const data = this.getFormData();
+                const formState = this.getFormData() as IRegisterUserAddressFormState;
 
                 this.formRef.reset();
 
-                const location = this.registerService.getGeoPoint(this.userGeoLocation.lat, this.userGeoLocation.lon);
+                await this.userService.upsertUserProfile({ phone: formState.phone,
+                    name: formState.name,
+                    address: formState.address,
+                    accepted_support_inquiry: formState.accepted_support_inquiry                    ,
+                    geo_location: this.userGeoLocation,
+                    //TODO: maybe change this have to be true!
+                    accepted_privacy_policy: true,
+                    accepted_terms_of_use: true,
+                });
 
-                await this.registerService.createUserProfileComplete({...data, geo_location: location});
-
-                st.debug('register user address data', data);
+                st.debug('register user address data', formState);
                 st.route = {
                     path: RegisterChooseProfile.ROUTE
                 };

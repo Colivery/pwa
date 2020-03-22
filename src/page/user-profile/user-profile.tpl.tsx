@@ -60,7 +60,7 @@ const getFormInputs = (component: UserProfile) => {
                 class={['col', 's12', 'm6']}
                 helperText="Your user Id"
                 disabled={true}
-                value={component.userId}
+                value={component.state.user_id}
             />
             <MatInput name="email" label="E-Mail"
                 class={['col', 's12', 'm6']}
@@ -116,3 +116,12 @@ const getFormInputs = (component: UserProfile) => {
     }
     return <fragment />
 };
+
+export interface IUserProfileFromState {
+    id: string;
+    email: string
+    name: string
+    phone: string
+    address: string
+    accepted_support_inquiry: boolean;
+}

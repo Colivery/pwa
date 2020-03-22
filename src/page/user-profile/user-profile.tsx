@@ -3,11 +3,9 @@ import "./user-profile.scss";
 import {st} from "springtype/core";
 import {component, state} from "springtype/web/component";
 import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
-import tpl from "./user-profile.tpl";
+import tpl, {IUserProfileFromState} from "./user-profile.tpl";
 import {ConsumerOrderAddPage} from "../consumer-order-add/consumer-order-add";
 import {inject} from "springtype/core/di";
-import {RegisterService} from "../../service/register";
-import {IUserProfile} from "../../datamodel/user";
 import {ref} from "springtype/core/ref";
 import {Form, Input} from "springtype/web/form";
 import {ErrorMessage} from "../../component/error-message/error-message";
@@ -16,6 +14,8 @@ import {OlMap} from "../../component/ol-map/ol-map";
 import {MatModal} from "../../component/mat/mat-modal";
 import {MatLoadingIndicator} from "../../component/mat/mat-loading-indicator";
 import {address} from "../../validatoren/address";
+import {UserService} from "../../service/user";
+import {IUserProfileResponse} from "../../datamodel/user";
 
 @component({
     tpl
@@ -24,8 +24,8 @@ export class UserProfile extends st.component implements ILifecycle {
 
     static ROUTE = "user-profile";
 
-    @inject(RegisterService)
-    registerService: RegisterService;
+    @inject(UserService)
+    userService: UserService;
 
     @inject(GeoService)
     geoService: GeoService;
@@ -49,16 +49,17 @@ export class UserProfile extends st.component implements ILifecycle {
     afterSaveModal: MatModal;
 
     @state
-    state: IUserProfile;
+    state: IUserProfileResponse;
 
     @ref
     loadingIndicator: MatLoadingIndicator;
 
-    userId!: string;
-
     lookupTimeout: any;
 
-    userGeoLocation: any;
+    userGeoLocation: {
+        latitude: number;
+        longitude: number;
+    };
 
     constructor() {
         super();
@@ -75,9 +76,11 @@ export class UserProfile extends st.component implements ILifecycle {
     addressValidator = () => {
         return address(this.geoService, this, (geolocation) => {
             this.olMapRef.removeAllMarker();
-            this.olMapRef.setCenter(parseFloat(geolocation.lat), parseFloat(geolocation.lon));
-            this.olMapRef.setMarker(parseFloat(geolocation.lat), parseFloat(geolocation.lon));
-            this.userGeoLocation = geolocation;
+            const latitude = parseFloat(geolocation.lat);
+            const longitude = parseFloat(geolocation.lon);
+            this.olMapRef.setCenter(latitude, longitude);
+            this.olMapRef.setMarker(latitude, longitude);
+            this.userGeoLocation = {latitude, longitude};
         });
     };
 
@@ -90,13 +93,19 @@ export class UserProfile extends st.component implements ILifecycle {
         try {
             this.loadingIndicator.toggle();
             if (await this.formRef.validate()) {
-                const formState = this.formRef.getState() as any;
+                const formState = this.formRef.getState() as any as IUserProfileFromState;
                 st.debug('userProfile', formState);
 
-                delete formState.id;
-                const location = this.registerService.getGeoPoint(this.userGeoLocation.lat, this.userGeoLocation.lon);
-
-                await this.registerService.updateProfile({...formState as IUserProfile, geo_location: location});
+                await this.userService.upsertUserProfile({
+                    phone: formState.phone,
+                    name: formState.name,
+                    address: formState.address,
+                    accepted_support_inquiry: formState.accepted_support_inquiry                    ,
+                    geo_location: this.userGeoLocation,
+                    //TODO: maybe change this have to be true!
+                    accepted_privacy_policy: true,
+                    accepted_terms_of_use: true,
+                });
 
                 this.afterSaveModal.toggle();
             }
@@ -107,8 +116,7 @@ export class UserProfile extends st.component implements ILifecycle {
     };
 
     private async loadData() {
-        this.userId = this.registerService.getUserId();
-        this.state = await this.registerService.getUserProfile();
+        this.state = await this.userService.getUserProfile();
         console.log('profile',);
     }
 
