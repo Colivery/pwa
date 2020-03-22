@@ -15,6 +15,7 @@ export default (component: ConsumerOrderAddPage) => (
             {component.isLoading ? <MatLoadingIndicator /> : ''}
 
             <MatInput
+                disabled={component.doesNotCareForLocation}
                 ref={{ locationField: component }}
                 label="Von"
                 class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
@@ -36,6 +37,17 @@ export default (component: ConsumerOrderAddPage) => (
                         </div>
                     </a>)}
             </ul> : ''}
+            <div class="switch">
+                <label>
+                    <input ref={{ dontCareForLocationSwitch: component }} onChange={component.onToggleDontCareForLocationSwitch} type="checkbox" />
+                    <span class="lever"></span>
+                Mir ist egal, wo genau eingekauft wird.
+                </label>
+            </div>
+
+            <p>
+                Ich möchte ein Produkt aus folgender Kategorie:
+            </p>
 
             <div class="row">
                 <div class="col s6 m3 l2">

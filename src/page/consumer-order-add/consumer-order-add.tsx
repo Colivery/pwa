@@ -32,11 +32,22 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     isLoading: boolean = false;
     selectedLocationType: string = '';
 
+    @ref
+    dontCareForLocationSwitch: HTMLInputElement;
+
+    doesNotCareForLocation: boolean = false;
+
     buffer = (fn: Function, buffer: number = 1000): Function => {
         return () => {
             clearTimeout(this.lookupTimeout);
             this.lookupTimeout = setTimeout(fn, buffer);
         };
+    }
+
+    onToggleDontCareForLocationSwitch = () => {
+
+        this.doesNotCareForLocation = this.dontCareForLocationSwitch.checked
+        this.doRender();
     }
 
     onLocationKeyUp = () => {
