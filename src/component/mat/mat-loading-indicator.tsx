@@ -10,8 +10,11 @@ export class MatLoadingIndicator extends st.component {
 
     toggle() {
         this.visible = !this.visible;
+        this.doRender();
+    }
 
-        console.log('asds toggle', this.visible)
+    setVisible(visible: boolean) {
+        this.visible = visible;
         this.doRender();
     }
 

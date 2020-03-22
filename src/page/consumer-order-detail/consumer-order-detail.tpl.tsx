@@ -4,7 +4,6 @@ import { NavHeader } from "../../component/nav-header/nav-header";
 import { MatModal } from "../../component/mat/mat-modal";
 import { getOrderStatusText } from "../../function/get-order-status-text";
 import { getOrderStatusTextColorClass } from "../../function/get-order-status-text-color-class";
-import {OlMap} from "../../component/ol-map/ol-map";
 
 export default (component: ConsumerOrderDetailPage) => (
     <fragment>
@@ -37,23 +36,22 @@ export default (component: ConsumerOrderDetailPage) => (
                 <h5 class="">Dein Fahrer</h5>
 
                 {component.orderContext.driver_user_id ?
-                    <table class="striped">
-                        <tbody>
-                            <tr>
-                                <td width="30%">Name</td>
-                                <td width="70%">{component.driverContext.name}</td>
-                            </tr>
-                            <tr>
-                                <td>Telefon</td>
-                                <td><a href={`tel:${component.driverContext.phone}`}>{component.driverContext.phone}</a></td>
-                            </tr>
-                            <tr>
-                                <td>E-Mail</td>
-                                <td><a href={`mailto:${component.driverContext.email}`}>{component.driverContext.email}</a></td>
-                            </tr>
-                        </tbody>
-                    </table> : 'Leider hat sich noch kein Fahrer für die Fahrt gemeldet.'}
-
+                <table class="striped">
+                    <tbody>
+                        <tr>
+                            <td width="30%">Name</td>
+                            <td width="70%">{component.driverContext.name}</td>
+                        </tr>
+                        <tr>
+                            <td>Telefon</td>
+                            <td><a href={`tel:${component.driverContext.phone}`}>{component.driverContext.phone}</a></td>
+                        </tr>
+                        <tr>
+                            <td>E-Mail</td>
+                            <td><a href={`mailto:${component.driverContext.email}`}>{component.driverContext.email}</a></td>
+                        </tr>
+                    </tbody>
+                </table> : 'Leider hat sich noch kein Fahrer für die Fahrt gemeldet.'}
             </div>
 
             <div class="row">
@@ -77,7 +75,7 @@ export default (component: ConsumerOrderDetailPage) => (
                 <h5 class="">Hinweise</h5>
 
                 <span>
-                {component.orderContext.hint}
+                    {component.orderContext.hint}
                 </span>
             </div>
 

@@ -18,6 +18,7 @@ export class ConsumerOrderDetailPage extends st.component implements ILifecycle 
 
     @ref
     confirmDeleteItemModal: MatModal;
+    
     @ref
     mapRef: OlMap;
 

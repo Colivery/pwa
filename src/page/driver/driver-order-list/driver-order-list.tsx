@@ -7,6 +7,11 @@ import tpl from "./driver-order-list.tpl";
 import { context } from "springtype/core/context/context";
 import { getOrderContext, ORDER_CONTEXT } from "../../../context/order";
 import { ConsumerOrderDetailPage } from "../../consumer-order-detail/consumer-order-detail";
+import { MatLoadingIndicator } from "../../../component/mat/mat-loading-indicator";
+import { ref } from "springtype/core/ref";
+import { inject } from "springtype/core/di";
+import { EngineService } from "../../../service/engine";
+import { GeoService } from "../../../service/geocoding";
 
 @component({
     tpl
@@ -19,12 +24,27 @@ export class DriverOrderList extends st.component implements ILifecycle {
 
     @context(ORDER_CONTEXT)
     orderContext: any = getOrderContext();
+    
+    @ref
+    loadingIndicator: MatLoadingIndicator;
+
+    @inject(EngineService)
+    engineService: EngineService;
+
+    @inject(GeoService)
+    geoService: GeoService;
 
     range: number = 20;
 
-    onRouteEnter() {
-        console.log('Route enter: TODO: Load from firebase');
+    async onRouteEnter() {
 
+        const currentPosition = await this.geoService.getCurrentLocation();
+        const serviceResonse = await this.engineService.search(currentPosition.latitude, currentPosition.longitude, this.range);
+
+        console.log('engine serviceResonse', serviceResonse);
+
+        this.loadingIndicator.setVisible(false);
+        
         // mock: TODO: get data from firebase
         this.displayData = [{
             order_id: 'woEIqAywu7SkD3M6ijip',

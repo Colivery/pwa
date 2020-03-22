@@ -11,6 +11,7 @@ import { ref } from "springtype/core/ref";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { inject } from "springtype/core/di";
 import { OrderService } from "../../service/order";
+import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 
 @component({
     tpl
@@ -27,12 +28,15 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
     @context(ORDER_CONTEXT)
     orderContext: any = getOrderContext();
 
-    async onRouteEnter() {
+    @ref
+    loadingIndicator: MatLoadingIndicator;
 
-        console.log('service response', await this.orderService.getOwnOrders());
+    async onRouteEnter() {
 
         this.displayData = await this.orderService.getOwnOrders();
 
+        this.loadingIndicator.setVisible(false);
+        
         this.doRender();
     }
 

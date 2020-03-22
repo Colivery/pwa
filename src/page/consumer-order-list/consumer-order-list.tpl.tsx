@@ -3,10 +3,13 @@ import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { getOrderStatusText as getOrderStatusText } from "../../function/get-order-status-text";
 import { getOrderStatusTextColorClass } from "../../function/get-order-status-text-color-class";
+import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 
 export default (component: ConsumerOrderListPage) => (
     <fragment>
         <NavHeader showBackButton={false} showAddButton={true} onAddButtonClick={component.onAddButtonClick} />
+
+        <MatLoadingIndicator ref={{loadingIndicator: component}} />
 
         <div class="container">
             <h5 class="header">Deine Aufträge</h5>

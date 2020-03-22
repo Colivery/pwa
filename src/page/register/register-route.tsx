@@ -13,7 +13,6 @@ import {component} from "springtype/web/component";
 @component
 export class RegisterRoute extends st.component implements ILifecycle {
 
-
     @inject(RegisterGuard)
     registerGuard: RegisterGuard;
 
