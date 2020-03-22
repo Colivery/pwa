@@ -69,7 +69,7 @@ export class AuthService {
         const passwordHash = this.cryptoService.hash(password);
         const result = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
         this.userContext = {userId: result.user.uid, email: email};
-        st.debug('result.user.uid this.userContext', result.user.uid, this.userContext);
+        st.debug('LOGIN result.user.uid this.userContext', result, result.user.uid, this.userContext);
         this.storeCredentials(email, passwordHash);
 
         st.route = {
@@ -92,6 +92,10 @@ export class AuthService {
         this.userContext = {userId: result.user.uid, email: email};
         this.storeCredentials(email, passwordHash);
         return result;
+    }
+
+    async getIdToken() {
+        return this.firebaseService.auth().currentUser.getIdToken();
     }
 }
 

@@ -145,6 +145,7 @@ export default (component: ConsumerOrderAddPage) => (
             <div class="row">
 
                 <MatTextarea
+                    ref={{hintField: component}}
                     name="hint"
                     label="Hinweise für die Fahrer*in"
                     class={['col', 's12']}

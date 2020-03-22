@@ -3,7 +3,7 @@ export interface IUserProfile {
     phone: string;
     address: string;
     email: string;
-    geo_location: { _lat: number, _long: number }
+    geo_location: any
     accepted_privacy_policy: boolean;
     accepted_support_inquiry: boolean;
     accepted_terms_of_use: boolean;

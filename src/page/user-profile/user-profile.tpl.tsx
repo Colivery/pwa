@@ -94,17 +94,13 @@ const getFormInputs = (component: UserProfile) => {
             <MatTextarea ref={{ addressRef: component }} name="address" label="Wohl/Lieferadresse"
                 class={['col', 's12', 'm6']}
                 helperText="Wohin die Fahrer*in kommen soll"
-                validators={[required, component.addressValidator]}
+                validators={[required, component.addressValidator()]}
                 value={component.state.address}
                 errorMessage={{
                     required: 'Das ist ein Pflichtfeld',
                     address: 'Diese Adresse können wir nicht verstehen'
                 }}>
             </MatTextarea>
-            <Form name='geo_location'>
-                <input ref={{ latInputRef: component }} name="lat" hidden />
-                <input ref={{ lngInputRef: component }} name="lng" hidden />
-            </Form>
             <div class={['col', 's12']}>
                 <OlMap ref={{ olMapRef: component }} hideZoom={false} /><br />
             </div>

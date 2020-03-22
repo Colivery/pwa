@@ -7,7 +7,8 @@ import {ref} from "springtype/core/ref";
 import {UserProfile} from "../../page/user-profile/user-profile";
 import {inject} from "springtype/core/di";
 import {PreferenceService} from "../../service/preference";
-import {Profile} from "../../types/profile";
+import {ConsumerOrderListPage} from "../../page/consumer-order-list/consumer-order-list";
+import {DriverOrderList} from "../../page/driver/driver-order-list/driver-order-list";
 
 export interface NavHeaderProps {
     onAddButtonClick?: Function;
@@ -35,13 +36,14 @@ export class NavHeader extends st.component<NavHeaderProps> {
     showAddButton: boolean = false;
 
     @attr
-    showBackButton: boolean = false;
+    showBackButton: boolean = true;
 
     @attr
     showRefreshButton: boolean = false;
 
 
     onLogoutClick = () => {
+        console.log('logout click');
         window.authService.logout();
     };
 
@@ -54,6 +56,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
     };
 
     onBackButtonClick = () => {
+        console.log('back click');
         window.history.back();
     };
 
@@ -70,7 +73,9 @@ export class NavHeader extends st.component<NavHeaderProps> {
                     }} href='javascript:'><i class="material-icons">menu</i></a>
 
                     {this.showBackButton ?
-                        <a class='btn btn-flat btn-small' href='javascript:' onClick={this.onBackButtonClick}>
+                        <a class='btn btn-flat btn-small' href='javascript:' onClick={() => {
+                            this.onBackButtonClick()
+                        }}>
                             <i class="material-icons">arrow_back</i>
                         </a> : ''}
 
@@ -82,7 +87,9 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
             <ul class="dropdown-content" ref={{dropDownContentRef: this}} tabindex="0">
                 <li><
-                    a href="javascript:" onClick={this.onUserProfileClick}>
+                    a href="javascript:" onClick={() => {
+                    this.onUserProfileClick()
+                }}>
                     <i class="material-icons">account_circle</i> Mein Profil</a>
                 </li>
                 <li>
@@ -90,7 +97,9 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 </li>
                 <li class="divider" tabindex="-1"/>
                 <li>
-                    <a href="javascript:" onclick={this.onLogoutClick}>
+                    <a href="javascript:" onclick={() => {
+                        this.onLogoutClick()
+                    }}>
                         <i class="material-icons">directions_run</i> Ausloggen</a>
                 </li>
             </ul>
@@ -107,14 +116,24 @@ export class NavHeader extends st.component<NavHeaderProps> {
     };
 
 
-    onModeSwitch = (profile: Profile) => {
+    onCustomerSwitch = () => {
         //close menu
         this.toggle();
-        this.preferenceService.setProfile(profile);
-        const route = profile + '-order-list';
-        st.debug('switch mode -> route', route);
+        this.preferenceService.setProfile('consumer');
+        st.debug('onCustomerSwitch');
         st.route = {
-            path: route
+            path: ConsumerOrderListPage.ROUTE
+        }
+
+    };
+
+    onDriverSwitch = () => {
+        //close menu
+        this.toggle();
+        this.preferenceService.setProfile('driver');
+        st.debug('onDeviceSwitch');
+        st.route = {
+            path: DriverOrderList.ROUTE
         }
 
     };
@@ -126,37 +145,30 @@ export class NavHeader extends st.component<NavHeaderProps> {
     }
 
     private getActiveMode() {
-        if (this.preferenceService.getProfile() === 'driver') {
-            return <a href="javascript:" onclick={() => {
-                this.onModeSwitch('consumer')
+        const isDriver = this.preferenceService.getProfile() === 'driver';
+        return <fragment>
+            <a href="javascript:" style={{display: isDriver ? 'block' : 'none'}} onclick={() => {
+                this.onCustomerSwitch();
             }}>
-                <i class="material-icons">local_mall</i>
-                Konsument-Modus
+                <i class="material-icons">local_mall</i> Konsument-Modus
             </a>
-        } else {
-            return <a href="javascript:" onclick={() => {
-                this.onModeSwitch('driver')
+            <a href="javascript:" style={{display: isDriver ? 'none' : 'block'}} onclick={() => {
+                this.onDriverSwitch();
             }}>
-                <i class="material-icons">time_to_leave</i>
-                Fahrer-Modus
+                <i class="material-icons">time_to_leave</i> Fahrer-Modus
             </a>
-        }
+        </fragment>
     }
 
     private getButton() {
-        const comp = [];
-        if (this.showAddButton) {
-            comp.push(<a onClick={this.onAddClick}
-                         class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
-                <i class="material-icons">add</i>
-            </a>)
-        }
-        if (this.showRefreshButton) {
-            comp.push(<a onClick={this.onRefreshClick}
-                         class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+        return <fragment><a onClick={this.onAddClick} style={{display: this.showAddButton ? 'block' : 'none'}}
+                            class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+            <i class="material-icons">add</i>
+        </a>
+            <a onClick={this.onRefreshClick} style={{display: this.showRefreshButton ? 'block' : 'none'}}
+               class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
                 <i class="material-icons">refresh</i>
-            </a>)
-        }
-        return comp;
+            </a>
+        </fragment>
     }
 }

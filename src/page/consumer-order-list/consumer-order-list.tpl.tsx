@@ -11,7 +11,7 @@ export default (component: ConsumerOrderListPage) => (
         <div class="container">
             <h5 class="header">Deine Aufträge</h5>
 
-            <table class="consumer-order-list striped highlight responsive-table">
+            <table class="consumer-order-list striped highlight">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -23,9 +23,9 @@ export default (component: ConsumerOrderListPage) => (
                 </thead>
 
                 <tbody>
-                    {component.displayData.length > 0 ? component.displayData.map((order: any) => <tr data-id={order.order_id} onClick={component.onRowClick}>
+                    {component.displayData.length > 0 ? component.displayData.map((order: any) => <tr data-id={order.id} onClick={component.onRowClick}>
                         <td>{order.shop_name}</td>
-                        <td>{order.products.length}</td>
+                        <td>{order.items.length}</td>
                         <td class={[getOrderStatusTextColorClass(order.status)]}>{getOrderStatusText(order.status)}</td>
                         <td>{order.date}</td>
                         <td><a href="javascript:" class="btn grey">Anzeigen</a></td>

@@ -59,6 +59,10 @@ export class MatTextarea extends st.component<IAttrMatTextarea> implements ILife
     @attr
     errorMessage: { [error: string]: string } = {};
 
+    @ref
+    labelRef: HTMLLabelElement;
+
+    internalValue: string;
 
     render() {
         const id = getUniqueHTMLId();
@@ -69,13 +73,15 @@ export class MatTextarea extends st.component<IAttrMatTextarea> implements ILife
                    onStValidation={(evt) => {
                        this.onChange(evt)
                    }}/>
-            <label for={id} class={this.getLabelClasses()} >{this.label}</label>
+            <label for={id} ref={{labelRef: this}}  class={this.getLabelClasses()} >{this.label}</label>
             <span ref={{helperSpanRef: this}} class="helper-text"
                   data-success={this.successMessage}>{this.helperText}</span>
         </div>
     }
-
     onAfterRender(hasDOMChanged: boolean): void {
+        if(this.internalValue){
+            this.labelRef.classList.add(...this.inputRef.getActiveLabelClasses());
+        }
         (this.inputRef.el as HTMLAreaElement).innerText = this.value;
     }
 

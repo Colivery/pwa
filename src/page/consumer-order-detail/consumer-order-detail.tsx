@@ -44,11 +44,6 @@ export class ConsumerOrderDetailPage extends st.component implements ILifecycle 
         console.log('Delete item', orderItemId);
 
         this.confirmDeleteItemModal.toggle();
-
-    }
-
-    onAfterRender(hasDOMChanged: boolean): void {
-        this.mapRef.init();
     }
 
     getStatusText(status: string) {

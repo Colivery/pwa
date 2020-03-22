@@ -13,6 +13,9 @@ import { Feature } from "ol";
 import { MatInput } from "../../component/mat/mat-input";
 import { MatModal } from "../../component/mat/mat-modal";
 import { ConsumerOrderListPage } from "../consumer-order-list/consumer-order-list";
+import { OrderService } from "../../service/order";
+import { OrderStatus } from "../../types/order-status";
+import { OrderItemStatus } from "../../types/order-item-status";
 
 @component({
     tpl
@@ -23,6 +26,9 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
     @inject(GeoService)
     geoService: GeoService;
+
+    @inject(OrderService)
+    orderService: OrderService;
 
     @ref
     locationField: MatInput;
@@ -38,6 +44,9 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
     @ref
     confirmCreateOrderModal: MatModal
+
+    @ref
+    hintField: MatInput;
 
     lookupTimeout: any;
     pickupLat = 0;
@@ -137,12 +146,36 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         console.log('remove', orderItemIndex)
     }
 
-    onReallyCreateOrderClick = () => {
+    onReallyCreateOrderClick = async() => {
 
         // close modal
         this.confirmCreateOrderModal.toggle();
 
         // TODO: OrderService.create(...)
+
+        const currentGeoLocation = await this.geoService.getCurrentLocation();
+
+        await this.orderService.createOrder({
+            "pickup_address": `${this.selectedLocation.tags['addr:street']} ${this.selectedLocation.tags['addr:housenumber']}, ${this.selectedLocation.tags['addr:postcode']} ${this.selectedLocation.tags['addr:city']}`,
+            "pickup_location": {
+              "latitude": parseFloat(this.selectedLocation.lat),
+              "longitude": parseFloat(this.selectedLocation.lon)
+            },
+            "shop_name": this.selectedLocation.tags['name'],
+            "shop_type": this.selectedLocationType,
+            "status": OrderStatus.TO_BE_DELIVERED,
+            "hint": this.hintField.inputRef.getValue(),
+            "dropoff_location": {
+              "latitude": currentGeoLocation.latitude,
+              "longitude": currentGeoLocation.longitude
+            },
+            "items": this.orderItems.map((orderItem) => {
+                orderItem.status = OrderItemStatus.TODO;
+                return orderItem;
+            })
+          });
+
+          debugger;
 
         st.route = {
             path: ConsumerOrderListPage.ROUTE

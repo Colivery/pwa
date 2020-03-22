@@ -83,49 +83,49 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
 
     init(): void {
 
-        if(!this.olMap){
+        if (!this.olMap) {
 
-        const language = 'de';
-        const country = 'DE';
+            const language = 'de';
+            const country = 'DE';
 
-        const olLayer = new TileLayer({
-            visible: true,
-            preload: Infinity,
-            source: new TileImage({
-                wrapX: true,
-                url: `http://maps.google.de/maps/vt?pb=!1m5!1m4!1i{z}!2i{x}!3i{y}!4i256!2m3!1e0!2sm!3i375060738!3m9!2s${language}!3s${country.toUpperCase()}!5e18!12m1!1e47!12m3!1e37!2m1!1ssmartmaps!4e0`
-            })
-        });
-
-        this.markerLayer = new Vector({
-            source: new VectorSource({
-                features: []
-            }),
-            style: new Style({
-                image: new Icon({
-                    anchor: [0.5, 46],
-                    anchorXUnits: 'fraction',
-                    anchorYUnits: 'pixels',
-                    src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+            const olLayer = new TileLayer({
+                visible: true,
+                preload: Infinity,
+                source: new TileImage({
+                    wrapX: true,
+                    url: `http://maps.google.de/maps/vt?pb=!1m5!1m4!1i{z}!2i{x}!3i{y}!4i256!2m3!1e0!2sm!3i375060738!3m9!2s${language}!3s${country.toUpperCase()}!5e18!12m1!1e47!12m3!1e37!2m1!1ssmartmaps!4e0`
                 })
-            })
-        });
-        this.view = new View({
-            center: fromLonLat([this.longitude, this.latitude]),
-            zoom: 15,
-        });
+            });
 
-        this.olMap = new Map({
-            target: this.mapRef,
-            layers: [olLayer, this.markerLayer],
-            view: this.view,
-            controls: defaults({
-                zoom: !this.hideZoom,
-            }),
+            this.markerLayer = new Vector({
+                source: new VectorSource({
+                    features: []
+                }),
+                style: new Style({
+                    image: new Icon({
+                        anchor: [0.5, 46],
+                        anchorXUnits: 'fraction',
+                        anchorYUnits: 'pixels',
+                        src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+                    })
+                })
+            });
+            this.view = new View({
+                center: fromLonLat([this.longitude, this.latitude]),
+                zoom: 15,
+            });
 
-        });
+            this.olMap = new Map({
+                target: this.mapRef,
+                layers: [olLayer, this.markerLayer],
+                view: this.view,
+                controls: defaults({
+                    zoom: !this.hideZoom,
+                }),
 
-        this.addListeners();
+            });
+
+            this.addListeners();
 
         }
     }
@@ -158,11 +158,16 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
         return newMarker;
     }
 
+    removeAllMarker() {
+        this.markerLayer.getSource().getFeatures().forEach(feature => this.markerLayer.getSource().removeFeature(feature));
+    }
+
+
     removeMarker(marker: Feature) {
         if (marker) {
             try {
-            this.markerLayer.getSource().removeFeature(marker);
-            }catch (e) {
+                this.markerLayer.getSource().removeFeature(marker);
+            } catch (e) {
             }
         }
     }
