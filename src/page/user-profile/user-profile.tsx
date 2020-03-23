@@ -105,6 +105,7 @@ export class UserProfile extends st.component implements ILifecycle {
                     //TODO: maybe change this have to be true!
                     accepted_privacy_policy: true,
                     accepted_terms_of_use: true,
+                    is_support_member: false
                 });
 
                 this.afterSaveModal.toggle();

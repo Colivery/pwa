@@ -3,7 +3,7 @@ import {st} from "springtype/core";
 import {IUserProfileRequest, IUserProfileResponse} from "../datamodel/user";
 import {request} from "../function/http";
 
-const ENDPOINT_URL = 'https://colivery-api.s0ra.de';
+export const ENDPOINT_URL = 'https://colivery-api.s0ra.de';
 
 @injectable
 export class UserService {

@@ -30,9 +30,9 @@ export default (component: ConsumerOrderAddPage) => (
                 {component.locationOptions.map((locationOption, dataIndex) =>
                     <a href="javascript:" class="collection-item" data-index={dataIndex} onClick={component.onLocationOptionSelect}>
                         <div>
-                            {locationOption.tags.name}<br />
-                            {locationOption.tags['addr:street']} {locationOption.tags['addr:housenumber']}<br />
-                            {locationOption.tags['addr:postcode']} {locationOption.tags['addr:city']}
+                            {locationOption.name}<br />
+                            {locationOption.street} {locationOption.houseNumber}<br />
+                            {locationOption.postcode} {locationOption.city}
                             <span class="secondary-content">
                                 <i class="material-icons">send</i> ~{Math.round(locationOption.distance * 1000)} km
                         </span>
@@ -45,9 +45,9 @@ export default (component: ConsumerOrderAddPage) => (
             {component.selectedLocation ? <OlMap ref={{ olMapRef: component }} hideZoom={false} /> : ''}
 
             {component.selectedLocation ? <div>
-                {component.selectedLocation.tags.name}<br />
-                {component.selectedLocation.tags['addr:street']} {component.selectedLocation.tags['addr:housenumber']}<br />
-                {component.selectedLocation.tags['addr:postcode']} {component.selectedLocation.tags['addr:city']}
+                {component.selectedLocation.name}<br />
+                {component.selectedLocation.street} {component.selectedLocation.houseNumber}<br />
+                {component.selectedLocation.postcode} {component.selectedLocation.city}
                 <span class="secondary-content">
                     <i class="material-icons">send</i> ~{Math.round(component.selectedLocation.distance * 1000)} km
                         </span><br /><br /></div> : ''}

@@ -87,6 +87,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
                     address: formState.address,
                     accepted_support_inquiry: formState.accepted_support_inquiry                    ,
                     geo_location: this.userGeoLocation,
+                    is_support_member: false,
                     //TODO: maybe change this have to be true!
                     accepted_privacy_policy: true,
                     accepted_terms_of_use: true,

@@ -8,6 +8,7 @@ export const address = (geoService: GeoService, instance: any, geoCallback: (geo
     return validatorNameFactory(async (value: string) => {
         const geocodeBuffered = buffer(instance, async (innerCallback: Function) => {
             const sanitizedValue = value.split('\n').join(' ');
+
             st.debug('address value sanitizedValue', value, sanitizedValue);
             const geoCoordinates = await geoService.forwardGeoCode(sanitizedValue);
 

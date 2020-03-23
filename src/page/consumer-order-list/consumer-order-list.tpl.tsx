@@ -26,7 +26,8 @@ export default (component: ConsumerOrderListPage) => (
                 </thead>
 
                 <tbody>
-                    {component.displayData.length > 0 ? component.displayData.map((order: any) => <tr data-id={order.id} onClick={component.onRowClick}>
+                    {component.displayData.length > 0 ? component.displayData.map((order: any) =>
+                    <tr data-id={order.id} onClick={component.onRowClick}>
                         <td>{order.shop_name}</td>
                         <td>{order.items.length}</td>
                         <td class={[getOrderStatusTextColorClass(order.status)]}>{getOrderStatusText(order.status)}</td>

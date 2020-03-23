@@ -1,21 +1,20 @@
-import { st } from "springtype/core";
-import { component, state } from "springtype/web/component";
-import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
+import {st} from "springtype/core";
+import {component} from "springtype/web/component";
+import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
 import tpl from "./consumer-order-add.tpl";
 import "./consumer-order-add.scss";
-import { context } from "springtype/core/context/context";
-import { ORDER_CONTEXT, getOrderContext } from "../../context/order";
-import { inject } from "springtype/core/di";
-import { GeoService } from "../../service/geocoding";
-import { ref } from "springtype/core/ref";
-import { OlMap } from "../../component/ol-map/ol-map";
-import { Feature } from "ol";
-import { MatInput } from "../../component/mat/mat-input";
-import { MatModal } from "../../component/mat/mat-modal";
-import { ConsumerOrderListPage } from "../consumer-order-list/consumer-order-list";
-import { OrderService } from "../../service/order";
-import { OrderStatus } from "../../types/order-status";
-import { OrderItemStatus } from "../../types/order-item-status";
+import {inject} from "springtype/core/di";
+import {GeoService} from "../../service/geocoding";
+import {ref} from "springtype/core/ref";
+import {OlMap} from "../../component/ol-map/ol-map";
+import {Feature} from "ol";
+import {MatInput} from "../../component/mat/mat-input";
+import {MatModal} from "../../component/mat/mat-modal";
+import {ConsumerOrderListPage} from "../consumer-order-list/consumer-order-list";
+import {OrderService} from "../../service/order";
+import {OrderStatus} from "../../types/order-status";
+import {OrderItemStatus} from "../../types/order-item-status";
+import {Shop} from "../../datamodel/shop";
 
 @component({
     tpl
@@ -51,12 +50,12 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     lookupTimeout: any;
     pickupLat = 0;
     pickupLon = 0;
-    locationOptions = [];
+    locationOptions: Array<Shop> = [];
     isLoading: boolean = false;
     selectedLocationType: string = '';
     oldMarker: Feature;
     doesNotCareForLocation: boolean = false;
-    selectedLocation: any;
+    selectedLocation: Shop;
 
     orderItems = [];
 
@@ -102,7 +101,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         const locationOption = this.locationOptions[locationOptionIndex];
         this.locationOptions = [];
 
-        this.selectedLocationType = locationOption.tags.shop;
+        this.selectedLocationType = locationOption.shop || 'unknown';
         this.selectedLocation = locationOption;
 
         this.doRender();
@@ -115,7 +114,8 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             this.olMapRef.setCenter(this.selectedLocation.lat, this.selectedLocation.lon);
             try {
                 this.olMapRef.removeMarker(this.oldMarker);
-            } catch (e) { }
+            } catch (e) {
+            }
             this.oldMarker = this.olMapRef.setMarker(this.selectedLocation.lat, this.selectedLocation.lon);
         }
     }
@@ -146,36 +146,34 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         console.log('remove', orderItemIndex)
     }
 
-    onReallyCreateOrderClick = async() => {
+    onReallyCreateOrderClick = async () => {
 
         // close modal
         this.confirmCreateOrderModal.toggle();
 
-        // TODO: OrderService.create(...)
-
         const currentGeoLocation = await this.geoService.getCurrentLocation();
 
         await this.orderService.createOrder({
-            "pickup_address": `${this.selectedLocation.tags['addr:street']} ${this.selectedLocation.tags['addr:housenumber']}, ${this.selectedLocation.tags['addr:postcode']} ${this.selectedLocation.tags['addr:city']}`,
+            "pickup_address": `${this.selectedLocation.street} ${this.selectedLocation.houseNumber}, ${this.selectedLocation.postcode} ${this.selectedLocation.city}`,
             "pickup_location": {
-              "latitude": parseFloat(this.selectedLocation.lat),
-              "longitude": parseFloat(this.selectedLocation.lon)
+                "latitude": this.selectedLocation.lat,
+                "longitude": this.selectedLocation.lon
             },
-            "shop_name": this.selectedLocation.tags['name'],
+            "shop_name": this.selectedLocation.name,
             "shop_type": this.selectedLocationType,
             "status": OrderStatus.TO_BE_DELIVERED,
             "hint": this.hintField.inputRef.getValue(),
             "dropoff_location": {
-              "latitude": currentGeoLocation.latitude,
-              "longitude": currentGeoLocation.longitude
+                "latitude": currentGeoLocation.latitude,
+                "longitude": currentGeoLocation.longitude
             },
             "items": this.orderItems.map((orderItem) => {
                 orderItem.status = OrderItemStatus.TODO;
                 return orderItem;
             })
-          });
+        });
 
-          debugger;
+        debugger;
 
         st.route = {
             path: ConsumerOrderListPage.ROUTE

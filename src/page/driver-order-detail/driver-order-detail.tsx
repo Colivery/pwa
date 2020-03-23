@@ -56,10 +56,9 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
         console.log('Delete item', orderItemId);
 
         this.confirmDeleteItemModal.toggle();
-    }
+    };
 
     getStatusText(status: string) {
-
         switch (status) {
             case "accepted":
                 return "Auf dem Weg zu Dir";

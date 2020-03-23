@@ -1,13 +1,16 @@
-import { st } from "springtype/core";
-import { component, state } from "springtype/web/component";
-import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
+import {st} from "springtype/core";
+import {component, state} from "springtype/web/component";
+import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
 import tpl from "./consumer-order-detail.tpl";
 import "./consumer-order-detail.scss";
-import { context } from "springtype/core/context/context";
-import { ORDER_CONTEXT, getOrderContext } from "../../context/order";
-import { MatModal } from "../../component/mat/mat-modal";
-import { ref } from "springtype/core/ref";
+import {MatModal} from "../../component/mat/mat-modal";
+import {ref} from "springtype/core/ref";
 import {OlMap} from "../../component/ol-map/ol-map";
+import {inject} from "springtype/core/di";
+import {OrderService} from "../../service/order";
+import {OrderResponse} from "../../datamodel/order";
+import {UserService} from "../../service/user";
+import {IUserProfileResponse} from "../../datamodel/user";
 
 @component({
     tpl
@@ -16,57 +19,29 @@ export class ConsumerOrderDetailPage extends st.component implements ILifecycle 
 
     static ROUTE = "consumer-order-detail/:id";
 
+    @inject(OrderService)
+    orderService: OrderService;
+
+    @inject(UserService)
+    userService: UserService;
+
     @ref
     confirmDeleteItemModal: MatModal;
-    
+
     @ref
     mapRef: OlMap;
 
     @state
-    orderState: any = {};
+    orderState: OrderResponse = null;
 
-    @context(ORDER_CONTEXT)
-    orderContext: any = getOrderContext();
+    @state
+    driverUserState: IUserProfileResponse = null;
 
-    driverContext: any = {
-        name: 'Aron Homberg',
-        phone: '+49 170 54 7 44 55',
-        email: 'info@aron-homberg.de'
-    };
-
-    onRouteEnter() {
-        this.orderState.id = st.route.params.id;
-    }
-
-    onDeleteButtonClick = (evt: MouseEvent) => {
-
-        const orderItemId = (evt.target as HTMLElement).closest('tr').getAttribute('data-id');
-
-        console.log('Delete item', orderItemId);
-
-        this.confirmDeleteItemModal.toggle();
-    }
-
-    getStatusText(status: string) {
-
-        switch (status) {
-            case "accepted":
-                return "Auf dem Weg zu Dir";
-            case "to_be_delivered":
-                return "Bisher kein Fahrer gefunden";
-            case "delivered":
-                return "Erfolgreich geliefert";
-            case "consumer_canceled":
-                return "Abbruch durch Dich";
+    async onRouteEnter() {
+        this.orderState = await this.orderService.getOrder(st.route.params.id as string);
+        if (this.orderState.driver_user_id) {
+            this.driverUserState = await this.userService.getUserProfile();
         }
     }
 
-    getStatusEmoji(itemStatus: string) {
-        switch(itemStatus) {
-            case "todo":
-                return "⏳";
-            case "done":
-                return "✅";
-        }
-    }
 }
