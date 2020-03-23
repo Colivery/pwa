@@ -1,32 +1,59 @@
-import {injectable} from "springtype/core/di";
-import {st} from "springtype/core";
-import {request} from "../function/http";
-import {ENDPOINT_URL} from "./user";
-import {OrderResponse} from "../datamodel/order";
+import { injectable } from "springtype/core/di";
 
 @injectable
 export class OrderService {
 
-    async getOwnOrders() {
-        try {
-            st.debug('getUserProfile');
-
-            return JSON.parse(await request(
-                'GET',
-                `${ENDPOINT_URL}/order/own`,
-                {
-                    'Authorization': `Bearer ${await window.authService.getIdToken()}`,
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                }
-            ));
-        } catch (e) {
-            st.error('error in get user profile request', e)
-        }
+    async declide(id: string) {
+        const response = await fetch(`https://colivery-api.s0ra.de/order/declide?order_id=${id}`, {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await window.authService.getIdToken()}`
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer' // no-referrer, *client
+        });
+        return await response.json();
     }
 
-    async getOrder(orderId: string): Promise<OrderResponse>{
-        return (await fetch(`https://colivery-api.s0ra.de/order?order_id=${orderId}`, {
+    async accept(id: string) {
+        const response = await fetch(`https://colivery-api.s0ra.de/order/accept?order_id=${id}`, {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await window.authService.getIdToken()}`
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer' // no-referrer, *client
+        });
+        return await response.json();
+    }
+
+    async getById(id: string) {
+        const response = await fetch(`https://colivery-api.s0ra.de/order?order_id=${id}`, {
+            method: 'GET',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await window.authService.getIdToken()}`
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer' // no-referrer, *client
+        });
+        return await response.json();
+    }
+
+    async getOwnOrders() {
+
+        return (await fetch('https://colivery-api.s0ra.de/order/own', {
             method: 'GET',
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

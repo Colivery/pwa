@@ -8,6 +8,9 @@ import { ORDER_CONTEXT, getOrderContext } from "../../context/order";
 import { MatModal } from "../../component/mat/mat-modal";
 import { ref } from "springtype/core/ref";
 import {OlMap} from "../../component/ol-map/ol-map";
+import { inject } from "springtype/core/di";
+import { OrderService } from "../../service/order";
+import { DriverOrderList } from "../driver/driver-order-list/driver-order-list";
 
 @component({
     tpl
@@ -28,13 +31,10 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
     @context(ORDER_CONTEXT)
     orderContext: any = getOrderContext();
 
-    // TODO: UserService get
-    customerContext: any = {
-        name: 'Aron Homberg',
-        phone: '+49 170 54 7 44 55',
-        email: 'info@aron-homberg.de',
-        address: ''
-    };
+    @inject(OrderService)
+    orderService: OrderService;
+
+    customerContext: any = null;
 
     onCheckboxDoneChance(evt: MouseEvent) {
 
@@ -42,7 +42,6 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
         const checked = (evt.target as HTMLInputElement).checked;
         
         console.log('onCheckboxDoneChance', id, checked);
-
     }
 
     onRouteEnter() {
@@ -57,6 +56,24 @@ export class DriverOrderDetailPage extends st.component implements ILifecycle {
 
         this.confirmDeleteItemModal.toggle();
     };
+
+    onAcceptOrderClick = async() => {
+
+        const user = await this.orderService.accept(this.orderContext.id);
+
+        this.customerContext = user;
+
+        this.doRender();
+    };
+
+    onDeclideOrderClick = async() => {
+        
+        await this.orderService.declide(this.orderContext.id);
+
+        st.route = {
+            path: DriverOrderList.ROUTE
+        }
+    }
 
     getStatusText(status: string) {
         switch (status) {

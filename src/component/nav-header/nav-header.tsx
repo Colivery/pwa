@@ -1,14 +1,14 @@
-import {st} from "springtype/core";
-import {event} from "springtype/web/component/decorator/event";
-import {attr, component} from "springtype/web/component";
-import {tsx} from "springtype/web/vdom";
+import { st } from "springtype/core";
+import { event } from "springtype/web/component/decorator/event";
+import { attr, component } from "springtype/web/component";
+import { tsx } from "springtype/web/vdom";
 import "./nav-header.scss";
-import {ref} from "springtype/core/ref";
-import {UserProfile} from "../../page/user-profile/user-profile";
-import {inject} from "springtype/core/di";
-import {PreferenceService} from "../../service/preference";
-import {ConsumerOrderListPage} from "../../page/consumer-order-list/consumer-order-list";
-import {DriverOrderList} from "../../page/driver/driver-order-list/driver-order-list";
+import { ref } from "springtype/core/ref";
+import { UserProfile } from "../../page/user-profile/user-profile";
+import { inject } from "springtype/core/di";
+import { PreferenceService } from "../../service/preference";
+import { ConsumerOrderListPage } from "../../page/consumer-order-list/consumer-order-list";
+import { DriverOrderList } from "../../page/driver/driver-order-list/driver-order-list";
 
 export interface NavHeaderProps {
     onAddButtonClick?: Function;
@@ -66,9 +66,9 @@ export class NavHeader extends st.component<NavHeaderProps> {
     render() {
         return <fragment>
             <nav class="nav-extended z-depth-3">
-                <div class="nav-wrapper" ref={{dropDownLiRef: this}}>
+                <div class="nav-wrapper" ref={{ dropDownLiRef: this }}>
                     <a href="javascript:" class="brand-logo">
-                        <img class="nav-brand-logo" src={require('../../../assets/images/logo.png')}/>
+                        <img class="nav-brand-logo" src={require('../../../assets/images/logo.png')} />
                     </a>
 
                     <a class='dropdown-trigger btn btn-flat btn-small' onclick={() => {
@@ -88,9 +88,8 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 </div>
             </nav>
 
-            <ul class="dropdown-content" ref={{dropDownContentRef: this}} tabindex="0">
-                <li><
-                    a href="javascript:" onClick={() => {
+            <ul class="dropdown-content" ref={{ dropDownContentRef: this }} tabindex="0">
+                <li><a href="javascript:" onClick={() => {
                     this.onUserProfileClick()
                 }}>
                     <i class="material-icons">account_circle</i> Mein Profil</a>
@@ -98,7 +97,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 <li>
                     {this.getActiveMode()}
                 </li>
-                <li class="divider" tabindex="-1"/>
+                <li class="divider" tabindex="-1" />
                 <li>
                     <a href="javascript:" onclick={() => {
                         this.onLogoutClick()
@@ -150,12 +149,12 @@ export class NavHeader extends st.component<NavHeaderProps> {
     private getActiveMode() {
         const isDriver = this.preferenceService.getProfile() === 'driver';
         return <fragment>
-            <a href="javascript:" style={{display: isDriver ? 'block' : 'none'}} onclick={() => {
+            <a href="javascript:" style={{ display: isDriver ? 'block' : 'none' }} onclick={() => {
                 this.onCustomerSwitch();
             }}>
                 <i class="material-icons">local_mall</i> Konsument-Modus
             </a>
-            <a href="javascript:" style={{display: isDriver ? 'none' : 'block'}} onclick={() => {
+            <a href="javascript:" style={{ display: isDriver ? 'none' : 'block' }} onclick={() => {
                 this.onDriverSwitch();
             }}>
                 <i class="material-icons">time_to_leave</i> Fahrer-Modus
@@ -164,12 +163,12 @@ export class NavHeader extends st.component<NavHeaderProps> {
     }
 
     private getButton() {
-        return <fragment><a onClick={this.onAddClick} style={{display: this.showAddButton ? 'block' : 'none'}}
-                            class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+        return <fragment><a onClick={this.onAddClick} style={{ display: this.showAddButton ? 'block' : 'none' }}
+            class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
             <i class="material-icons">add</i>
         </a>
-            <a onClick={this.onRefreshClick} style={{display: this.showRefreshButton ? 'block' : 'none'}}
-               class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+            <a onClick={this.onRefreshClick} style={{ display: this.showRefreshButton ? 'block' : 'none' }}
+                class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
                 <i class="material-icons">refresh</i>
             </a>
         </fragment>

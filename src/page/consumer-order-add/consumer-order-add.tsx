@@ -101,7 +101,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         const locationOption = this.locationOptions[locationOptionIndex];
         this.locationOptions = [];
 
-        this.selectedLocationType = locationOption.shop || 'unknown';
+        this.selectedLocationType = locationOption.shop;
         this.selectedLocation = locationOption;
 
         this.doRender();
@@ -172,8 +172,6 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
                 return orderItem;
             })
         });
-
-        debugger;
 
         st.route = {
             path: ConsumerOrderListPage.ROUTE

@@ -29,7 +29,7 @@ export default (component: DriverOrderDetailPage) => (
                 </table>
             </div>
 
-            <div class="row">
+            {component.customerContext ? <div class="row">
                 <h5 class="">Dein Auftraggeber</h5>
 
                 <table class="striped">
@@ -48,9 +48,9 @@ export default (component: DriverOrderDetailPage) => (
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> : ''}
 
-            <div class="row">
+            {component.customerContext ? <div class="row">
 
                 <h5 class="">Deine Lieferadresse</h5>
 
@@ -59,7 +59,7 @@ export default (component: DriverOrderDetailPage) => (
                         {component.customerContext.address}
                     </tbody>
                 </table>
-            </div>
+            </div> : ''}
 
             <div class="row">
 
@@ -71,7 +71,7 @@ export default (component: DriverOrderDetailPage) => (
                             <td width="5%">{component.getStatusEmoji(item.status)}</td>
                             <td width="90%" class="truncate">{item.description}</td>
                             <td width="5%">
-                                <MatCheckbox name="done" label="Eingekauft" onChange={component.onCheckboxDoneChance} required={true} />
+                                {/*<MatCheckbox name="done" label="Eingekauft" onChange={component.onCheckboxDoneChance} required={true} />*/}
                             </td>
                         </tr>)}
                     </tbody>
@@ -86,23 +86,24 @@ export default (component: DriverOrderDetailPage) => (
                 </span>
             </div>
 
-            {component.orderContext.status == 'to_be_delivered' ?
+            {!component.customerContext ?
                 <div class="card blue darken-2">
                     <div class="card-content white-text">
                         <span class="card-title">Achtung</span>
-                        <p>Du kannst diesen Auftrag übernehmen.</p>
+                        <p>Du kannst diesen Auftrag übernehmen. Sobald Du den Auftrag übernommen hast, erscheinen hier die genauen Kontaktdaten Deines Auftraggebers.</p>
                     </div>
                     <div class="card-action">
-                        <a href="#">Auftrag übernehmen</a>
+                        <a href="javascript:" onClick={component.onAcceptOrderClick}>Auftrag übernehmen</a>
                     </div>
-                </div> : <div class="card red darken-2">
+                </div> : <div><div class="card red darken-2">
                     <div class="card-content white-text">
                         <span class="card-title">Achtung</span>
                         <p>Falls Du den Auftrag doch nicht erfüllen kannst, kannst Du ihn abgeben.</p>
                     </div>
                     <div class="card-action">
-                        <a href="#">Auftrag abgeben</a>
+                        <a href="javascript:" onClick={component.onDeclideOrderClick}>Auftrag abbrechen</a>
                     </div>
+                </div>
                 </div>
             }
         </div>

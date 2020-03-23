@@ -21,7 +21,7 @@ export default (component: ConsumerOrderAddPage) => (
                 ref={{ locationField: component }}
                 label="Von"
                 class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
-                helperText="Gib hier den Namen des Ladens ein"
+                helperText="Gib hier den Namen des Ladens ein, z.B. 'Edeka'"
                 onKeyUp={component.onLocationKeyUp}>
             </MatInput>
 
