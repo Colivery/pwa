@@ -1,7 +1,6 @@
 import {injectable} from "springtype/core/di";
 import {st} from "springtype/core";
 import {IUserProfileRequest, IUserProfileResponse} from "../datamodel/user";
-import {request} from "../function/http";
 import { SERVICE_API_ENDPOINT } from "../config/endpoints";
 
 @injectable
@@ -11,15 +10,21 @@ export class UserService {
         try {
             st.debug('getUserProfile');
 
-            return JSON.parse(await request(
-                'GET',
-                `${SERVICE_API_ENDPOINT}/user`,
-                {
-                    'Authorization': `Bearer ${await window.authService.getIdToken()}`,
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/user`, {
+                method: 'GET',
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
                     "Accept": "application/json",
-                    "Content-Type": "application/json",
-                }
-            ));
+                    'Authorization': `Bearer ${await window.authService.getIdToken()}`
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer', // no-referrer, *client
+            });
+            return response.json();
+
         } catch (e) {
             st.error('error in get user profile request', e)
         }
@@ -29,16 +34,23 @@ export class UserService {
 
         st.debug('upsertUserProfile...', userProfile);
         try {
-            await request(
-                'POST',
-                `${SERVICE_API_ENDPOINT}/user`,
-                {
-                    'Authorization': `Bearer ${await window.authService.getIdToken()}`,
+
+            await fetch(`${SERVICE_API_ENDPOINT}/user`, {
+                method: 'POST',
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
                     "Accept": "application/json",
-                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${await window.authService.getIdToken()}`
                 },
-                JSON.stringify(userProfile)
-            )
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer', // no-referrer, *client
+                body: JSON.stringify(userProfile) // body data type must match "Content-Type" header
+
+            });
+
         } catch (e) {
             st.error('error in get user profile request', e)
         }
