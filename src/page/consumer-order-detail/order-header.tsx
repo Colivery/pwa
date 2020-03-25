@@ -35,16 +35,16 @@ export class OrderHeader extends st.component<IAttrOrderHeader> implements ILife
                 <table class={["striped", 'col', 's12', 'm6','l8', 'offset-l2']}>
                     <tbody>
                     <tr>
-                        <td width="30%"><strong>Wo</strong></td>
+                        <td width="30%"><strong>Wohin:</strong></td>
                         <td width="70%">{this.order.shop_name}<br/>
                         </td>
                     </tr>
                     <tr>
-                        <td width="30%"><strong>Wann</strong></td>
-                        <td width="70%">{this.order.created}</td>
+                        <td width="30%"><strong>Datum:</strong></td>
+                        <td width="70%">{this.order.created.substring(0, 10)}</td>
                     </tr>
                     <tr>
-                        <td width="30%"><strong>Status</strong></td>
+                        <td width="30%"><strong>Status:</strong></td>
                         <td width="70%"><span
                             class={["badge", getOrderStatusTextColorClass(this.order.status)]}>{getOrderStatusText(this.order.status)}</span>
                         </td>

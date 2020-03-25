@@ -2,8 +2,7 @@ import {injectable} from "springtype/core/di";
 import {st} from "springtype/core";
 import {IUserProfileRequest, IUserProfileResponse} from "../datamodel/user";
 import {request} from "../function/http";
-
-export const ENDPOINT_URL = 'https://colivery-api.s0ra.de';
+import { SERVICE_API_ENDPOINT } from "../config/endpoints";
 
 @injectable
 export class UserService {
@@ -14,7 +13,7 @@ export class UserService {
 
             return JSON.parse(await request(
                 'GET',
-                `${ENDPOINT_URL}/user`,
+                `${SERVICE_API_ENDPOINT}/user`,
                 {
                     'Authorization': `Bearer ${await window.authService.getIdToken()}`,
                     "Accept": "application/json",
@@ -32,7 +31,7 @@ export class UserService {
         try {
             await request(
                 'POST',
-                `${ENDPOINT_URL}/user`,
+                `${SERVICE_API_ENDPOINT}/user`,
                 {
                     'Authorization': `Bearer ${await window.authService.getIdToken()}`,
                     "Accept": "application/json",

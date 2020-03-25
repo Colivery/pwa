@@ -11,6 +11,22 @@ html, body {
   margin-bottom: 30px;
 }
 
+h3.slogan {
+  font-weight: bold;
+  color: $colivery-grey;
+  font-size: 1.5rem;
+  padding-top: -2rem;
+  text-align: center;
+}
+
+.btn {
+  border-radius: 30px;
+  box-shadow: none;
+  font-weight: bold;
+  line-height: 45px;
+  height: 45px;
+}
+
 /* style for switches */
 .switch input[type="checkbox"].invalid + span {
   background-color: $colivery-orange !important;

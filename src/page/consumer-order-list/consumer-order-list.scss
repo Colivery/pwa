@@ -1,3 +1,10 @@
+@import "../../../assets/components/color-variables";
+
+.page-consumer-order-list {
+
+    background-color: $colvery-grey-light;
+}
+
 .consumer-order-list {
     cursor: pointer;
 }

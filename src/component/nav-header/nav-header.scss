@@ -6,22 +6,39 @@
 
 nav {
     background-color: $colivery-background !important;
+    box-shadow: none !important;
+}
+
+.nav-wrapper {
+  height: 15vh !important;
+
+  .btn:hover {
+    background-color: inherit;
+  }
 }
 
 .nav-brand-logo {
-    margin-top: 5px;
-    height: 42px;
+    height: 10vh;
+    min-height: 45px;
+    margin: auto;
 }
 
 nav .brand-logo {
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
+  top: 50%;
+  left: 50%;
+  transform: translateY(-5%) translateX(-50%);
+}
+
+.left-btn-position  {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-70%);
 }
 
 nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
     height: 32px;
     line-height: 32px;
+    font-size: 32px !important;
 }
 
 .dropdown-content.show {
@@ -30,4 +47,123 @@ nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
   transform-origin: 100% 0;
   width: 250px;
   transform: scaleX(1) scaleY(1);
+}
+// menu
+
+.menu {
+  height: 46px;
+  width: 46px;
+  left: 20px;
+}
+
+.menu-circle {
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 50%;
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: 1000;
+}
+
+.menu:hover .menu-circle {
+  transform: scale(1.4);
+}
+
+.menu.open .menu-circle {
+  transform: scale(60);
+}
+
+.menu-link {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 1002;
+}
+
+.menu-icon {
+	position: absolute;
+  width: 20px;
+  height: 16px;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 1px;
+}
+
+.menu-line {
+  background-color: #333;
+  height: 2px;
+  width: 100%;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.menu-overlay {
+  .material-icons {
+    font-size: 16px;
+  }
+}
+
+.menu-line-1 { top: 0; }
+
+.menu-line-2 {
+  top: 0;
+  width: 70%;
+  bottom: 0;
+  margin: auto;
+}
+
+.menu-line-3 { 
+  bottom: 0; 
+  width: 85%;
+}
+
+.menu.open .menu-line-1 {
+  width: 120% !important;
+  transform: translateY(9px) translateY(-50%) rotate(-135deg);
+}
+
+.menu.open .menu-line-2 {
+  opacity: 0;
+  width: 120% !important;
+}
+
+.menu.open .menu-line-3 {
+  width: 120% !important;
+  transform: translateY(-7px) translateY(50%) rotate(135deg);
+}
+
+.menu-overlay {
+  background-color: #fff;
+  color: #333;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  opacity: 0;
+  visibility: hidden;
+  text-align: center;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 1001;
+}
+
+.menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.03s;
+}
+
+.menu-overlay a {
+  color: #333;
+  font-weight: 600;
+  font-size: 1.5rem;
+  padding: 2%;
+  width: 100vw;
+  margin: 2% 1% 0;
+  margin-top: 0.5vh;
+  margin-bottom: 0.5vh;
+  display: inline-block;
 }

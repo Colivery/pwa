@@ -4,7 +4,8 @@ import { LogoRow } from "../../component/logo-row/logo-row";
 
 export default (component: SplashscreenPage) => (
     <fragment>
-        <br /><br /><br />
-        <LogoRow />
+        <div class="page-splashscreen">
+            <img src={require("../../../assets/images/logo_white_transparent.png")} />
+        </div>
     </fragment>
 )

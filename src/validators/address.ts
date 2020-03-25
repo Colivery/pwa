@@ -28,7 +28,7 @@ export const address = (geoService: GeoService, instance: any, geoCallback: (geo
                 st.debug('invalid');
                 await innerCallback(false);
             }
-        });
+        }, 800);
         return geocodeBuffered();
     }, 'address')
 };

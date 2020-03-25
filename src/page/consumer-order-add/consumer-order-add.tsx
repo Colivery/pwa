@@ -1,20 +1,20 @@
-import {st} from "springtype/core";
-import {component} from "springtype/web/component";
-import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
+import { st } from "springtype/core";
+import { component } from "springtype/web/component";
+import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import tpl from "./consumer-order-add.tpl";
 import "./consumer-order-add.scss";
-import {inject} from "springtype/core/di";
-import {GeoService} from "../../service/geocoding";
-import {ref} from "springtype/core/ref";
-import {OlMap} from "../../component/ol-map/ol-map";
-import {Feature} from "ol";
-import {MatInput} from "../../component/mat/mat-input";
-import {MatModal} from "../../component/mat/mat-modal";
-import {ConsumerOrderListPage} from "../consumer-order-list/consumer-order-list";
-import {OrderService} from "../../service/order";
-import {OrderStatus} from "../../types/order-status";
-import {OrderItemStatus} from "../../types/order-item-status";
-import {Shop} from "../../datamodel/shop";
+import { inject } from "springtype/core/di";
+import { GeoService } from "../../service/geocoding";
+import { ref } from "springtype/core/ref";
+import { OlMap } from "../../component/ol-map/ol-map";
+import { Feature } from "ol";
+import { MatInput } from "../../component/mat/mat-input";
+import { MatModal } from "../../component/mat/mat-modal";
+import { ConsumerOrderListPage } from "../consumer-order-list/consumer-order-list";
+import { OrderService } from "../../service/order";
+import { OrderStatus } from "../../types/order-status";
+import { OrderItemStatus } from "../../types/order-item-status";
+import { Shop } from "../../datamodel/shop";
 
 @component({
     tpl
@@ -42,7 +42,10 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     dontCareForLocationSwitch: HTMLInputElement;
 
     @ref
-    confirmCreateOrderModal: MatModal
+    confirmCreateOrderModal: MatModal;
+
+    @ref
+    warnAtLeastOneItemModal: MatModal;
 
     @ref
     hintField: MatInput;
@@ -52,7 +55,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     pickupLon = 0;
     locationOptions: Array<Shop> = [];
     isLoading: boolean = false;
-    selectedLocationType: string = '';
+    selectedLocationType: string = 'supermarket';
     oldMarker: Feature;
     doesNotCareForLocation: boolean = false;
     selectedLocation: Shop;
@@ -71,16 +74,17 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     }
 
     onLocationKeyUp = () => {
-        const value = (this.locationField as any).el.querySelector('input').value;
+        const searchTerm = (this.locationField as any).el.querySelector('input').value;
+
+        if (searchTerm.length < 3) return;
+
         const searchForPlacesBuffered = this.buffer(async () => {
 
             this.isLoading = true;
             this.doRender();
 
             const currentLocation = await this.geoService.getCurrentLocation();
-
-            this.locationOptions = await this.geoService.forwardLocalPlacesSearch(value);
-
+            this.locationOptions = await this.geoService.forwardLocalPlacesSearch(searchTerm);
             this.locationOptions = this.locationOptions.map((locationOption) => {
 
                 // on-the-fly distance calculation
@@ -122,6 +126,11 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
     onCreateOrderButtonClick = () => {
 
+        if (this.orderItems.length === 0) {
+            this.warnAtLeastOneItemModal.toggle();
+            return;
+        }
+
         // open modal
         this.confirmCreateOrderModal.toggle();
     }
@@ -132,7 +141,12 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             description: this.articleDescription.value
         });
 
+        // reset value
+        this.articleDescription.value = '';
+
         this.doRender();
+
+        this.articleDescription.focus();
     }
 
     onOrderItemRemoveClick = (evt: MouseEvent) => {
@@ -143,7 +157,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
         this.doRender();
 
-        console.log('remove', orderItemIndex)
+        this.articleDescription.focus();
     }
 
     onReallyCreateOrderClick = async () => {
@@ -152,14 +166,24 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         this.confirmCreateOrderModal.toggle();
 
         const currentGeoLocation = await this.geoService.getCurrentLocation();
+        let pickupAddress;
+        let pickupLocation;
+        let shopName;
 
-        await this.orderService.createOrder({
-            "pickup_address": `${this.selectedLocation.street} ${this.selectedLocation.houseNumber}, ${this.selectedLocation.postcode} ${this.selectedLocation.city}`,
-            "pickup_location": {
+        // optional selected location (otherwise determined by matching service API)
+        if (this.selectedLocation) {
+            pickupAddress = `${this.selectedLocation.street} ${this.selectedLocation.houseNumber}, ${this.selectedLocation.postcode} ${this.selectedLocation.city}`;
+            pickupLocation = {
                 "latitude": this.selectedLocation.lat,
                 "longitude": this.selectedLocation.lon
-            },
-            "shop_name": this.selectedLocation.name,
+            };
+            shopName = this.selectedLocation.name;
+        }
+
+        await this.orderService.createOrder({
+            "pickup_address": pickupAddress,
+            "pickup_location": pickupLocation,
+            "shop_name": shopName,
             "shop_type": this.selectedLocationType,
             "status": OrderStatus.TO_BE_DELIVERED,
             "hint": this.hintField.inputRef.getValue(),

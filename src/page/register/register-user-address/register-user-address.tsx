@@ -12,7 +12,7 @@ import tpl, {IRegisterUserAddressFormState} from "./register-user-address.tpl";
 import {RegisterChooseProfile} from "../register-choose-profile/register-choose-profile";
 import {ErrorMessage} from "../../../component/error-message/error-message";
 import {OlMap} from "../../../component/ol-map/ol-map";
-import {address} from "../../../validatoren/address";
+import {address} from "../../../validators/address";
 import {UserService} from "../../../service/user";
 
 @component({
@@ -83,7 +83,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
                 this.formRef.reset();
 
                 await this.userService.upsertUserProfile({ phone: formState.phone,
-                    name: formState.name,
+                    name: `${formState.firstname} ${formState.lastname}`,
                     address: formState.address,
                     accepted_support_inquiry: formState.accepted_support_inquiry                    ,
                     geo_location: this.userGeoLocation,

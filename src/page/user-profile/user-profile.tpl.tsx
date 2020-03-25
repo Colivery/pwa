@@ -15,7 +15,7 @@ export default (component: UserProfile) => (
     <fragment>
         <NavHeader showBackButton={true} onAddButtonClick={component.onAddButtonClick} />
 
-        <MatLoadingIndicator ref={{loadingIndicator: component}} /> 
+        <MatLoadingIndicator ref={{ loadingIndicator: component }} />
 
         <div class="container">
             <div class="row">
@@ -73,11 +73,21 @@ const getFormInputs = (component: UserProfile) => {
                     'email': 'Keine gültige E-Mail'
                 }}>
             </MatInput>
-            <MatInput name="name" label="Dein Name"
-                class={['col', 's12', 'm6']}
-                helperText="z.B. Max Mustermann"
+            <MatInput name="name" label="Vorname"
+                class={['col', 's6', 'm3']}
+                helperText="z.B. Max"
                 validators={[required]}
-                value={component.state.name}
+                value={component.state.firstname}
+                errorMessage={{
+                    required: 'Das ist ein Pflichtfeld'
+                }}>
+            </MatInput>
+
+            <MatInput name="name" label="Nachname"
+                class={['col', 's6', 'm3']}
+                helperText="z.B. Mustermann"
+                validators={[required]}
+                value={component.state.lastname}
                 errorMessage={{
                     required: 'Das ist ein Pflichtfeld'
                 }}>
@@ -104,6 +114,7 @@ const getFormInputs = (component: UserProfile) => {
             <div class={['col', 's12']}>
                 <OlMap ref={{ olMapRef: component }} hideZoom={false} /><br />
             </div>
+            {/* 
 
             <h5>Könntest Du uns bei der Telefon-Hotline helfen?</h5>
             <p>Für unsere Telefon-Hotline suchen wir tatkräftige Hilfe, denn viele Menschen rufen uns lieber an,
@@ -112,6 +123,7 @@ const getFormInputs = (component: UserProfile) => {
             <div class={['col', 's12', 'm12']} style={{ marginTop: '15px' }}>
                 <MatCheckbox checked={component.state.accepted_support_inquiry} ref={{ supportInquiryRef: component }} name="accepted_support_inquiry" label="Ja, ich biete meine Hilfe für die Telefon-Hotline an." />
             </div>
+            */}
         </fragment>
     }
     return <fragment />
@@ -120,7 +132,8 @@ const getFormInputs = (component: UserProfile) => {
 export interface IUserProfileFromState {
     id: string;
     email: string
-    name: string
+    firstname: string;
+    lastname: string;
     phone: string
     address: string
     accepted_support_inquiry: boolean;

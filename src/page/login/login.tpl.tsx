@@ -10,10 +10,15 @@ export default (component: LoginPage) => (
     <fragment>
         <div class="container">
             <LogoRow />
+
+            <h3 class="slogan">
+                Gemeinsam besser versorgt!
+            </h3>
+
             <Form ref={{ formRef: component }}>
                 <div class="row">
                     <MatInput name="email" label="E-Mail"
-                        class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
+                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText="Deine E-Mail-Adresse"
                         validators={[required, email]}
                         errorMessage={{
@@ -22,8 +27,9 @@ export default (component: LoginPage) => (
                         }}>
                     </MatInput>
                     <MatInput name="password" label="Passwort" type="password"
-                        class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
+                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText="Dein Passwort"
+                        onKeyDown={component.onPasswordFieldKeyUp}
                         validators={[required, minLength(7)]}
                         errorMessage={{
                             required: 'Das ist ein Pflichtfeld',
@@ -33,14 +39,14 @@ export default (component: LoginPage) => (
                 </div>
                 <div class="row">
                     <ErrorMessage ref={{ errorMessage: component }}
-                        class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']} />
+                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
                 </div>
                 <div class="row">
-                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         onClick={component.onLoginClick}>Einloggen</a>
                 </div>
                 <div class="row">
-                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         onClick={component.onRegisterClick}>Registrieren</a>
                 </div>
 

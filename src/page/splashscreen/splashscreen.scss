@@ -1,0 +1,14 @@
+@import "../../../assets//components/color-variables";
+
+.page-splashscreen {
+    background-color: $colivery-orange;
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    img {
+        margin: auto;
+        width: 40vw;
+        max-width: 200px;
+    }
+}

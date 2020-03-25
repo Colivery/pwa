@@ -106,7 +106,7 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
                         anchor: [0.5, 46],
                         anchorXUnits: 'fraction',
                         anchorYUnits: 'pixels',
-                        src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+                        src: require('../../../assets/images/map_marker.png')
                     })
                 })
             });

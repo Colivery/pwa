@@ -14,7 +14,7 @@ export default (component: RegisterPage) => (
             <Form ref={{ formRef: component }} class="col s12">
                 <div class="row">
                     <MatInput name="email" label="E-Mail"
-                        class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
+                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText="Deine E-Mail-Adresse"
                         validators={[required, email]}
                         errorMessage={{
@@ -23,7 +23,7 @@ export default (component: RegisterPage) => (
                         }}>
                     </MatInput>
                     <MatInput name="password" label="Passwort" type="password"
-                        class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
+                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText="Bitte wähle ein Passwort"
                         validators={[required, minLength(7)]}
                         errorMessage={{
@@ -32,22 +32,32 @@ export default (component: RegisterPage) => (
                         }}>
                     </MatInput>
                 </div>
+
                 <div class="row">
-                    <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
+                    <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
+                        Bitte beachte unsere <a href="http://colivery.de/Impressum" target="_blank">AGB</a> und <a href="http://colivery.de/Datenschutz" target="_blank">Datenschutzerklärung</a>.
+                    </div>
+
+                </div>
+
+                {/*                <div class="row">
+                    <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
                         <MatCheckbox name="accepted_terms_of_use" label="Ich habe die AGB gelesen, verstanden und akzeptiere sie." required={true} />
                     </div>
-                    <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
+                    <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
                         <MatCheckbox name="accepted_privacy_policy" label="Ich habe die Datenschutzerklärung gelesen, verstanden und bin damit einverstanden." required={true} />
                     </div>
-                </div>
+                </div> */}
+
                 <div class="row">
                     <ErrorMessage ref={{ errorMessage: component }}
-                        class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']} />
+                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
                 </div>
                 <div class="row">
-                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's6', 'offset-l4', 'l2']}
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's5', 'offset-m3', 'm2', 'offset-l3', 'l2']}
                         onClick={() => component.onBackClick()}>Zurück</a>
-                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's6', 'l2']}
+                    <div class="col s2 m2 l2"></div>
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's5', 'm2', 'l2']}
                         onClick={() => component.onNextClick()}>Weiter</a>
                 </div>
             </Form>

@@ -11,8 +11,10 @@ export interface IUserProfileRequest {
     is_support_member: boolean;
 }
 
-export interface IUserProfileResponse extends IUserProfileRequest{
+export interface IUserProfileResponse extends IUserProfileRequest {
     user_id: string;
     email: string;
+    firstname: string;
+    lastname: string;
     support_member: boolean;
 }

@@ -1,10 +1,11 @@
 import { injectable } from "springtype/core/di";
+import { SERVICE_API_ENDPOINT } from "../config/endpoints";
 
 @injectable
 export class OrderService {
 
     async declide(id: string) {
-        const response = await fetch(`https://colivery-api.s0ra.de/order/declide?order_id=${id}`, {
+        const response = await fetch(`${SERVICE_API_ENDPOINT}/order/declide?order_id=${id}`, {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -20,7 +21,7 @@ export class OrderService {
     }
 
     async accept(id: string) {
-        const response = await fetch(`https://colivery-api.s0ra.de/order/accept?order_id=${id}`, {
+        const response = await fetch(`${SERVICE_API_ENDPOINT}/order/accept?order_id=${id}`, {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -36,7 +37,7 @@ export class OrderService {
     }
 
     async getById(id: string) {
-        const response = await fetch(`https://colivery-api.s0ra.de/order?order_id=${id}`, {
+        const response = await fetch(`${SERVICE_API_ENDPOINT}/order?order_id=${id}`, {
             method: 'GET',
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -53,7 +54,7 @@ export class OrderService {
 
     async getOwnOrders() {
 
-        return (await fetch('https://colivery-api.s0ra.de/order/own', {
+        return (await fetch(`${SERVICE_API_ENDPOINT}/order/own`, {
             method: 'GET',
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -71,7 +72,7 @@ export class OrderService {
 
         console.log('createOrder...', order);
 
-        const response = await fetch('https://colivery-api.s0ra.de/order', {
+        const response = await fetch(`${SERVICE_API_ENDPOINT}/order`, {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

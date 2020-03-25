@@ -22,6 +22,8 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
     displayData = [];
 
+    class = "page-consumer-order-list";
+
     @inject(OrderService)
     orderService: OrderService;
     

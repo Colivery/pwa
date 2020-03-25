@@ -1,21 +1,21 @@
 import "./user-profile.scss";
 
-import {st} from "springtype/core";
-import {component, state} from "springtype/web/component";
-import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
-import tpl, {IUserProfileFromState} from "./user-profile.tpl";
-import {ConsumerOrderAddPage} from "../consumer-order-add/consumer-order-add";
-import {inject} from "springtype/core/di";
-import {ref} from "springtype/core/ref";
-import {Form, Input} from "springtype/web/form";
-import {ErrorMessage} from "../../component/error-message/error-message";
-import {GeoService} from "../../service/geocoding";
-import {OlMap} from "../../component/ol-map/ol-map";
-import {MatModal} from "../../component/mat/mat-modal";
-import {MatLoadingIndicator} from "../../component/mat/mat-loading-indicator";
-import {address} from "../../validatoren/address";
-import {UserService} from "../../service/user";
-import {IUserProfileResponse} from "../../datamodel/user";
+import { st } from "springtype/core";
+import { component, state } from "springtype/web/component";
+import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
+import tpl, { IUserProfileFromState } from "./user-profile.tpl";
+import { ConsumerOrderAddPage } from "../consumer-order-add/consumer-order-add";
+import { inject } from "springtype/core/di";
+import { ref } from "springtype/core/ref";
+import { Form, Input } from "springtype/web/form";
+import { ErrorMessage } from "../../component/error-message/error-message";
+import { GeoService } from "../../service/geocoding";
+import { OlMap } from "../../component/ol-map/ol-map";
+import { MatModal } from "../../component/mat/mat-modal";
+import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import { address } from "../../validators/address";
+import { UserService } from "../../service/user";
+import { IUserProfileResponse } from "../../datamodel/user";
 
 @component({
     tpl
@@ -66,7 +66,7 @@ export class UserProfile extends st.component implements ILifecycle {
         this.loadData()
     }
 
-    onAfterRender(hasDOMChanged: boolean): void {
+    onAfterRender(): void {
         if (this.state) {
             this.olMapRef.init();
             this.addressValidator()(this.state.address)
@@ -80,7 +80,7 @@ export class UserProfile extends st.component implements ILifecycle {
             const longitude = parseFloat(geolocation.lon);
             this.olMapRef.setCenter(latitude, longitude);
             this.olMapRef.setMarker(latitude, longitude);
-            this.userGeoLocation = {latitude, longitude};
+            this.userGeoLocation = { latitude, longitude };
         });
     };
 
@@ -89,20 +89,21 @@ export class UserProfile extends st.component implements ILifecycle {
             path: ConsumerOrderAddPage.ROUTE
         }
     };
+
     updateUserProfile = async () => {
         try {
             this.loadingIndicator.toggle();
             if (await this.formRef.validate()) {
                 const formState = this.formRef.getState() as any as IUserProfileFromState;
-                st.debug('userProfile', formState);
+
+                console.log('formState before save', formState);
 
                 await this.userService.upsertUserProfile({
                     phone: formState.phone,
-                    name: formState.name,
+                    name: `${formState.firstname} ${formState.lastname}`,
                     address: formState.address,
-                    accepted_support_inquiry: formState.accepted_support_inquiry                    ,
+                    accepted_support_inquiry: formState.accepted_support_inquiry,
                     geo_location: this.userGeoLocation,
-                    //TODO: maybe change this have to be true!
                     accepted_privacy_policy: true,
                     accepted_terms_of_use: true,
                     is_support_member: false
@@ -118,7 +119,10 @@ export class UserProfile extends st.component implements ILifecycle {
 
     private async loadData() {
         this.state = await this.userService.getUserProfile();
-        console.log('profile',);
+        this.state.firstname = this.state.name.split(' ')[0];
+        this.state.lastname = this.state.name.split(' ')[1];
+        console.log('this.state', this.state);
+        this.doRender();
     }
 
     onAfterInitialRender() {

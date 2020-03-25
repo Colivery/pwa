@@ -1,8 +1,8 @@
 {
   "name": "Colivery",
   "short_name": "Colivery",
-  "theme_color": "#ff1744",
-  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "background_color": "#FF6A2A",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",

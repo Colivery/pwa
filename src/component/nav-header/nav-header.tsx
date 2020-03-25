@@ -36,6 +36,12 @@ export class NavHeader extends st.component<NavHeaderProps> {
     @ref
     dropDownLiRef: HTMLLIElement;
 
+    @ref
+    menuIcon: HTMLElement;
+
+    @ref
+    menuOverlay: HTMLElement;
+
     @attr
     showAddButton: boolean = false;
 
@@ -63,55 +69,75 @@ export class NavHeader extends st.component<NavHeaderProps> {
         window.history.back();
     };
 
+    toggleMenu = () => {
+
+        if (this.menuIcon.classList.contains('open')) {
+            setTimeout(() => {
+                document.body.style.overflow = 'inherit';
+            }, 200 /* wait for animation to finish*/);
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
+
+        this.menuIcon.classList.toggle('open');
+        this.menuOverlay.classList.toggle('open');
+        this.el.querySelectorAll('.action-button').forEach((el: HTMLElement) => {
+            el.classList.toggle('hide');
+        });
+    }
+
     render() {
         return <fragment>
-            <nav class="nav-extended z-depth-3">
-                <div class="nav-wrapper" ref={{ dropDownLiRef: this }}>
+            <nav class="nav-extended">
+                <div class="nav-wrapper" >
                     <a href="javascript:" class="brand-logo">
-                        <img class="nav-brand-logo" src={require('../../../assets/images/logo.png')} />
+                        <img class="nav-brand-logo" src={require('../../../assets/images/logo_fullcolor_cubic.png')} />
                     </a>
 
-                    <a class='dropdown-trigger btn btn-flat btn-small' onclick={() => {
-                        this.toggle()
-                    }} href='javascript:'><i class="material-icons">menu</i></a>
-
                     {this.showBackButton ?
-                        <a class='btn btn-flat btn-small' href='javascript:' onClick={() => {
+                        <a class='left-btn-position btn btn-flat btn-small' href='javascript:' onClick={() => {
                             this.onBackButtonClick()
                         }}>
-                            <i class="material-icons">arrow_back</i>
-                        </a> : ''}
+                            <i class="material-icons">arrow_back_ios</i>
+                        </a> : <div class="menu left-btn-position" ref={{ menuIcon: this }}>
+                            <span class="menu-circle"></span>
+                            <a href="javascript:" onclick={this.toggleMenu} class="menu-link">
+                                <span class="menu-icon">
+                                    <span class="menu-line menu-line-1"></span>
+                                    <span class="menu-line menu-line-2"></span>
+                                    <span class="menu-line menu-line-3"></span>
+                                </span>
+                            </a>
+                        </div>}
 
                 </div>
                 <div class="nav-content">
-                    {this.getButton()}
+                    {this.renderActionButton()}
                 </div>
             </nav>
 
-            <ul class="dropdown-content" ref={{ dropDownContentRef: this }} tabindex="0">
-                <li><a href="javascript:" onClick={() => {
+            <div class="menu-overlay" ref={{ menuOverlay: this }}>
+                <a href="javascript:" onClick={() => {
                     this.onUserProfileClick()
                 }}>
-                    <i class="material-icons">account_circle</i> Mein Profil</a>
-                </li>
-                <li>
-                    {this.getActiveMode()}
-                </li>
-                <li class="divider" tabindex="-1" />
-                <li>
-                    <a href="javascript:" onclick={() => {
-                        this.onLogoutClick()
-                    }}>
-                        <i class="material-icons">directions_run</i> Ausloggen</a>
-                </li>
-            </ul>
+                    <i class="material-icons">account_circle</i> <span>Mein Profil</span></a>
+                {this.getActiveMode()}
+
+                <a href="javascript:"><i class="material-icons">description</i> <span>AGB</span></a>
+
+                <a href="javascript:"> <i class="material-icons">security</i> <span>Datenschutz</span></a>
+
+                <a href="javascript:" onclick={() => {
+                    this.onLogoutClick()
+                }}>
+                    <i class="material-icons">directions_run</i> <span>Ausloggen</span></a>
+            </div>
 
         </fragment>
     }
 
     onUserProfileClick = () => {
-        //close menu
-        this.toggle();
+        this.toggleMenu();
         st.route = {
             path: UserProfile.ROUTE
         }
@@ -119,8 +145,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
 
     onCustomerSwitch = () => {
-        //close menu
-        this.toggle();
+        this.toggleMenu();
         this.preferenceService.setProfile('consumer');
         st.debug('onCustomerSwitch');
         st.route = {
@@ -130,8 +155,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
     };
 
     onDriverSwitch = () => {
-        //close menu
-        this.toggle();
+        this.toggleMenu();
         this.preferenceService.setProfile('driver');
         st.debug('onDeviceSwitch');
         st.route = {
@@ -139,12 +163,6 @@ export class NavHeader extends st.component<NavHeaderProps> {
         }
 
     };
-
-    toggle() {
-        const boundingDropdown = this.dropDownLiRef.getBoundingClientRect();
-        this.dropDownContentRef.setAttribute('style', `left: ${boundingDropdown.left}px; top:  ${boundingDropdown.bottom}px;`);
-        this.dropDownContentRef.classList.toggle('show');
-    }
 
     private getActiveMode() {
         const isDriver = this.preferenceService.getProfile() === 'driver';
@@ -162,13 +180,13 @@ export class NavHeader extends st.component<NavHeaderProps> {
         </fragment>
     }
 
-    private getButton() {
+    private renderActionButton() {
         return <fragment><a onClick={this.onAddClick} style={{ display: this.showAddButton ? 'block' : 'none' }}
-            class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+            class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
             <i class="material-icons">add</i>
         </a>
             <a onClick={this.onRefreshClick} style={{ display: this.showRefreshButton ? 'block' : 'none' }}
-                class="btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+                class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
                 <i class="material-icons">refresh</i>
             </a>
         </fragment>

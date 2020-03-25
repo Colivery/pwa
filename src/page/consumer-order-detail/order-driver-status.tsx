@@ -21,7 +21,7 @@ export class OrderDriverStatus extends st.component<IAttrOrderHeader> implements
 
 
         if (this.user) {
-            driver = <table class={["striped", 'col', 's12', 'm6','l8', 'offset-l2']}>
+            driver = <table class={["striped", 'col', 's12', 'm6', 'l8', 'offset-l2']}>
                 <tbody>
                 <tr>
                     <td width="30%">Name</td>

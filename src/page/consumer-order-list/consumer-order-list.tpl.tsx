@@ -31,7 +31,7 @@ export default (component: ConsumerOrderListPage) => (
                         <td>{order.shop_name}</td>
                         <td>{order.items.length}</td>
                         <td class={[getOrderStatusTextColorClass(order.status)]}>{getOrderStatusText(order.status)}</td>
-                        <td>{order.date}</td>
+                        <td>{order.created.substring(0, 10)}</td>
                         <td><a href="javascript:" class="btn grey">Anzeigen</a></td>
                     </tr>) : 'Noch kein Auftrag'}
                 </tbody>

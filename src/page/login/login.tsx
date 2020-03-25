@@ -1,13 +1,13 @@
-import {st} from "springtype/core";
-import {component} from "springtype/web/component";
-import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
-import {ErrorMessage} from "../../component/error-message/error-message";
-import {ref} from "springtype/core/ref";
+import { st } from "springtype/core";
+import { component } from "springtype/web/component";
+import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
+import { ErrorMessage } from "../../component/error-message/error-message";
+import { ref } from "springtype/core/ref";
 import tpl from "./login.tpl";
 import "./login.scss";
-import {Form} from "springtype/web/form";
-import {tsx} from "springtype/web/vdom";
-import {RegisterPage} from "../register/register-account/register";
+import { Form } from "springtype/web/form";
+import { tsx } from "springtype/web/vdom";
+import { RegisterPage } from "../register/register-account/register";
 
 @component({
     tpl
@@ -26,6 +26,10 @@ export class LoginPage extends st.component implements ILifecycle {
 
     onLoginClick = async () => {
 
+        this.doLogin();
+    };
+
+    doLogin = async() => {
         try {
             if (await this.formRef.validate()) {
                 const data = this.formRef.getState() as { email: string, password: string };
@@ -35,7 +39,7 @@ export class LoginPage extends st.component implements ILifecycle {
         } catch (e) {
             this.errorMessage.message = e.message;
         }
-    };
+    }
 
     onRegisterClick = async () => {
         st.route = {
@@ -46,4 +50,11 @@ export class LoginPage extends st.component implements ILifecycle {
     onForgotPassword = () => {
         st.warn('onForgotPassword')
     };
+
+    onPasswordFieldKeyUp = (event: KeyboardEvent) => {
+
+        if (event.key === "Enter") {
+            this.doLogin();
+        }
+    }
 }
