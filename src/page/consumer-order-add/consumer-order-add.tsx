@@ -50,6 +50,9 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     @ref
     hintField: MatInput;
 
+    @ref
+    maxPriceField: MatInput;
+
     lookupTimeout: any;
     pickupLat = 0;
     pickupLon = 0;
@@ -166,6 +169,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         this.confirmCreateOrderModal.toggle();
 
         const currentGeoLocation = await this.geoService.getCurrentLocation();
+        const maxPrice = parseInt((this.el.querySelector('input[name=maxPrice]') as HTMLInputElement).value, 10);
         let pickupAddress;
         let pickupLocation;
         let shopName;
@@ -184,6 +188,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             "pickup_address": pickupAddress,
             "pickup_location": pickupLocation,
             "shop_name": shopName,
+            "max_price": maxPrice,
             "shop_type": this.selectedLocationType,
             "status": OrderStatus.TO_BE_DELIVERED,
             "hint": this.hintField.inputRef.getValue(),
