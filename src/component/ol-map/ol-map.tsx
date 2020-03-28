@@ -148,7 +148,7 @@ export class OlMap extends st.component<IAttrOlMap> implements ILifecycle {
     }
 
 
-    setMarker(lat: number, lng: number) {
+    addMarker(lat: number, lng: number) {
         const newMarker = new Feature({
             geometry: new Point(fromLonLat([lng, lat])),
         });

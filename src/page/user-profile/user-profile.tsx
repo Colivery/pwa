@@ -79,7 +79,7 @@ export class UserProfile extends st.component implements ILifecycle {
             const latitude = parseFloat(geolocation.lat);
             const longitude = parseFloat(geolocation.lon);
             this.olMapRef.setCenter(latitude, longitude);
-            this.olMapRef.setMarker(latitude, longitude);
+            this.olMapRef.addMarker(latitude, longitude);
             this.userGeoLocation = { latitude, longitude };
         });
     };

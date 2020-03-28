@@ -123,7 +123,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
                 this.olMapRef.removeMarker(this.oldMarker);
             } catch (e) {
             }
-            this.oldMarker = this.olMapRef.setMarker(this.selectedLocation.lat, this.selectedLocation.lon);
+            this.oldMarker = this.olMapRef.addMarker(this.selectedLocation.lat, this.selectedLocation.lon);
         }
     }
 
@@ -173,6 +173,8 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         let pickupAddress;
         let pickupLocation;
         let shopName;
+        let pickupLocationGeohash;
+        let dropoffLocationGeohash;
 
         // optional selected location (otherwise determined by matching service API)
         if (this.selectedLocation) {
@@ -182,16 +184,20 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
                 "longitude": this.selectedLocation.lon
             };
             shopName = this.selectedLocation.name;
+            pickupLocationGeohash = this.geoService.getGeoHash(pickupLocation.latitude, pickupLocation.longitude, 5);
+            dropoffLocationGeohash = this.geoService.getGeoHash(currentGeoLocation.latitude, currentGeoLocation.longitude, 5);
         }
 
         await this.orderService.createOrder({
             "pickup_address": pickupAddress,
             "pickup_location": pickupLocation,
+            "pickup_location_geohash": pickupLocationGeohash,
             "shop_name": shopName,
             "max_price": maxPrice,
             "shop_type": this.selectedLocationType,
             "status": OrderStatus.TO_BE_DELIVERED,
             "hint": this.hintField.inputRef.getValue(),
+            "dropoff_location_geohash": dropoffLocationGeohash,
             "dropoff_location": {
                 "latitude": currentGeoLocation.latitude,
                 "longitude": currentGeoLocation.longitude

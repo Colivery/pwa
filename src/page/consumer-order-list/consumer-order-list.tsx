@@ -16,7 +16,7 @@ import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 @component({
     tpl
 })
-export class ConsumerOrderListPage extends st.component implements ILifecycle {
+export class ConsumerOrderListPage extends st.staticComponent implements ILifecycle {
 
     static ROUTE = "consumer-order-list";
 

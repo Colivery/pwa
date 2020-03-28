@@ -90,9 +90,9 @@ export class NavHeader extends st.component<NavHeaderProps> {
         return <fragment>
             <nav class="nav-extended">
                 <div class="nav-wrapper" >
-                    <a href="javascript:" class="brand-logo">
+                    <div class="brand-logo">
                         <img class="nav-brand-logo" src={require('../../../assets/images/logo_fullcolor_cubic.png')} />
-                    </a>
+                    </div>
 
                     {this.showBackButton ?
                         <a class='left-btn-position btn btn-flat btn-small' href='javascript:' onClick={() => {
@@ -185,10 +185,6 @@ export class NavHeader extends st.component<NavHeaderProps> {
             class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
             <i class="material-icons">add</i>
         </a>
-            <a onClick={this.onRefreshClick} style={{ display: this.showRefreshButton ? 'block' : 'none' }}
-                class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
-                <i class="material-icons">refresh</i>
-            </a>
         </fragment>
     }
 }

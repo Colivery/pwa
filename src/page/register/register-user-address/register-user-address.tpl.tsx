@@ -4,7 +4,6 @@ import { required } from "springtype/core/validate";
 import { Form } from "springtype/web/form";
 import { RegisterUserAddressPage } from "./register-user-address";
 import { MatTextarea } from "../../../component/mat/mat-textarea";
-import { MatCheckbox } from "../../../component/mat/mat-checkbox";
 import { LogoRow } from "../../../component/logo-row/logo-row";
 import { ErrorMessage } from "../../../component/error-message/error-message";
 import { OlMap } from "../../../component/ol-map/ol-map";
@@ -54,16 +53,6 @@ export default (component: RegisterUserAddressPage) => (
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
                         <OlMap ref={{ olMapRef: component }} hideZoom={false} />
                     </div>
-                    {/*
-                    <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <p>Für unsere Telefon-Hotline suchen wir tatkräftige Hilfe, denn viele Menschen rufen uns lieber an,
-                        als Apps zu nutzen. Könntest Du Dir vorstellen, stundenweise auszuhelfen?
-                        </p>
-                    </div>
-                    <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
-                        <MatCheckbox name="accepted_support_inquiry" label="Ja, ich biete meine Hilfe für die Telefon-Hotline an." />
-                    </div>
-                    */}
                 </div>
                 <div class="row">
                     <ErrorMessage ref={{ errorMessage: component }}

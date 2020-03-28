@@ -10,6 +10,7 @@ import { ErrorMessage } from "../../component/error-message/error-message";
 import { OlMap } from "../../component/ol-map/ol-map";
 import { MatModal } from "../../component/mat/mat-modal";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
 
 export default (component: UserProfile) => (
     <fragment>
@@ -27,12 +28,10 @@ export default (component: UserProfile) => (
                 <Form ref={{ formRef: component }}>
                     {getFormInputs(component)}
                 </Form>
-            </div>
-            <div class="row">
+
                 <ErrorMessage ref={{ errorMessage: component }}
                     class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']} />
-            </div>
-            <div class="row">
+
                 <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
                     onClick={component.updateUserProfile}>Speichern</a>
             </div>
@@ -112,18 +111,8 @@ const getFormInputs = (component: UserProfile) => {
                 }}>
             </MatTextarea>
             <div class={['col', 's12']}>
-                <OlMap ref={{ olMapRef: component }} hideZoom={false} /><br />
+                <OlMap height={calculateAvailableHeightPercent(20)} ref={{ olMapRef: component }} hideZoom={false} /><br />
             </div>
-            {/* 
-
-            <h5>Könntest Du uns bei der Telefon-Hotline helfen?</h5>
-            <p>Für unsere Telefon-Hotline suchen wir tatkräftige Hilfe, denn viele Menschen rufen uns lieber an,
-            als Apps zu nutzen. Könntest Du Dir vorstellen, stundenweise auszuhelfen?
-                        </p>
-            <div class={['col', 's12', 'm12']} style={{ marginTop: '15px' }}>
-                <MatCheckbox checked={component.state.accepted_support_inquiry} ref={{ supportInquiryRef: component }} name="accepted_support_inquiry" label="Ja, ich biete meine Hilfe für die Telefon-Hotline an." />
-            </div>
-            */}
         </fragment>
     }
     return <fragment />

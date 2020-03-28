@@ -1,6 +1,7 @@
 import {injectable} from "springtype/core/di";
 import {Shop} from "../datamodel/shop";
 import {st} from "springtype/core";
+import Geohash from 'latlon-geohash';
 
 @injectable
 export class GeoService {
@@ -82,6 +83,10 @@ export class GeoService {
 
     toRad(n: number): number {
         return n * Math.PI / 180;
+    }
+
+    getGeoHash(lat: number, lon: number, precision: number) {
+        return Geohash.encode(lat, lon, precision);
     }
 
     getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {

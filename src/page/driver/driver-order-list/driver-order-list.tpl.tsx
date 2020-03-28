@@ -1,9 +1,10 @@
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../../component/nav-header/nav-header";
-import { getOrderStatusText as getOrderStatusText } from "../../../function/get-order-status-text";
-import { getOrderStatusTextColorClass } from "../../../function/get-order-status-text-color-class";
 import { DriverOrderList } from "./driver-order-list";
 import { MatLoadingIndicator } from "../../../component/mat/mat-loading-indicator";
+import { OlMap } from "../../../component/ol-map/ol-map";
+import { calculateAvailableHeightPercent } from "../../../function/calculate-available-height-percent";
+import { MatModal } from "../../../component/mat/mat-modal";
 
 export default (component: DriverOrderList) => (
     <fragment>
@@ -11,42 +12,65 @@ export default (component: DriverOrderList) => (
 
         <MatLoadingIndicator ref={{ loadingIndicator: component }} />
 
+
         <div class="container">
-            <h5 class="header"><i class="material-icons">time_to_leave</i> Offene Aufträge</h5>
+            <div class="order-tabs">
+                <a href="javascript:" ref={{ openOrdersTabLink: component }} onClick={component.activateOpenOrdersTab} class="order-active-tab"><h3 class="slogan">Freie</h3></a>
+                <h3 class="slogan">&nbsp;/&nbsp;</h3>
+                <a href="javascript:" ref={{ myOrdersTabLink: component }} onClick={component.activateMyOrdersTab}><h3 class="slogan">Meine Aufträge</h3></a>
+            </div>
 
-            <p class="range-field">
-                <h6>In welchem Umkreis möchtest Du gerne fahren?<span class="badge">{component.range} km</span></h6>
-                <input type="range" min="1" max="50" value={component.range} onChange={component.onRangeChange} />
-            </p>
+            <div id="open-orders" ref={{ openOrdersTab: component }}>
 
-            <table class="consumer-order-list striped highlight">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Artikel</th>
-                        <th>Status</th>
-                        <th>Route</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
+                <p class="range-field order-range-field">
+                    <p>Im Umkreis von: <span class="badge">{component.range} km</span></p>
+                    <input type="range" min="1" max="50" value={component.range} onChange={component.onRangeChange} />
+                </p>
 
-                {!component.isLoading ? <tbody>
+                <OlMap height={calculateAvailableHeightPercent(20)} ref={{ map: component }}></OlMap>
 
-                    {component.displayData.map((order: any) =>
-                        <tr data-id={order.id}
-                            onclick={component.onRowClick}>
-                            <td>{order.shop_name}</td>
-                            <td>{order.items.length}</td>
-                            <td class={[getOrderStatusTextColorClass(order.status)]}>{getOrderStatusText(order.status)}</td>
-                            <td>~{Math.round(parseInt(order.distance_km))} km</td>
-                            <td><a href="javascript:" class="btn grey">Anzeigen</a></td>
-                        </tr>)}
+                <br />
 
-                </tbody> : <p>Bitte warten, Daten werden abgerufen...</p>}
+                <div class="horizontal-scroll hide" ref={{ openOrdersScrollContainer: component }}></div>
+            </div>
 
-                {component.displayData.length === 0 ? <p>Keine offene Auftrag</p> : ''}
+            <span id="my-orders" class="hide" ref={{ myOrdersTab: component }}>
 
-            </table>
+                <div class="horizontal-scroll hide" ref={{ myOrdersScrollContainer: component }}></div>
+            </span>
+
+            <span class="valign-wrapper hide" style={{ flexDirection: 'column' }} ref={{ loadingComponent: component }}>
+                <br /><br /><br />
+                <div class="preloader-wrapper active center-align">
+                    <div class="spinner-layer spinner-green-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </span>
         </div>
+
+
+        <MatModal ref={{ confirmAcceptOrderModal: component }}>
+
+            <h4 class={'center'}><i class="material-icons">done_all</i> Auftrag annehmen</h4>
+
+            Bist Du Dir sicher, dass Du diese Fahrt übernehmen kannst? Es ist sehr frustrierend für die andere Person, wenn es doch nicht klappt.
+
+            <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
+
+            <a href="javascript:" onclick={component.onCancelAccept} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
+                <a href="javascript:" onclick={component.onReallyAcceptOrder} class="modal-close waves-effect btn waves-white material-align-middle"><i class="material-icons">done_all</i> &nbsp;Ja</a>
+            </template>
+        </MatModal>
+
+        <a onClick={component.onRefreshButtonClick} class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+            <i class="material-icons">refresh</i>
+        </a>
     </fragment>
 )
