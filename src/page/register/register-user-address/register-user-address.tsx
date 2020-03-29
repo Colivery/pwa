@@ -11,14 +11,15 @@ import {Form, Input} from "springtype/web/form";
 import tpl, {IRegisterUserAddressFormState} from "./register-user-address.tpl";
 import {RegisterChooseProfile} from "../register-choose-profile/register-choose-profile";
 import {ErrorMessage} from "../../../component/error-message/error-message";
-import {OlMap} from "../../../component/ol-map/ol-map";
 import {address} from "../../../validators/address";
 import {UserService} from "../../../service/user";
+import { EsriMap } from "../../../component/esri/EsriMap";
 
 @component({
     tpl
 })
 export class RegisterUserAddressPage extends st.component implements ILifecycle {
+
     static ROUTE = "register-user-address";
 
     @inject(UserService)
@@ -31,10 +32,11 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     formRef: Form;
 
     @ref
-    olMapRef: OlMap;
+    map: EsriMap;
 
     @ref
     latInputRef: Input;
+
     @ref
     lngInputRef: Input;
 
@@ -53,20 +55,14 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
         longitude: number;
     };
 
-
-    onAfterRender(): void {
-        this.olMapRef.init();
-    }
-
     addressValidator = () => {
-        return address(this.geoService, this, (geolocation) => {
-            this.olMapRef.removeAllMarker();
+        return address(this.geoService, this, async(geolocation) => {
+            await this.map.removeAllMarkers();
             const latitude = parseFloat(geolocation.lat);
             const longitude = parseFloat(geolocation.lon);
-            this.olMapRef.setCenter(latitude, longitude);
-            this.olMapRef.addMarker(latitude, longitude);
+            await this.map.setCenter(latitude, longitude);
+            await this.map.addMarker(latitude, longitude, require('../../../../assets/images/map_marker.png'), 20, 25);
             this.userGeoLocation = {latitude, longitude};
-
         });
     };
 
@@ -82,15 +78,12 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
                 this.formRef.reset();
 
-                await this.userService.upsertUserProfile({ phone: formState.phone,
-                    name: `${formState.firstname} ${formState.lastname}`,
-                    address: formState.address,
-                    accepted_support_inquiry: formState.accepted_support_inquiry                    ,
-                    geo_location: this.userGeoLocation,
-                    is_support_member: false,
-                    //TODO: maybe change this have to be true!
-                    accepted_privacy_policy: true,
-                    accepted_terms_of_use: true,
+                await this.userService.upsertUserProfile({ 
+                    phone: formState.phone,
+                    first_name: formState.first_name,
+                    last_name: formState.last_name,
+                    address: formState.address,               
+                    geo_location: this.userGeoLocation
                 });
 
                 st.debug('register user address data', formState);

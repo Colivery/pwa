@@ -6,8 +6,6 @@ import "./consumer-order-add.scss";
 import { inject } from "springtype/core/di";
 import { GeoService } from "../../service/geocoding";
 import { ref } from "springtype/core/ref";
-import { OlMap } from "../../component/ol-map/ol-map";
-import { Feature } from "ol";
 import { MatInput } from "../../component/mat/mat-input";
 import { MatModal } from "../../component/mat/mat-modal";
 import { ConsumerOrderListPage } from "../consumer-order-list/consumer-order-list";
@@ -15,11 +13,14 @@ import { OrderService } from "../../service/order";
 import { OrderStatus } from "../../types/order-status";
 import { OrderItemStatus } from "../../types/order-item-status";
 import { Shop } from "../../datamodel/shop";
+import { EsriMap } from "../../component/esri/EsriMap";
+import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import { tsx } from "springtype/web/vdom";
 
 @component({
     tpl
 })
-export class ConsumerOrderAddPage extends st.component implements ILifecycle {
+export class ConsumerOrderAddPage extends st.staticComponent implements ILifecycle {
 
     static ROUTE = "consumer-order-add";
 
@@ -33,10 +34,13 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     locationField: MatInput;
 
     @ref
+    loadingIndicator: MatLoadingIndicator;
+
+    @ref
     articleDescription: HTMLInputElement;
 
     @ref
-    olMapRef: OlMap;
+    olMapRef: EsriMap;
 
     @ref
     dontCareForLocationSwitch: HTMLInputElement;
@@ -51,6 +55,9 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     hintField: MatInput;
 
     @ref
+    orderListContainer: HTMLElement;
+
+    @ref
     maxPriceField: MatInput;
 
     lookupTimeout: any;
@@ -59,11 +66,31 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     locationOptions: Array<Shop> = [];
     isLoading: boolean = false;
     selectedLocationType: string = 'supermarket';
-    oldMarker: Feature;
+    oldMarker: any;
     doesNotCareForLocation: boolean = false;
     selectedLocation: Shop;
-
     orderItems = [];
+    activeShopTypeCard: HTMLElement;
+
+    onRouteEnter() {
+        this.orderListContainer.innerHTML = '';
+        this.maxPriceField.inputRef.value = '';
+    }
+
+    activateShopType = (evt: MouseEvent) => {
+
+        if (this.activeShopTypeCard) {
+            this.activeShopTypeCard.classList.remove('active');
+        }
+
+        const shopType = (evt.target as HTMLElement).closest('a').getAttribute('data-shop-type');
+
+        console.log('clicked on shop type', shopType);
+
+        this.activeShopTypeCard = (evt.target as HTMLElement).closest('.shop-card');
+
+        this.activeShopTypeCard.classList.add('active');
+    };
 
     buffer = (fn: Function, buffer: number = 1000): Function => {
         return () => {
@@ -84,6 +111,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         const searchForPlacesBuffered = this.buffer(async () => {
 
             this.isLoading = true;
+            this.loadingIndicator.setVisible(true);
             this.doRender();
 
             const currentLocation = await this.geoService.getCurrentLocation();
@@ -97,6 +125,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             });
 
             this.isLoading = false;
+            this.loadingIndicator.setVisible(false);
             this.doRender();
         });
         searchForPlacesBuffered();
@@ -119,11 +148,10 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         if (this.selectedLocation && this.olMapRef) {
 
             this.olMapRef.setCenter(this.selectedLocation.lat, this.selectedLocation.lon);
-            try {
-                this.olMapRef.removeMarker(this.oldMarker);
-            } catch (e) {
-            }
-            this.oldMarker = this.olMapRef.addMarker(this.selectedLocation.lat, this.selectedLocation.lon);
+
+            this.olMapRef.removeMarker(this.oldMarker);
+
+            this.oldMarker = this.olMapRef.addMarker(this.selectedLocation.lat, this.selectedLocation.lon, require('../../../assets/images/map_marker.png'), 20, 25);
         }
     }
 
@@ -138,6 +166,18 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         this.confirmCreateOrderModal.toggle();
     }
 
+    renderOrderListContainer() {
+
+        this.orderListContainer.innerHTML = '';
+
+        st.render(this.orderItems.map((orderItem, index) => <div data-index={index} class="row">
+            <div class="col s10">
+                {orderItem.description}
+            </div><div class="col s2">
+                <a class="btn-floating btn-small waves-effect waves-light red" onClick={this.onOrderItemRemoveClick}><i class="material-icons">remove</i></a>
+            </div></div>) as any, this.orderListContainer);
+    }
+
     onOrderItemAddClick = () => {
 
         this.orderItems.push({
@@ -147,7 +187,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         // reset value
         this.articleDescription.value = '';
 
-        this.doRender();
+        this.renderOrderListContainer();
 
         this.articleDescription.focus();
     }
@@ -158,7 +198,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
         this.orderItems.splice(orderItemIndex, 1);
 
-        this.doRender();
+        this.renderOrderListContainer();
 
         this.articleDescription.focus();
     }
@@ -213,9 +253,9 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         }
     }
 
-    onAfterRender(): void {
+    async onAfterRender() {
+
         if (this.olMapRef) {
-            this.olMapRef.init();
             this.updateMapMarker();
         }
     }

@@ -68,6 +68,22 @@ export class OrderService {
         })).json();
     }
 
+    async getDriverOwnOrders() {
+
+        return (await fetch(`${SERVICE_API_ENDPOINT}/order/driver/own`, {
+            method: 'GET',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await window.authService.getIdToken()}`
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+        })).json();
+    }
+
     async createOrder(order: any) {
 
         console.log('createOrder...', order);

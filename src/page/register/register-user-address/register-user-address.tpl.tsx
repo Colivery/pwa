@@ -6,7 +6,7 @@ import { RegisterUserAddressPage } from "./register-user-address";
 import { MatTextarea } from "../../../component/mat/mat-textarea";
 import { LogoRow } from "../../../component/logo-row/logo-row";
 import { ErrorMessage } from "../../../component/error-message/error-message";
-import { OlMap } from "../../../component/ol-map/ol-map";
+import { EsriMap } from "../../../component/esri/EsriMap";
 
 export default (component: RegisterUserAddressPage) => (
     <fragment>
@@ -15,7 +15,7 @@ export default (component: RegisterUserAddressPage) => (
                 <LogoRow />
                 <div class="row">
 
-                    <MatInput name="firstname" label="Vorname"
+                    <MatInput name="first_name" label="Vorname"
                         class={['col', 's6', 'm3', 'offset-m3', 'l3', 'offset-l3']}
                         helperText="z.B. Max"
                         validators={[required]}
@@ -24,7 +24,7 @@ export default (component: RegisterUserAddressPage) => (
                         }}>
                     </MatInput>
 
-                    <MatInput name="lastname" label="Nachname"
+                    <MatInput name="last_name" label="Nachname"
                         class={['col', 's6', 'm3', 'l3']}
                         helperText="z.B. Mustermann"
                         validators={[required]}
@@ -51,7 +51,7 @@ export default (component: RegisterUserAddressPage) => (
                         }}>
                     </MatTextarea>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
-                        <OlMap ref={{ olMapRef: component }} hideZoom={false} />
+                        <EsriMap ref={{ map: component }} />
                     </div>
                 </div>
                 <div class="row">
@@ -68,8 +68,8 @@ export default (component: RegisterUserAddressPage) => (
 )
 
 export interface IRegisterUserAddressFormState {
-    firstname: string;
-    lastname: string;
+    first_name: string;
+    last_name: string;
     address: string;
     phone: string;
     accepted_support_inquiry: boolean;

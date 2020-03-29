@@ -1,16 +1,15 @@
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { UserProfile } from "./user-profile";
-import { Form, Input } from "springtype/web/form";
+import { Form } from "springtype/web/form";
 import { MatInput } from "../../component/mat/mat-input";
 import { email, required } from "springtype/core/validate";
 import { MatTextarea } from "../../component/mat/mat-textarea";
-import { MatCheckbox } from "../../component/mat/mat-checkbox";
 import { ErrorMessage } from "../../component/error-message/error-message";
-import { OlMap } from "../../component/ol-map/ol-map";
 import { MatModal } from "../../component/mat/mat-modal";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
+import { EsriMap } from "../../component/esri/EsriMap";
 
 export default (component: UserProfile) => (
     <fragment>
@@ -72,21 +71,21 @@ const getFormInputs = (component: UserProfile) => {
                     'email': 'Keine gültige E-Mail'
                 }}>
             </MatInput>
-            <MatInput name="name" label="Vorname"
+            <MatInput name="first_name" label="Vorname"
                 class={['col', 's6', 'm3']}
                 helperText="z.B. Max"
                 validators={[required]}
-                value={component.state.firstname}
+                value={component.state.first_name}
                 errorMessage={{
                     required: 'Das ist ein Pflichtfeld'
                 }}>
             </MatInput>
 
-            <MatInput name="name" label="Nachname"
+            <MatInput name="last_name" label="Nachname"
                 class={['col', 's6', 'm3']}
                 helperText="z.B. Mustermann"
                 validators={[required]}
-                value={component.state.lastname}
+                value={component.state.last_name}
                 errorMessage={{
                     required: 'Das ist ein Pflichtfeld'
                 }}>
@@ -111,7 +110,7 @@ const getFormInputs = (component: UserProfile) => {
                 }}>
             </MatTextarea>
             <div class={['col', 's12']}>
-                <OlMap height={calculateAvailableHeightPercent(20)} ref={{ olMapRef: component }} hideZoom={false} /><br />
+                <EsriMap height={calculateAvailableHeightPercent(20)} ref={{ map: component }} /><br />
             </div>
         </fragment>
     }
@@ -121,8 +120,8 @@ const getFormInputs = (component: UserProfile) => {
 export interface IUserProfileFromState {
     id: string;
     email: string
-    firstname: string;
-    lastname: string;
+    first_name: string;
+    last_name: string;
     phone: string
     address: string
     accepted_support_inquiry: boolean;

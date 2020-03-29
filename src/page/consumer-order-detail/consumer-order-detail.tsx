@@ -43,5 +43,4 @@ export class ConsumerOrderDetailPage extends st.component implements ILifecycle 
             this.driverUserState = await this.userService.getUserProfile();
         }
     }
-
 }

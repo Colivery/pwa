@@ -8,14 +8,12 @@ import {OrderItem} from "../../datamodel/order";
 import {OrderItemStatus} from "../../types/order-item-status";
 import {IEvent, IEventListener} from "springtype/web/component/interface";
 
-
 export interface OrderItemDeleteClickEvent extends IEvent<OrderItemDeleteClickEventDetail> {
 }
 
 export interface OrderItemDeleteClickEventDetail {
     item: OrderItem;
 }
-
 
 export interface IAttrOrderItemRow {
     item: OrderItem;
@@ -35,8 +33,8 @@ export class OrderItemRow extends st.component<IAttrOrderItemRow> implements ILi
     @event
     onOrderItemDeleteClick!: IEventListener<Event>;
 
-
     dispatchOrderItemDelete = (detail: OrderItemDeleteClickEventDetail) => {
+
         this.dispatchEvent<OrderItemDeleteClickEventDetail>("orderItemDeleteClick", {
             bubbles: true,
             cancelable: true,
@@ -75,7 +73,5 @@ export class OrderItemRow extends st.component<IAttrOrderItemRow> implements ILi
                 return "✅";
         }
     }
-
-
 }
 

@@ -74,6 +74,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
         if (this.menuIcon.classList.contains('open')) {
             setTimeout(() => {
                 document.body.style.overflow = 'inherit';
+                document.body.style.overflowX = 'hidden';
             }, 200 /* wait for animation to finish*/);
         } else {
             document.body.style.overflow = 'hidden';
@@ -120,17 +121,31 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 <a href="javascript:" onClick={() => {
                     this.onUserProfileClick()
                 }}>
-                    <i class="material-icons">account_circle</i> <span>Mein Profil</span></a>
+                    <div class="material-align-middle">
+                        <i class="material-icons">account_circle</i> Mein Profil
+                    </div>
+                </a>
                 {this.getActiveMode()}
 
-                <a href="javascript:"><i class="material-icons">description</i> <span>AGB</span></a>
+                <a href="javascript:">
+                    <div class="material-align-middle">
+                        <i class="material-icons">description</i> AGB
+                    </div>
+                </a>
 
-                <a href="javascript:"> <i class="material-icons">security</i> <span>Datenschutz</span></a>
+                <a href="javascript:">
+                    <div class="material-align-middle">
+                        <i class="material-icons">security</i> Datenschutz
+                    </div>
+                </a>
 
                 <a href="javascript:" onclick={() => {
                     this.onLogoutClick()
                 }}>
-                    <i class="material-icons">directions_run</i> <span>Ausloggen</span></a>
+                    <div class="material-align-middle">
+                        <i class="material-icons">directions_run</i> Ausloggen
+                    </div>
+                </a>
             </div>
 
         </fragment>
@@ -170,12 +185,16 @@ export class NavHeader extends st.component<NavHeaderProps> {
             <a href="javascript:" style={{ display: isDriver ? 'block' : 'none' }} onclick={() => {
                 this.onCustomerSwitch();
             }}>
-                <i class="material-icons">local_mall</i> Konsument-Modus
+                <div class="material-align-middle">
+                    <i class="material-icons">local_mall</i> Konsument-Modus
+                </div>
             </a>
             <a href="javascript:" style={{ display: isDriver ? 'none' : 'block' }} onclick={() => {
                 this.onDriverSwitch();
             }}>
-                <i class="material-icons">time_to_leave</i> Fahrer-Modus
+                <div class="material-align-middle">
+                    <i class="material-icons">time_to_leave</i> Fahrer-Modus
+                </div>
             </a>
         </fragment>
     }

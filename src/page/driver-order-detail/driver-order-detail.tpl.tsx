@@ -1,10 +1,6 @@
 import { DriverOrderDetailPage } from "./driver-order-detail";
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
-import { MatModal } from "../../component/mat/mat-modal";
-import { getOrderStatusText } from "../../function/get-order-status-text";
-import { getOrderStatusTextColorClass } from "../../function/get-order-status-text-color-class";
-import { MatCheckbox } from "../../component/mat/mat-checkbox";
 
 export default (component: DriverOrderDetailPage) => (
     <fragment>

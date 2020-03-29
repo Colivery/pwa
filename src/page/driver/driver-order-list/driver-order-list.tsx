@@ -7,14 +7,14 @@ import tpl from "./driver-order-list.tpl";
 import { MatLoadingIndicator } from "../../../component/mat/mat-loading-indicator";
 import { ref } from "springtype/core/ref";
 import { inject } from "springtype/core/di";
-import { EngineService } from "../../../service/engine";
+import { MatchingService } from "../../../service/matching";
 import { GeoService } from "../../../service/geocoding";
 import { OrderService } from "../../../service/order";
 import { UserService } from "../../../service/user";
-import { OlMap } from "../../../component/ol-map/ol-map";
 import { tsx } from "springtype/web/vdom";
 import { IVirtualNode } from "springtype/web/vdom/interface";
 import { MatModal } from "../../../component/mat/mat-modal";
+import { EsriMap } from "../../../component/esri/EsriMap";
 
 export interface ILocation {
     latitude: number;
@@ -34,7 +34,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
     loadingIndicator: MatLoadingIndicator;
 
     @ref
-    map: OlMap;
+    map: EsriMap;
 
     @ref
     openOrdersTabLink: HTMLAnchorElement;
@@ -60,8 +60,8 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
     @ref
     confirmAcceptOrderModal: MatModal;
 
-    @inject(EngineService)
-    engineService: EngineService;
+    @inject(MatchingService)
+    engineService: MatchingService;
 
     @inject(OrderService)
     orderService: OrderService;
@@ -85,21 +85,19 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
     }
 
     async onAfterRender() {
-        this.map.init();
         this.resetMap();
     }
 
     async resetMap() {
-
         const currentPosition = await this.geoService.getCurrentLocation();
-
         this.updateMap(currentPosition);
     }
 
-    updateMap(location: ILocation) {
-        this.map.removeAllMarker();
-        this.map.setCenter(location.latitude, location.longitude);
-        this.map.addMarker(location.latitude, location.longitude);
+    async updateMap(location: ILocation) {
+
+        await this.map.removeAllMarkers();
+        await this.map.setCenter(location.latitude, location.longitude);
+        await this.map.addMarker(location.latitude, location.longitude, require('../../../../assets/images/map_marker.png'), 18, 25);
     }
 
     async updateOpenOrdersList() {
@@ -114,9 +112,11 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         const currentPosition = await this.geoService.getCurrentLocation();
         const serviceResonse = await this.engineService.search(currentPosition.latitude, currentPosition.longitude, this.range);
 
+        console.log('serviceResonse', serviceResonse)
+
         const unionOrders = [];
 
-        for (let order of serviceResonse.orders) {
+        for (let order of (await serviceResonse.data).orders) {
             const orderData = await this.orderService.getById(order.order_id);
             order = {
                 ...order,
@@ -235,9 +235,14 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         }
     }
 
-    updateMyOrdersList = () => {
+    updateMyOrdersList = async() => {
         this.isLoading = true;
         console.log('TODO: refresh my orders');
+
+        const driverOwnOrders = await this.orderService.getDriverOwnOrders();
+
+        console.log('driverOwnOrders', driverOwnOrders);
+
         this.isLoading = false;
     }
 

@@ -48,7 +48,6 @@ export class UserService {
                 redirect: 'follow',
                 referrerPolicy: 'no-referrer', // no-referrer, *client
                 body: JSON.stringify(userProfile) // body data type must match "Content-Type" header
-
             });
 
         } catch (e) {

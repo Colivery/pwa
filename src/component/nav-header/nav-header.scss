@@ -35,11 +35,6 @@ nav .brand-logo {
   transform: translateY(-70%);
 }
 
-nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
-    height: 32px;
-    line-height: 32px;
-    font-size: 32px !important;
-}
 
 .dropdown-content.show {
   display: block;
@@ -106,7 +101,8 @@ nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
 
 .menu-overlay {
   .material-icons {
-    font-size: 16px;
+    font-size: 30px;
+    margin-right: 5px;
   }
 }
 

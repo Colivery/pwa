@@ -2,16 +2,15 @@ import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../../component/nav-header/nav-header";
 import { DriverOrderList } from "./driver-order-list";
 import { MatLoadingIndicator } from "../../../component/mat/mat-loading-indicator";
-import { OlMap } from "../../../component/ol-map/ol-map";
 import { calculateAvailableHeightPercent } from "../../../function/calculate-available-height-percent";
 import { MatModal } from "../../../component/mat/mat-modal";
+import { EsriMap } from "../../../component/esri/EsriMap";
 
 export default (component: DriverOrderList) => (
     <fragment>
         <NavHeader showBackButton={false} showAddButton={false} showRefreshButton={true} onRefreshButtonClick={component.onRefreshButtonClick} />
 
         <MatLoadingIndicator ref={{ loadingIndicator: component }} />
-
 
         <div class="container">
             <div class="order-tabs">
@@ -27,7 +26,7 @@ export default (component: DriverOrderList) => (
                     <input type="range" min="1" max="50" value={component.range} onChange={component.onRangeChange} />
                 </p>
 
-                <OlMap height={calculateAvailableHeightPercent(20)} ref={{ map: component }}></OlMap>
+                <EsriMap height={calculateAvailableHeightPercent(20)} ref={{ map: component }}></EsriMap>
 
                 <br />
 
@@ -35,12 +34,12 @@ export default (component: DriverOrderList) => (
             </div>
 
             <span id="my-orders" class="hide" ref={{ myOrdersTab: component }}>
-
                 <div class="horizontal-scroll hide" ref={{ myOrdersScrollContainer: component }}></div>
             </span>
 
+            <br /><br /><br />
+
             <span class="valign-wrapper hide" style={{ flexDirection: 'column' }} ref={{ loadingComponent: component }}>
-                <br /><br /><br />
                 <div class="preloader-wrapper active center-align">
                     <div class="spinner-layer spinner-green-only">
                         <div class="circle-clipper left">
@@ -54,7 +53,6 @@ export default (component: DriverOrderList) => (
                 </div>
             </span>
         </div>
-
 
         <MatModal ref={{ confirmAcceptOrderModal: component }}>
 

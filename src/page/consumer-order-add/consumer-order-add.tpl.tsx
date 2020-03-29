@@ -2,37 +2,102 @@ import { ConsumerOrderAddPage } from "./consumer-order-add";
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { MatInput } from "../../component/mat/mat-input";
-import { OlMap } from "../../component/ol-map/ol-map";
-import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { MatTextarea } from "../../component/mat/mat-textarea";
 import { MatModal } from "../../component/mat/mat-modal";
-import { minLength } from "springtype/core/validate";
 
 export default (component: ConsumerOrderAddPage) => (
     <fragment>
+
         <NavHeader showBackButton={true} showAddButton={false} />
 
         <div class="container">
 
             <div class="row">
-                <div class={['col', 's12', 'm6', 'l8', 'offset-l2']}>
+                <div class={['col', 's12', 'm6', 'l8', 'offset-l2', 'offset-m3']}>
 
-                    <h4 class="header">Was brauchst Du?</h4>
+                    {/*
+                    <h5 class="header">Was brauchst Du?</h5>
 
-                    {component.isLoading ? <MatLoadingIndicator /> : ''}
+                    <p>
+                        Bitte Wähle zuerst die Art des Ladens, von dem Du etwas benötigst:
+                    </p>
 
-                    <MatInput
-                        name="von"
-                        ref={{ locationField: component }}
-                        label="Von"
-                        validators={[minLength(3)]}
-                        errorMessage={{
-                            'min-length': 'Bitte mindestens 3 Zeichen'
-                        }}
-                        class={['col', 's12']}
-                        helperText="Gib hier den Namen des Ladens ein, z.B. 'Edeka'"
-                        onKeyUp={component.onLocationKeyUp}>
-                    </MatInput>
+                    <strong>Laden</strong>
+
+                    <div class="row">
+                        <div class="col s4">
+                            <a href="javascript:" data-shop-type="supermarket" onClick={component.activateShopType}>
+                                <div class="shop-card">
+                                    <p class="emoji-icon">🍎</p>
+                                    <strong class="truncate">Supermarkt</strong>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s4">
+                            <a href="javascript:" data-shop-type="drugstore" onClick={component.activateShopType}>
+                                <div class="shop-card">
+                                    <p class="emoji-icon">🧻</p>
+                                    <strong class="truncate">Drogerie</strong>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s4">
+                            <a href="javascript:" data-shop-type="beverages" onClick={component.activateShopType}>
+                                <div class="shop-card">
+                                    <p class="emoji-icon">🥤</p>
+                                    <strong class="truncate">Getränke</strong>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s4">
+                            <a href="javascript:" data-shop-type="bakery" onClick={component.activateShopType}>
+                                <div class="shop-card">
+                                    <p class="emoji-icon">🍞</p>
+                                    <strong class="truncate">Bäckerei</strong>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s4">
+                            <a href="javascript:" data-shop-type="butcher" onClick={component.activateShopType}>
+                                <div class="shop-card">
+                                    <p class="emoji-icon">🥩</p>
+                                    <strong class="truncate">Metzgerei</strong>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col s4">
+                            <a href="javascript:" data-shop-type="pharmacy" onClick={component.activateShopType}>
+                                <div class="shop-card">
+                                    <p class="emoji-icon">💊</p>
+                                    <strong class="truncate">Apotheke</strong>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <strong>Bestimmter Laden</strong>
+
+                    <div class="row order-add-input-location">
+                        <div class="col s2">
+                            <img src={require('../../../assets/images/map_marker.png')} />
+                        </div>
+                        <MatInput
+                            name="von"
+                            ref={{ locationField: component }}
+                            label="Und zwar von:"
+                            value="&nbsp;"
+                            validators={[minLength(3)]}
+                            errorMessage={{
+                                'min-length': 'Bitte mindestens 3 Zeichen'
+                            }}
+                            class={['col', 's10']}
+                            helperText="Gib hier den Namen des Ladens ein, z.B. Edeka"
+                            onKeyUp={component.onLocationKeyUp}>
+                        </MatInput>
+                    </div>
+
+                    <MatLoadingIndicator class="hide" ref={{ loadingIndicator: component }} />
 
                     {component.locationOptions.length ? <ul class="collection">
 
@@ -62,7 +127,7 @@ export default (component: ConsumerOrderAddPage) => (
                             </div>
                         </div> : ''}
 
-                    {component.selectedLocation ? <OlMap ref={{ olMapRef: component }} hideZoom={false} /> : ''}
+                    {component.selectedLocation ? <EsriMap ref={{ olMapRef: component }} /> : ''}
 
                     {component.selectedLocation ? <div>
                         {component.selectedLocation.name}<br />
@@ -71,74 +136,11 @@ export default (component: ConsumerOrderAddPage) => (
                         <span class="secondary-content">
                             <i class="material-icons">send</i> ~{Math.round(component.selectedLocation.distance * 1000)} km
                         </span><br /><br /></div> : ''}
+                    */}
 
-                    <div class="switch">
-                        <label>
-                            <input ref={{ dontCareForLocationSwitch: component }} onChange={component.onToggleDontCareForLocationSwitch} type="checkbox" />
-                            <span class="lever"></span> Aber der Ort ist nicht so wichtig.
-                </label>
-                        <br />
-                    </div>
+                    <h5 class="header">Mein Einkaufszettel</h5>
 
-                    <p>
-                        Ich möchte ein Produkt aus folgender Kategorie:
-            </p>
-
-                    <div class="row">
-                        <div class="col s12 m6 l4">
-                            <label>
-                                <input class="with-gap" name="shop_type" value="supermarket" type="radio"
-                                    checked={component.selectedLocationType === 'supermarket'} />
-                                <span>Supermarkt</span>
-                            </label>
-                        </div>
-                        <div class="col s12 m6 l4">
-                            <label>
-                                <input class="with-gap" name="shop_type" value="butcher" type="radio"
-                                    checked={component.selectedLocationType === 'butcher'} />
-                                <span>Metzger</span>
-                            </label>
-                        </div>
-                        <div class="col s12 m6 l4">
-                            <label>
-                                <input class="with-gap" name="shop_type" value="bakery" type="radio"
-                                    checked={component.selectedLocationType === 'bakery'} />
-                                <span>Bäckerei</span>
-                            </label>
-                        </div>
-                        <div class="col s12 m6 l4">
-                            <label>
-                                <input class="with-gap" name="shop_type" value="cafe" type="radio"
-                                    checked={component.selectedLocationType === 'cafe'} />
-                                <span>Café</span>
-                            </label>
-                        </div>
-                        <div class="col s12 m6 l4">
-                            <label>
-                                <input class="with-gap" name="shop_type" value="pharmacy" type="radio"
-                                    checked={component.selectedLocationType === 'pharmacy'} />
-                                <span>Apotheke</span>
-                            </label>
-                        </div>
-                        <div class="col s12 m6 l4">
-                            <label>
-                                <input class="with-gap" name="shop_type" value="beverages" type="radio"
-                                    checked={component.selectedLocationType === 'beverages'} />
-                                <span>Getränkemarkt</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <h5 class="header">Einkaufszettel</h5>
-
-                    <div>
-                        {component.orderItems.length ? component.orderItems.map((orderItem, index) => <div data-index={index} class="row">
-                            <div class="col s10">
-                                {orderItem.description}
-                            </div><div class="col s2">
-                                <a class="btn-floating btn-large waves-effect waves-light red" onClick={component.onOrderItemRemoveClick}><i class="material-icons">remove</i></a>
-                            </div></div>) : 'Noch keine Einträge.'}
-                    </div>
+                    <div ref={{ orderListContainer: component }}></div>
 
                     <div class="row">
                         <div class="col s10">
@@ -146,7 +148,7 @@ export default (component: ConsumerOrderAddPage) => (
                         </div>
 
                         <div class="col s2">
-                            <a class="btn-floating btn-large waves-effect waves-light red" onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
+                            <a class="btn-floating btn-small waves-effect waves-light red" onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
                         </div>
                     </div>
 
@@ -154,13 +156,12 @@ export default (component: ConsumerOrderAddPage) => (
                         <MatInput
                             name="maxPrice"
                             ref={{ maxPriceField: component }}
-                            label="Maximalbetrag in €"
-                            class={['col', 's12']}
-                            helperText="Alles zusammen darf maximal so viel kosten.">
+                            label="Was darf es max. kosten? (€)"
+                            class={['col', 's12']}>
                         </MatInput>
                     </div>
 
-                    <h5 class="header">Lieferhinweise</h5>
+                    <h5 class="header" style={{ marginTop: 0 }}>Meine Lieferhinweise</h5>
 
                     <div class="row">
 

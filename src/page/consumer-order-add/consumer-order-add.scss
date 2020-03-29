@@ -1,0 +1,35 @@
+@import "../../../assets/components/color-variables";
+
+.shop-card {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    overflow-wrap: break-word;
+    padding: 10px;
+    color: $colivery-grey;
+    margin-top: 20px;
+}
+
+.emoji-icon {    
+    font-size: 2rem;
+    margin: 10px;
+}
+
+.shop-card.active {
+    color: $colivery-orange !important;
+}
+
+.order-add-input-location {
+     margin-top: 20px;
+    .s11 {
+        padding-left: 0;
+    }
+    .s1 {
+        padding-top: 20px;
+        position: relative;
+        img {
+            height: 24px;
+        }
+    }
+}

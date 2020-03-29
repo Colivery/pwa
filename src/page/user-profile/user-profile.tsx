@@ -10,12 +10,12 @@ import { ref } from "springtype/core/ref";
 import { Form, Input } from "springtype/web/form";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { GeoService } from "../../service/geocoding";
-import { OlMap } from "../../component/ol-map/ol-map";
 import { MatModal } from "../../component/mat/mat-modal";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { address } from "../../validators/address";
 import { UserService } from "../../service/user";
 import { IUserProfileResponse } from "../../datamodel/user";
+import { EsriMap } from "../../component/esri/EsriMap";
 
 @component({
     tpl
@@ -34,7 +34,7 @@ export class UserProfile extends st.component implements ILifecycle {
     formRef: Form;
 
     @ref
-    olMapRef: OlMap;
+    map: EsriMap;
 
     @ref
     latInputRef: Input;
@@ -68,18 +68,17 @@ export class UserProfile extends st.component implements ILifecycle {
 
     onAfterRender(): void {
         if (this.state) {
-            this.olMapRef.init();
             this.addressValidator()(this.state.address)
         }
     }
 
     addressValidator = () => {
-        return address(this.geoService, this, (geolocation) => {
-            this.olMapRef.removeAllMarker();
+        return address(this.geoService, this, async(geolocation) => {
+            await this.map.removeAllMarkers();
             const latitude = parseFloat(geolocation.lat);
             const longitude = parseFloat(geolocation.lon);
-            this.olMapRef.setCenter(latitude, longitude);
-            this.olMapRef.addMarker(latitude, longitude);
+            await this.map.setCenter(latitude, longitude);
+            await this.map.addMarker(latitude, longitude, require('../../../assets/images/map_marker.png'), 20, 25);
             this.userGeoLocation = { latitude, longitude };
         });
     };
@@ -100,13 +99,10 @@ export class UserProfile extends st.component implements ILifecycle {
 
                 await this.userService.upsertUserProfile({
                     phone: formState.phone,
-                    name: `${formState.firstname} ${formState.lastname}`,
+                    first_name: formState.first_name,
+                    last_name: formState.last_name,
                     address: formState.address,
-                    accepted_support_inquiry: formState.accepted_support_inquiry,
-                    geo_location: this.userGeoLocation,
-                    accepted_privacy_policy: true,
-                    accepted_terms_of_use: true,
-                    is_support_member: false
+                    geo_location: this.userGeoLocation
                 });
 
                 this.afterSaveModal.toggle();
@@ -119,8 +115,6 @@ export class UserProfile extends st.component implements ILifecycle {
 
     private async loadData() {
         this.state = await this.userService.getUserProfile();
-        this.state.firstname = this.state.name.split(' ')[0];
-        this.state.lastname = this.state.name.split(' ')[1];
         console.log('this.state', this.state);
         this.doRender();
     }
