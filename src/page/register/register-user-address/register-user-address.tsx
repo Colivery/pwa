@@ -1,24 +1,25 @@
 import "./register-user-address.scss";
 
-import {GeoService} from "../../../service/geocoding";
-import {MatTextarea} from "../../../component/mat/mat-textarea";
-import {st} from "springtype/core";
-import {inject} from "springtype/core/di";
-import {component} from "springtype/web/component";
-import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
-import {ref} from "springtype/core/ref";
-import {Form, Input} from "springtype/web/form";
-import tpl, {IRegisterUserAddressFormState} from "./register-user-address.tpl";
-import {RegisterChooseProfile} from "../register-choose-profile/register-choose-profile";
-import {ErrorMessage} from "../../../component/error-message/error-message";
-import {address} from "../../../validators/address";
-import {UserService} from "../../../service/user";
-import { EsriMap } from "../../../component/esri/EsriMap";
+import { GeoService } from "../../../service/geo";
+import { st } from "springtype/core";
+import { inject } from "springtype/core/di";
+import { component } from "springtype/web/component";
+import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
+import { ref } from "springtype/core/ref";
+import { Form } from "springtype/web/form";
+import tpl, { IRegisterUserAddressFormState } from "./register-user-address.tpl";
+import { RegisterChooseProfile } from "../register-choose-profile/register-choose-profile";
+import { ErrorMessage } from "../../../component/error-message/error-message";
+import { address } from "../../../validators/address";
+import { UserService } from "../../../service/user";
+import { MatLoaderCircle } from "../../../component/mat/mat-loader-circle";
+import { COLOR_COLIVERY_PRIMARY } from "../../../config/colors";
+import { calculateAvailableHeightPercent } from "../../../function/calculate-available-height-percent";
 
 @component({
     tpl
 })
-export class RegisterUserAddressPage extends st.component implements ILifecycle {
+export class RegisterUserAddressPage extends st.staticComponent implements ILifecycle {
 
     static ROUTE = "register-user-address";
 
@@ -32,61 +33,80 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     formRef: Form;
 
     @ref
-    map: EsriMap;
-
-    @ref
-    latInputRef: Input;
-
-    @ref
-    lngInputRef: Input;
-
-    @ref
     errorMessage: ErrorMessage;
 
     @ref
-    addressField: MatTextarea;
+    addressField: HTMLElement;
+
+    @ref
+    staticMapImage: HTMLElement;
+
+    @ref
+    mapContainer: HTMLElement;
+
+    @ref
+    matLoaderCircle: MatLoaderCircle;
+
+    @ref
+    submitButton: HTMLElement;
+
+    userGeoLocation: {
+        lat: number;
+        lng: number;
+    };
+
+    validatedUserAddress: string;
 
     class = ['wrapper', 'valign-wrapper'];
 
-    lookupTimeout: any;
-
-    userGeoLocation: {
-        latitude: number;
-        longitude: number;
-    };
-
     addressValidator = () => {
-        return address(this.geoService, this, async(geolocation) => {
-            await this.map.removeAllMarkers();
-            const latitude = parseFloat(geolocation.lat);
-            const longitude = parseFloat(geolocation.lon);
-            await this.map.setCenter(latitude, longitude);
-            await this.map.addMarker(latitude, longitude, require('../../../../assets/images/map_marker.png'), 20, 25);
-            this.userGeoLocation = {latitude, longitude};
+        return address(this.geoService, this, async (geolocation: any, address: string) => {
+            this.userGeoLocation = geolocation;
+
+            // render/update static map image
+            const mapSrc = this.geoService.getStaticMapImageSrc(address, {
+                ...geolocation,
+                lable: 'Hier bist Du',
+                color: COLOR_COLIVERY_PRIMARY
+            }, this.staticMapImage.closest('.row').clientWidth, calculateAvailableHeightPercent(20), 15);
+
+            this.staticMapImage.setAttribute('src', mapSrc);
+
+            // render/update validated address display
+            this.validatedUserAddress = address;
+
+            this.addressField.innerHTML = this.validatedUserAddress;
+
+            // hide loaders, show map
+            this.mapContainer.classList.remove('hide');
+            this.matLoaderCircle.setVisible(false);
         });
     };
 
-    getFormData(): IRegisterUserAddressFormState {
-        return this.formRef.getState() as any as IRegisterUserAddressFormState;
+    getDataToSave = () => {
+        const formState = this.formRef.getState() as any as IRegisterUserAddressFormState;
+        st.debug('register user address data', formState);
+        return {
+            first_name: formState.first_name,
+            phone: formState.phone,
+            last_name: formState.last_name,
+            address: this.validatedUserAddress,
+            geo_location: {
+                latitude: this.userGeoLocation.lat,
+                longitude: this.userGeoLocation.lng
+            }
+        }
     }
 
     async onNextClick() {
         try {
 
             if (await this.formRef.validate()) {
-                const formState = this.getFormData() as IRegisterUserAddressFormState;
+
+                await this.userService.upsertUserProfile(this.getDataToSave());
 
                 this.formRef.reset();
 
-                await this.userService.upsertUserProfile({ 
-                    phone: formState.phone,
-                    first_name: formState.first_name,
-                    last_name: formState.last_name,
-                    address: formState.address,               
-                    geo_location: this.userGeoLocation
-                });
-
-                st.debug('register user address data', formState);
                 st.route = {
                     path: RegisterChooseProfile.ROUTE
                 };
@@ -95,5 +115,4 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
             this.errorMessage.message = e.message;
         }
     }
-
 }

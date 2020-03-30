@@ -17,7 +17,7 @@ export interface IAttrMatTextarea {
     validators?: Array<(value: string) => Promise<boolean>>;
     successMessage?: string;
     errorMessage?: { [error: string]: string };
-
+    rows?: number;
 }
 
 const MAT_SPAN_ERROR_ATTRIBUTE = 'data-error';
@@ -54,6 +54,9 @@ export class MatTextarea extends st.component<IAttrMatTextarea> implements ILife
     helperText: string = '';
 
     @attr
+    rows: number = 1;
+
+    @attr
     successMessage: string = ' ';
 
     @attr
@@ -70,6 +73,7 @@ export class MatTextarea extends st.component<IAttrMatTextarea> implements ILife
             {this.renderSlot(MatTextarea.MAT_TEXTAREA_BEFORE_INPUT_SLOT_NAME)}
             <TextArea class="materialize-textarea" ref={{inputRef: this}} id={id} type={this.type} name={this.name} validators={this.validators}
                    disabled={this.disabled} value={this.value}
+                   rows={this.rows}
                    onStValidation={(evt) => {
                        this.onChange(evt)
                    }}/>
@@ -114,4 +118,4 @@ export class MatTextarea extends st.component<IAttrMatTextarea> implements ILife
 }
 
 @component({tag: 'textarea'})
-export class TextArea extends Input implements ILifecycle {}
+export class TextArea extends Input {}

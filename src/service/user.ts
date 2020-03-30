@@ -1,12 +1,34 @@
-import {injectable} from "springtype/core/di";
-import {st} from "springtype/core";
-import {IUserProfileRequest, IUserProfileResponse} from "../datamodel/user";
+import { injectable, inject } from "springtype/core/di";
+import { st } from "springtype/core";
+import { IUserProfileRequest, IUserProfileResponse } from "../datamodel/user";
 import { SERVICE_API_ENDPOINT } from "../config/endpoints";
+import { StorageService } from "./storage";
+
+export interface UserData {
+    first_name: string;
+    phone: string;
+    last_name: string;
+    address: string;
+    geo_location: {
+        latitude: number;
+        longitude: number;
+    }
+}
 
 @injectable
 export class UserService {
 
+    static readonly LOCAL_USER_DATA_IDENT = 'local_user_data';
+
+    userProfile;
+
+    @inject(StorageService)
+    storageService: StorageService;
+
     async getUserProfile(): Promise<IUserProfileResponse | undefined> {
+
+        if (this.userProfile) return this.userProfile;
+
         try {
             st.debug('getUserProfile');
 
@@ -23,16 +45,32 @@ export class UserService {
                 redirect: 'follow',
                 referrerPolicy: 'no-referrer', // no-referrer, *client
             });
-            return response.json();
+            this.userProfile = response.json();
+
+            return this.userProfile;
 
         } catch (e) {
             st.error('error in get user profile request', e)
         }
     }
 
-    async upsertUserProfile(userProfile: IUserProfileRequest): Promise<void> {
+    upsertLocalUserData(userProfileData: IUserProfileRequest) {
+        this.storageService.set(UserService.LOCAL_USER_DATA_IDENT, {
+            ...this.getLocalUserData(),
+            ...userProfileData
+        });
+    }
 
-        st.debug('upsertUserProfile...', userProfile);
+    getLocalUserData(): UserData {
+        return this.storageService.get(UserService.LOCAL_USER_DATA_IDENT) || {};
+    }
+
+    async upsertUserProfile(userProfileData: IUserProfileRequest): Promise<void> {
+
+        st.debug('upsertUserProfile...', userProfileData, this.storageService);
+
+        this.upsertLocalUserData(userProfileData);
+
         try {
 
             await fetch(`${SERVICE_API_ENDPOINT}/user`, {
@@ -47,7 +85,7 @@ export class UserService {
                 },
                 redirect: 'follow',
                 referrerPolicy: 'no-referrer', // no-referrer, *client
-                body: JSON.stringify(userProfile) // body data type must match "Content-Type" header
+                body: JSON.stringify(userProfileData) // body data type must match "Content-Type" header
             });
 
         } catch (e) {

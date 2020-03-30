@@ -4,7 +4,7 @@ import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import tpl from "./consumer-order-add.tpl";
 import "./consumer-order-add.scss";
 import { inject } from "springtype/core/di";
-import { GeoService } from "../../service/geocoding";
+import { GeoService } from "../../service/geo";
 import { ref } from "springtype/core/ref";
 import { MatInput } from "../../component/mat/mat-input";
 import { MatModal } from "../../component/mat/mat-modal";
@@ -16,6 +16,7 @@ import { Shop } from "../../datamodel/shop";
 import { EsriMap } from "../../component/esri/EsriMap";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { tsx } from "springtype/web/vdom";
+import { UserService } from "../../service/user";
 
 @component({
     tpl
@@ -30,6 +31,9 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
     @inject(OrderService)
     orderService: OrderService;
 
+    @inject(UserService)
+    userService: UserService;
+
     @ref
     locationField: MatInput;
 
@@ -37,7 +41,7 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
     loadingIndicator: MatLoadingIndicator;
 
     @ref
-    articleDescription: HTMLInputElement;
+    articleDescription: MatInput;
 
     @ref
     olMapRef: EsriMap;
@@ -60,6 +64,9 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
     @ref
     maxPriceField: MatInput;
 
+    @ref
+    addOrderButton: HTMLElement;
+
     lookupTimeout: any;
     pickupLat = 0;
     pickupLon = 0;
@@ -74,7 +81,10 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
     onRouteEnter() {
         this.orderListContainer.innerHTML = '';
-        this.maxPriceField.inputRef.value = '';
+        this.maxPriceField.inputRef.el.value = '';
+        console.log('Local user dtaa', this.userService.getLocalUserData());
+        this.articleDescription.inputRef.el.value = '';
+        this.hintField.inputRef.el.value = '';
     }
 
     activateShopType = (evt: MouseEvent) => {
@@ -171,25 +181,34 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
         this.orderListContainer.innerHTML = '';
 
         st.render(this.orderItems.map((orderItem, index) => <div data-index={index} class="row">
-            <div class="col s10">
+            <div class="col s11 truncate" style={{ lineHeight: '30px' }}>
                 {orderItem.description}
-            </div><div class="col s2">
-                <a class="btn-floating btn-small waves-effect waves-light red" onClick={this.onOrderItemRemoveClick}><i class="material-icons">remove</i></a>
+            </div><div class="col s1">
+                <a class="btn-floating btn-small waves-effect waves-light red" style={{ left: '-20px' }} onClick={this.onOrderItemRemoveClick}><i class="material-icons">delete</i></a>
             </div></div>) as any, this.orderListContainer);
+    }
+
+    articleDescriptionKeyDown = (event: KeyboardEvent) => {
+
+        if (event.key === "Enter") {
+            setTimeout(() => {
+                this.onOrderItemAddClick();
+            }, 100)
+        }
     }
 
     onOrderItemAddClick = () => {
 
         this.orderItems.push({
-            description: this.articleDescription.value
+            description: this.articleDescription.inputRef.el.value
         });
 
         // reset value
-        this.articleDescription.value = '';
+        this.articleDescription.inputRef.el.value = '';
 
         this.renderOrderListContainer();
 
-        this.articleDescription.focus();
+        this.articleDescription.inputRef.el.focus();
     }
 
     onOrderItemRemoveClick = (evt: MouseEvent) => {
@@ -200,21 +219,29 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
         this.renderOrderListContainer();
 
-        this.articleDescription.focus();
+        this.articleDescription.inputRef.el.focus();
     }
 
     onReallyCreateOrderClick = async () => {
 
-        // close modal
-        this.confirmCreateOrderModal.toggle();
+        this.addOrderButton.classList.add('disabled');
 
-        const currentGeoLocation = await this.geoService.getCurrentLocation();
+
+        const localUserData = this.userService.getLocalUserData();
+
+        console.log('Local user dtaa', this.userService.getLocalUserData());
+
         const maxPrice = parseInt((this.el.querySelector('input[name=maxPrice]') as HTMLInputElement).value, 10);
+
+        // TODO: move to Service API
+        const dropoffLocationGeohash = this.geoService.getGeoHash(
+            localUserData.geo_location.latitude, localUserData.geo_location.longitude, 5
+        );
+
         let pickupAddress;
         let pickupLocation;
         let shopName;
         let pickupLocationGeohash;
-        let dropoffLocationGeohash;
 
         // optional selected location (otherwise determined by matching service API)
         if (this.selectedLocation) {
@@ -225,22 +252,23 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
             };
             shopName = this.selectedLocation.name;
             pickupLocationGeohash = this.geoService.getGeoHash(pickupLocation.latitude, pickupLocation.longitude, 5);
-            dropoffLocationGeohash = this.geoService.getGeoHash(currentGeoLocation.latitude, currentGeoLocation.longitude, 5);
         }
 
         await this.orderService.createOrder({
-            "pickup_address": pickupAddress,
-            "pickup_location": pickupLocation,
-            "pickup_location_geohash": pickupLocationGeohash,
-            "shop_name": shopName,
+            /*
+            "pickup_address": pickupAddress, // leer
+            "pickup_location": pickupLocation, // leer
+            "pickup_location_geohash": pickupLocationGeohash, // leer
+            "shop_name": shopName, // leer
+            */
             "max_price": maxPrice,
             "shop_type": this.selectedLocationType,
             "status": OrderStatus.TO_BE_DELIVERED,
             "hint": this.hintField.inputRef.getValue(),
-            "dropoff_location_geohash": dropoffLocationGeohash,
+            "dropoff_location_geohash": dropoffLocationGeohash, // TODO: move to Service API
             "dropoff_location": {
-                "latitude": currentGeoLocation.latitude,
-                "longitude": currentGeoLocation.longitude
+                "latitude": localUserData.geo_location.latitude,
+                "longitude": localUserData.geo_location.longitude
             },
             "items": this.orderItems.map((orderItem) => {
                 orderItem.status = OrderItemStatus.TODO;
@@ -248,12 +276,19 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
             })
         });
 
+        // close modal
+        this.confirmCreateOrderModal.toggle();
+        
+        this.addOrderButton.classList.remove('disabled');
+
         st.route = {
             path: ConsumerOrderListPage.ROUTE
         }
     }
 
     async onAfterRender() {
+
+        (this.articleDescription.inputRef.el as HTMLInputElement).maxLength = 30;
 
         if (this.olMapRef) {
             this.updateMapMarker();

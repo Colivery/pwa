@@ -1,7 +1,8 @@
-import {injectable} from "springtype/core/di";
-import {Shop} from "../datamodel/shop";
-import {st} from "springtype/core";
+import { injectable } from "springtype/core/di";
+import { Shop } from "../datamodel/shop";
+import { st } from "springtype/core";
 import Geohash from 'latlon-geohash';
+import { REVERSE_GEOCODE_API_ENDPOINT, ESRI_API_TOKEN, GEOCODE_API_ENDPOINT, GOOGLE_MAPS_GEOCODE_API_ENDPOINT, GOOGLE_MAPS_API_KEY, GOOGLE_MAPS_STATIC_API_ENDPOINT } from "../config/endpoints";
 
 @injectable
 export class GeoService {
@@ -12,6 +13,44 @@ export class GeoService {
     // https://docs.mapbox.com/api/search/#forward-geocoding
     async forwardGeoCode(searchText: string) {
         const response = await fetch(`https://nominatim.openstreetmap.org/search/${searchText}?format=jsonv2`);
+        return await response.json();
+    }
+
+    /*
+
+    async geoCode(address: string) {
+
+        // https://developers.arcgis.com/rest/geocode/api-reference/geocoding-geocode-addresses.htm
+        const response = await fetch(`${GEOCODE_API_ENDPOINT}?addresses=${encodeURIComponent(JSON.stringify({
+            "records": [
+                {
+                    "attributes": {
+                        "OBJECTID": 1,
+                        "SingleLine": address
+                    }
+                }
+            ]
+        }))}&token=${ESRI_API_TOKEN}&f=json`, {
+            method: 'GET',
+            mode: 'no-cors'
+        });
+        return await response.json();
+    }
+    */
+
+    async geoCode(address: string) {
+        const response = await fetch(`${GOOGLE_MAPS_GEOCODE_API_ENDPOINT}?address=${address}&key=${GOOGLE_MAPS_API_KEY}`);
+        return await response.json();
+    }
+
+    getStaticMapImageSrc(address: string, markerPosition: {lat: number, lng: number, lable: string, color: string}, width: number = 300, height: number = 200, zoomLevel: number = 13, mapType: 'roadmap' = 'roadmap') {
+        // https://developers.google.com/maps/documentation/maps-static/intro
+        return `${GOOGLE_MAPS_STATIC_API_ENDPOINT}?center=${address}&markers=color:${markerPosition.color.replace('#', '0x')}%7Clabel:${markerPosition.lable}%7C${markerPosition.lat},${markerPosition.lng}&size=${width.toFixed()}x${height.toFixed()}&zoom=${zoomLevel}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`;
+    }
+
+    async reverseGeoCode(lat: number, lon: number) {
+        // https://developers.arcgis.com/rest/geocode/api-reference/geocoding-reverse-geocode.htm
+        const response = await fetch(`${REVERSE_GEOCODE_API_ENDPOINT}?location=${lon},${lat}&token=${ESRI_API_TOKEN}&f=json`);
         return await response.json();
     }
 
@@ -27,7 +66,7 @@ export class GeoService {
 
         for (const el of responseJSON.elements) {
             if (el.type === 'node') {
-                nodes[el.id] = {lat: el.lat, lon: el.lon};
+                nodes[el.id] = { lat: el.lat, lon: el.lon };
             }
         }
 
@@ -42,7 +81,7 @@ export class GeoService {
                 if (!!el.nodes && Array.isArray(el.nodes) && el.nodes.length > 0 && !!nodes[el.nodes[0]]) {
                     locationNode = nodes[el.nodes[0]];
                 } else {
-                    locationNode = {lat: el.lat, lon: el.lon};
+                    locationNode = { lat: el.lat, lon: el.lon };
                 }
 
                 ways.push({
@@ -52,7 +91,7 @@ export class GeoService {
                     houseNumber: el.tags['addr:housenumber'],
                     postcode: el.tags['addr:postcode'],
                     name: el.tags.name,
-                    shop: el.tags.shop ,
+                    shop: el.tags.shop,
                     street: el.tags['addr:street']
                 })
             }

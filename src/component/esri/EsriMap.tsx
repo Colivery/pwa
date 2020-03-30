@@ -3,11 +3,21 @@ import { st } from "springtype/core";
 import { getUniqueHTMLId } from "../../function/get-unique-html-id";
 import { tsx } from "springtype/web/vdom";
 
+
+/**
+ * Expects in <head>:
+ * 
+ * <link rel="stylesheet" href="https://js.arcgis.com/4.14/esri/themes/light/main.css">
+ * <script src="https://js.arcgis.com/4.14/"></script>
+ */
 export interface EsriMapProps {
     height?: number;
     latitude?: number;
     longitude?: number;
     unit?: 'metric' | 'non-metric' | 'dual';
+    uiComponents?: Array<'attribution' | 'zoom'>;
+    showScaleBar?: boolean;
+    zoomLevel?: number;
 }
 
 @component
@@ -26,6 +36,15 @@ export class EsriMap extends st.staticComponent<EsriMapProps> {
 
     @attr
     unit: 'metric' | 'non-metric' | 'dual' = 'metric';
+
+    @attr
+    showScaleBar: boolean = true;
+
+    @attr
+    zoomLevel: number = 13;
+    
+    @attr
+    uiComponents: Array<'attribution' | 'zoom'> = ['attribution', 'zoom'];
 
     webMap: any;
 
@@ -66,7 +85,10 @@ export class EsriMap extends st.staticComponent<EsriMapProps> {
                     container: this.ersiMapId,
                     map: this.webMap,
                     center: [this.longitude, this.latitude],
-                    zoom: 13
+                    zoom: 13,
+                    ui: {
+                        components: ["attribution"]
+                    }
                 });
 
                 this.scaleBar = new ScaleBar({
@@ -74,9 +96,11 @@ export class EsriMap extends st.staticComponent<EsriMapProps> {
                     view: this.mapView
                 });
 
-                this.mapView.ui.add(this.scaleBar, {
-                    position: "bottom-right"
-                });
+                if (this.showScaleBar) {
+                    this.mapView.ui.add(this.scaleBar, {
+                        position: "bottom-right"
+                    });
+                }
 
                 resolve();
             });

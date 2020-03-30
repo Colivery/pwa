@@ -17,7 +17,8 @@ export interface IAttrMatInput {
     validators?: Array<(value: string) => Promise<boolean>>;
     successMessage?: string;
     errorMessage?: { [error: string]: string };
-
+    rows?: number;
+    max?: number;
 }
 
 const MAT_SPAN_ERROR_ATTRIBUTE = 'data-error';
@@ -62,6 +63,12 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
     @attr
     errorMessage: { [error: string]: string } = {};
 
+    @attr
+    rows: number = 1;
+
+    @attr
+    max: number = 255;
+
     internalValue: string;
 
     render() {
@@ -70,6 +77,8 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
             {this.renderSlot(MatInput.MAT_INPUT_BEFORE_INPUT_SLOT_NAME)}
             <Input ref={{inputRef: this}} id={id} type={this.type} name={this.name} validators={this.validators}
                    disabled={this.disabled} value={this.value}
+                   rows={this.rows}
+                   max={this.max.toString()}
                    onStValidation={(evt) => {
                        this.onChange(evt)
                    }}/>

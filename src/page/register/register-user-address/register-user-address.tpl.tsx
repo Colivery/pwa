@@ -6,7 +6,7 @@ import { RegisterUserAddressPage } from "./register-user-address";
 import { MatTextarea } from "../../../component/mat/mat-textarea";
 import { LogoRow } from "../../../component/logo-row/logo-row";
 import { ErrorMessage } from "../../../component/error-message/error-message";
-import { EsriMap } from "../../../component/esri/EsriMap";
+import { MatLoaderCircle } from "../../../component/mat/mat-loader-circle";
 
 export default (component: RegisterUserAddressPage) => (
     <fragment>
@@ -50,16 +50,24 @@ export default (component: RegisterUserAddressPage) => (
                             address: 'Diese Adresse können wir nicht verstehen'
                         }}>
                     </MatTextarea>
-                    <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
-                        <EsriMap ref={{ map: component }} />
+                    <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3', 'hide']} ref={{ mapContainer: component }}>
+
+                        <center>
+                            <strong>Wir haben folgende Adresse erkannt:<br /></strong>
+
+                            <span ref={{ addressField: component }}></span>
+
+                            <img class="static-map" ref={{ staticMapImage: component }} />
+                        </center>
                     </div>
+
+                    <MatLoaderCircle ref={{ matLoaderCircle: component }} class={['col', 's12',]} />
                 </div>
                 <div class="row">
                     <ErrorMessage ref={{ errorMessage: component }}
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
-                </div>
-                <div class="row">
-                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
+
+                    <a ref={{ submitButton: component }} style={{ marginTop: '10px' }} class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         onClick={() => component.onNextClick()}>Weiter</a>
                 </div>
             </Form>

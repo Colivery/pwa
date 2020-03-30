@@ -38,8 +38,14 @@ export class ConsumerOrderDetailPage extends st.component implements ILifecycle 
     driverUserState: IUserProfileResponse = null;
 
     async onRouteEnter() {
+        console.log('st.route.params.id?', st.route.params.id);
+
         this.orderState = await this.orderService.getById(st.route.params.id as string);
+
+        console.log('st.route.params.id', st.route.params.id);
+
         if (this.orderState.driver_user_id) {
+            console.log('this.orderState.driver_user_id', this.orderState.driver_user_id);
             this.driverUserState = await this.userService.getUserProfile();
         }
     }

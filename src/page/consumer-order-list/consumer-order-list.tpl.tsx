@@ -2,10 +2,11 @@ import { ConsumerOrderListPage } from "./consumer-order-list";
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import { MatModal } from "../../component/mat/mat-modal";
 
 export default (component: ConsumerOrderListPage) => (
     <fragment>
-        <NavHeader showBackButton={false} showAddButton={true} onAddButtonClick={component.onAddButtonClick} />
+        <NavHeader showBackButton={false} />
 
         <MatLoadingIndicator ref={{ loadingIndicator: component }} />
 
@@ -31,6 +32,37 @@ export default (component: ConsumerOrderListPage) => (
                 </div>
             </span>
         </div>
+
+        <MatModal ref={{ myOrderDetailsModal: component }}>
+
+            <h3 class={'center'}>Einkauf</h3>
+
+            <div ref={{ myOrderDetailsContainer: component }}></div>
+
+            <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
+                <a href="javascript:" onclick={() => {
+                    component.myOrderDetailsModal.toggle();
+                }} class="modal-close waves-effect waves-red btn-flat material-align-middle">
+                    <i class="material-icons">close</i>&nbsp;Schließen
+                </a>
+            </template>
+        </MatModal>
+
+        <MatModal ref={{ cancelOrderModal: component }}>
+
+            <h4 class={'center'}><i class="material-icons">cancel</i> Auftrag abbrechen</h4>
+
+            Bist Du Dir sicher, dass Du den Einkaufsauftrag abbrechen möchtest? 
+
+            <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
+                <a href="javascript:" onclick={() => component.cancelOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
+                <a href="javascript:" onclick={component.onReallyCancelOrder} class="modal-close waves-effect btn waves-white material-align-middle cancel-button"><i class="material-icons">done_all</i> &nbsp;Ja</a>
+            </template>
+        </MatModal>
+
+        <a onClick={component.onAddButtonClick} class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
+            <i class="material-icons">add</i>
+        </a>
 
     </fragment>
 )

@@ -1,26 +1,30 @@
-import "./user-profile.scss";
-
 import { st } from "springtype/core";
 import { component, state } from "springtype/web/component";
 import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import tpl, { IUserProfileFromState } from "./user-profile.tpl";
-import { ConsumerOrderAddPage } from "../consumer-order-add/consumer-order-add";
 import { inject } from "springtype/core/di";
 import { ref } from "springtype/core/ref";
 import { Form, Input } from "springtype/web/form";
 import { ErrorMessage } from "../../component/error-message/error-message";
-import { GeoService } from "../../service/geocoding";
+import { GeoService } from "../../service/geo";
 import { MatModal } from "../../component/mat/mat-modal";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { address } from "../../validators/address";
 import { UserService } from "../../service/user";
 import { IUserProfileResponse } from "../../datamodel/user";
 import { EsriMap } from "../../component/esri/EsriMap";
+import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
+import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
+import { MatLoaderCircle } from "../../component/mat/mat-loader-circle";
+import { tsx } from "springtype/web/vdom";
+import { MatInput } from "../../component/mat/mat-input";
+import { required, email } from "springtype/core/validate";
+import { MatTextarea } from "../../component/mat/mat-textarea";
 
 @component({
     tpl
 })
-export class UserProfile extends st.component implements ILifecycle {
+export class UserProfile extends st.staticComponent implements ILifecycle {
 
     static ROUTE = "user-profile";
 
@@ -34,15 +38,6 @@ export class UserProfile extends st.component implements ILifecycle {
     formRef: Form;
 
     @ref
-    map: EsriMap;
-
-    @ref
-    latInputRef: Input;
-
-    @ref
-    lngInputRef: Input;
-
-    @ref
     errorMessage: ErrorMessage;
 
     @ref
@@ -54,16 +49,34 @@ export class UserProfile extends st.component implements ILifecycle {
     @ref
     loadingIndicator: MatLoadingIndicator;
 
-    lookupTimeout: any;
+    @ref
+    addressField: HTMLElement;
+
+    @ref
+    staticMapImage: HTMLElement;
+
+    @ref
+    mapContainer: HTMLElement;
+
+    @ref
+    matLoaderCircle: MatLoaderCircle;
+
+    @ref
+    submitButton: HTMLElement;
+
+    @ref
+    formContainer: HTMLElement;
 
     userGeoLocation: {
-        latitude: number;
-        longitude: number;
+        lat: number;
+        lng: number;
     };
+
+    validatedUserAddress: string;
 
     constructor() {
         super();
-        this.loadData()
+        this.loadData();
     }
 
     onAfterRender(): void {
@@ -73,38 +86,50 @@ export class UserProfile extends st.component implements ILifecycle {
     }
 
     addressValidator = () => {
-        return address(this.geoService, this, async(geolocation) => {
-            await this.map.removeAllMarkers();
-            const latitude = parseFloat(geolocation.lat);
-            const longitude = parseFloat(geolocation.lon);
-            await this.map.setCenter(latitude, longitude);
-            await this.map.addMarker(latitude, longitude, require('../../../assets/images/map_marker.png'), 20, 25);
-            this.userGeoLocation = { latitude, longitude };
+        return address(this.geoService, this, async (geolocation: any, address: string) => {
+
+            this.userGeoLocation = geolocation;
+
+            // render/update static map image
+            const mapSrc = this.geoService.getStaticMapImageSrc(address, {
+                ...geolocation,
+                lable: 'Hier bist Du',
+                color: COLOR_COLIVERY_PRIMARY
+            }, this.staticMapImage.closest('.row').clientWidth, calculateAvailableHeightPercent(20), 15);
+
+            this.staticMapImage.setAttribute('src', mapSrc);
+
+            // render/update validated address display
+            this.validatedUserAddress = address;
+
+            this.addressField.innerHTML = this.validatedUserAddress;
+
+            // hide loaders, show map
+            this.mapContainer.classList.remove('hide');
+            this.matLoaderCircle.setVisible(false);
         });
     };
 
-    onAddButtonClick = () => {
-        st.route = {
-            path: ConsumerOrderAddPage.ROUTE
+    getDataToSave = () => {
+        const formState = this.formRef.getState() as any as IUserProfileFromState;
+        return {
+            first_name: formState.first_name,
+            phone: formState.phone,
+            last_name: formState.last_name,
+            address: this.validatedUserAddress,
+            geo_location: {
+                latitude: this.userGeoLocation.lat,
+                longitude: this.userGeoLocation.lng
+            }
         }
-    };
+    }
 
     updateUserProfile = async () => {
         try {
             this.loadingIndicator.toggle();
             if (await this.formRef.validate()) {
-                const formState = this.formRef.getState() as any as IUserProfileFromState;
 
-                console.log('formState before save', formState);
-
-                await this.userService.upsertUserProfile({
-                    phone: formState.phone,
-                    first_name: formState.first_name,
-                    last_name: formState.last_name,
-                    address: formState.address,
-                    geo_location: this.userGeoLocation
-                });
-
+                await this.userService.upsertUserProfile(this.getDataToSave());
                 this.afterSaveModal.toggle();
             }
         } catch (e) {
@@ -115,8 +140,81 @@ export class UserProfile extends st.component implements ILifecycle {
 
     private async loadData() {
         this.state = await this.userService.getUserProfile();
-        console.log('this.state', this.state);
-        this.doRender();
+
+        this.formContainer.innerHTML = '';
+
+        st.render(
+            <Form ref={{ formRef: this }}>
+                {this.getFormInputs()}
+            </Form>, this.formContainer)
+    }
+
+
+    getFormInputs() {
+        return <fragment>
+            <MatInput name="email" label="E-Mail"
+                class={['col', 's12', 'm6']}
+                disabled={true}
+                helperText="Deine E-Mail-Adresse"
+                validators={[required, email]}
+                value={this.state.email}
+                errorMessage={{
+                    required: 'Das ist ein Pflichtfeld',
+                    'email': 'Keine gültige E-Mail'
+                }}>
+            </MatInput>
+            <MatInput name="first_name" label="Vorname"
+                class={['col', 's6', 'm3']}
+                helperText="z.B. Max"
+                validators={[required]}
+                value={this.state.first_name}
+                errorMessage={{
+                    required: 'Das ist ein Pflichtfeld'
+                }}>
+            </MatInput>
+
+            <MatInput name="last_name" label="Nachname"
+                class={['col', 's6', 'm3']}
+                helperText="z.B. Mustermann"
+                validators={[required]}
+                value={this.state.last_name}
+                errorMessage={{
+                    required: 'Das ist ein Pflichtfeld'
+                }}>
+            </MatInput>
+            <MatInput name="phone" label="Phone"
+                class={['col', 's12', 'm6']}
+                helperText="Enter your phone number here"
+                validators={[required]}
+                value={this.state.phone}
+                errorMessage={{
+                    required: 'Das ist ein Pflichtfeld'
+                }}>
+            </MatInput>
+            <MatTextarea ref={{ addressRef: this }} name="address" label="Wohl/Lieferadresse"
+                class={['col', 's12', 'm6']}
+                rows={2}
+                helperText="Wohin die Fahrer*in kommen soll"
+                validators={[required, this.addressValidator()]}
+                value={this.state.address}
+                errorMessage={{
+                    required: 'Das ist ein Pflichtfeld',
+                    address: 'Diese Adresse können wir nicht verstehen'
+                }}>
+            </MatTextarea>
+            <div class={['col', 's12', 'hide']} ref={{ mapContainer: this }}>
+
+                <center>
+                    <strong>Wir haben folgende Adresse erkannt:<br /></strong>
+
+                    <span ref={{ addressField: this }}></span>
+                    <img class="static-map" ref={{ staticMapImage: this }} />
+                </center>
+
+            </div>
+
+            <MatLoaderCircle ref={{ matLoaderCircle: this }} class={['col', 's12',]} />
+        </fragment>
     }
 
     onAfterInitialRender() {

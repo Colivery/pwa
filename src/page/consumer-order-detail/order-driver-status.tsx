@@ -6,7 +6,7 @@ import {IAttrOrderHeader} from "./order-header";
 import {IUserProfileResponse} from "../../datamodel/user";
 
 export interface IAttrOrderDriverStatus {
-    user: IUserProfileResponse
+    user?: IUserProfileResponse
 }
 
 @component({tag: 'div'})
@@ -25,7 +25,7 @@ export class OrderDriverStatus extends st.component<IAttrOrderHeader> implements
                 <tbody>
                 <tr>
                     <td width="30%">Name</td>
-                    <td width="70%">{this.user.name}</td>
+                    <td width="70%">{this.user.first_name} {this.user.last_name}</td>
                 </tr>
                 <tr>
                     <td>Telefon</td>

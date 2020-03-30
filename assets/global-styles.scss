@@ -6,6 +6,18 @@ html, body {
   background-color: $colivery-background;
 }
 
+.info-button, .info-button:hover {
+  background-color: $colivery-blue;
+}
+
+.cancel-button, .cancel-button:hover {
+  background-color: #cc0000;
+}
+
+.success-button, .success-button:hover {
+  background-color: $colivery-green;
+}
+
 .header {
   font-weight: bold;
   margin-top: 50px;
@@ -100,11 +112,30 @@ input[type="radio"]:not(:checked).valid + span:after {
   white-space: nowrap;
 }
 
+
+/* Mobile */
 @media screen and (max-width: 768px) {
+
+  .modal.open {
+    top: 0 !important;
+    height: 100vh !important;
+    width: 100% !important;
+    max-height: 100vh !important;
+  }
+  .modal.modal-fixed-footer .modal-content {
+    height: calc(100vh - 56px) !important;
+    max-height: calc(100vh - 56px) !important;
+  }
 
   ::-webkit-scrollbar {
     display: none;
   }
+}
+
+.static-map {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
 }
 
 .btn-floating.halfway-fab {
@@ -125,6 +156,24 @@ input[type="radio"]:not(:checked).valid + span:after {
 .order-card.active {
   background-color: $colivery-orange;
   color: #fff;
+}
+
+.order-header {
+  background-color: $colivery-orange;
+  margin: -10px;
+  border-radius: 10px 10px 0 0;
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.order-header-green {
+  background-color: $colivery-green;
+}
+
+.order-header-blue {
+  background-color: $colivery-blue;
 }
 
 .order-date {

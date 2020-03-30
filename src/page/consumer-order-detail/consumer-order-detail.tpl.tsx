@@ -11,7 +11,7 @@ import {OrderDriverStatus} from "./order-driver-status";
 
 export default (component: ConsumerOrderDetailPage) => (
     <fragment>
-        <NavHeader showBackButton={true} showAddButton={false}/>
+        <NavHeader showBackButton={true} />
 
         {getContainer(component)}
 

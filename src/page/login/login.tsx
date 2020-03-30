@@ -29,9 +29,11 @@ export class LoginPage extends st.component implements ILifecycle {
         this.doLogin();
     };
 
-    doLogin = async() => {
+    doLogin = async () => {
+
         try {
             if (await this.formRef.validate()) {
+
                 const data = this.formRef.getState() as { email: string, password: string };
                 await window.authService.login(data.email, data.password);
                 st.debug('login accomplished')
@@ -54,7 +56,9 @@ export class LoginPage extends st.component implements ILifecycle {
     onPasswordFieldKeyUp = (event: KeyboardEvent) => {
 
         if (event.key === "Enter") {
-            this.doLogin();
+            setTimeout(() => {
+                this.doLogin();
+            }, 100)
         }
     }
 }

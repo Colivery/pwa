@@ -36,12 +36,11 @@
   "dependencies": {
     "@types/latlon-geohash": "^2.0.0",
     "@types/materialize-css": "^1.0.7",
-    "@types/ol": "^5.3.6",
+    "date-fns": "^2.11.1",
     "firebase": "^7.6.1",
     "latlon-geohash": "^2.0.0",
     "libsodium-wrappers": "^0.7.6",
     "materialize-css": "^1.0.0",
-    "ol": "^6.1.1",
-    "springtype": "springtype@2.0.0-beta.47"
+    "springtype": "springtype@2.0.0-beta.50"
   }
 }

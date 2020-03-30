@@ -9,13 +9,10 @@ import { inject } from "springtype/core/di";
 import { PreferenceService } from "../../service/preference";
 import { ConsumerOrderListPage } from "../../page/consumer-order-list/consumer-order-list";
 import { DriverOrderList } from "../../page/driver/driver-order-list/driver-order-list";
+import { TERMS_OF_USE_URL, PRIVACY_STATEMENT_URL } from "../../config/website-urls";
 
 export interface NavHeaderProps {
-    onAddButtonClick?: Function;
-    onRefreshButtonClick?: Function;
-    showAddButton?: boolean;
     showBackButton?: boolean;
-    showRefreshButton?: boolean;
 }
 
 @component
@@ -23,12 +20,6 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     @inject(PreferenceService)
     preferenceService: PreferenceService;
-
-    @event
-    onAddButtonClick: MouseEvent;
-
-    @event
-    onRefreshButtonClick: MouseEvent;
 
     @ref
     dropDownContentRef: HTMLUListElement;
@@ -43,43 +34,35 @@ export class NavHeader extends st.component<NavHeaderProps> {
     menuOverlay: HTMLElement;
 
     @attr
-    showAddButton: boolean = false;
-
-    @attr
     showBackButton: boolean = true;
-
-    @attr
-    showRefreshButton: boolean = false;
 
     onLogoutClick = () => {
         console.log('logout click');
+        this.resetBodyOverflowBehaviour();
         window.authService.logout();
     };
 
-    onAddClick = () => {
-        this.dispatchEvent('addButtonClick');
-    };
-
-    onRefreshClick = () => {
-        this.dispatchEvent('refreshButtonClick');
-    };
 
     onBackButtonClick = () => {
         console.log('back click');
         window.history.back();
     };
 
+    resetBodyOverflowBehaviour() {
+
+        setTimeout(() => {
+            document.body.style.overflow = 'inherit';
+            document.body.style.overflowX = 'hidden';
+        }, 200 /* wait for animation to finish*/);
+    }
+
     toggleMenu = () => {
 
         if (this.menuIcon.classList.contains('open')) {
-            setTimeout(() => {
-                document.body.style.overflow = 'inherit';
-                document.body.style.overflowX = 'hidden';
-            }, 200 /* wait for animation to finish*/);
+            this.resetBodyOverflowBehaviour();
         } else {
             document.body.style.overflow = 'hidden';
         }
-
         this.menuIcon.classList.toggle('open');
         this.menuOverlay.classList.toggle('open');
         this.el.querySelectorAll('.action-button').forEach((el: HTMLElement) => {
@@ -110,10 +93,6 @@ export class NavHeader extends st.component<NavHeaderProps> {
                                 </span>
                             </a>
                         </div>}
-
-                </div>
-                <div class="nav-content">
-                    {this.renderActionButton()}
                 </div>
             </nav>
 
@@ -127,13 +106,13 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 </a>
                 {this.getActiveMode()}
 
-                <a href="javascript:">
+                <a href={TERMS_OF_USE_URL} target="_blank">
                     <div class="material-align-middle">
                         <i class="material-icons">description</i> AGB
                     </div>
                 </a>
 
-                <a href="javascript:">
+                <a href={PRIVACY_STATEMENT_URL} target="_blank">
                     <div class="material-align-middle">
                         <i class="material-icons">security</i> Datenschutz
                     </div>
@@ -196,14 +175,6 @@ export class NavHeader extends st.component<NavHeaderProps> {
                     <i class="material-icons">time_to_leave</i> Fahrer-Modus
                 </div>
             </a>
-        </fragment>
-    }
-
-    private renderActionButton() {
-        return <fragment><a onClick={this.onAddClick} style={{ display: this.showAddButton ? 'block' : 'none' }}
-            class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
-            <i class="material-icons">add</i>
-        </a>
         </fragment>
     }
 }

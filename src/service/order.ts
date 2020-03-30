@@ -5,6 +5,9 @@ import { SERVICE_API_ENDPOINT } from "../config/endpoints";
 export class OrderService {
 
     async declide(id: string) {
+
+        // TODO: FIXME: https://colivery.atlassian.net/secure/RapidBoard.jspa?rapidView=3&modal=detail&selectedIssue=API-5
+        /*
         const response = await fetch(`${SERVICE_API_ENDPOINT}/order/declide?order_id=${id}`, {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
@@ -17,7 +20,40 @@ export class OrderService {
             redirect: 'follow',
             referrerPolicy: 'no-referrer' // no-referrer, *client
         });
-        return await response.json();
+        */
+        //return await response.json();
+
+        return Promise.resolve();
+    }
+
+    async userCancelOrder(id: string) {
+        await fetch(`${SERVICE_API_ENDPOINT}/order/update_order_status?order_id=${id}&status=consumer_canceled`, {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await window.authService.getIdToken()}`
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer' // no-referrer, *client
+        });
+    }
+
+    async markOrderDelivered(id: string) {
+        await fetch(`${SERVICE_API_ENDPOINT}/order/update_order_status?order_id=${id}&status=delivered`, {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await window.authService.getIdToken()}`
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer' // no-referrer, *client
+        });
     }
 
     async accept(id: string) {
