@@ -37,14 +37,11 @@ export class NavHeader extends st.component<NavHeaderProps> {
     showBackButton: boolean = true;
 
     onLogoutClick = () => {
-        console.log('logout click');
         this.resetBodyOverflowBehaviour();
         window.authService.logout();
     };
 
-
     onBackButtonClick = () => {
-        console.log('back click');
         window.history.back();
     };
 
@@ -137,25 +134,20 @@ export class NavHeader extends st.component<NavHeaderProps> {
         }
     };
 
-
     onCustomerSwitch = () => {
         this.toggleMenu();
         this.preferenceService.setProfile('consumer');
-        st.debug('onCustomerSwitch');
         st.route = {
             path: ConsumerOrderListPage.ROUTE
         }
-
     };
 
     onDriverSwitch = () => {
         this.toggleMenu();
         this.preferenceService.setProfile('driver');
-        st.debug('onDeviceSwitch');
         st.route = {
             path: DriverOrderList.ROUTE
         }
-
     };
 
     private getActiveMode() {

@@ -15,9 +15,9 @@ export class PreferenceService {
     @inject(FirebaseService, FIREBASE_CONFIG)
     firebaseService: FirebaseService;
 
-    constructor() {
+    profile;
 
-        console.log('PreferenceService created', this.storageService, this.firebaseService)
+    constructor() {
         this.syncPreferences();
     }
 
@@ -29,10 +29,10 @@ export class PreferenceService {
     }
 
     getProfile() {
-        return this.storageService.get(PROFILE) || 'consumer';
+        return this.profile || 'consumer';
     }
 
     setProfile(profile: Profile) {
-        this.storageService.set(PROFILE, profile);
+        this.profile = profile;
     }
 }

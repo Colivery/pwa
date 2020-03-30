@@ -27,11 +27,11 @@ export class UserService {
 
     async getUserProfile(): Promise<IUserProfileResponse | undefined> {
 
-        if (this.userProfile) return this.userProfile;
+        if (this.userProfile) {
+            return this.userProfile;
+        }
 
         try {
-            st.debug('getUserProfile');
-
             const response = await fetch(`${SERVICE_API_ENDPOINT}/user`, {
                 method: 'GET',
                 mode: 'cors', // no-cors, *cors, same-origin
@@ -46,7 +46,6 @@ export class UserService {
                 referrerPolicy: 'no-referrer', // no-referrer, *client
             });
             this.userProfile = response.json();
-
             return this.userProfile;
 
         } catch (e) {
@@ -54,22 +53,12 @@ export class UserService {
         }
     }
 
-    upsertLocalUserData(userProfileData: IUserProfileRequest) {
-        this.storageService.set(UserService.LOCAL_USER_DATA_IDENT, {
-            ...this.getLocalUserData(),
-            ...userProfileData
-        });
-    }
-
-    getLocalUserData(): UserData {
-        return this.storageService.get(UserService.LOCAL_USER_DATA_IDENT) || {};
-    }
-
     async upsertUserProfile(userProfileData: IUserProfileRequest): Promise<void> {
 
-        st.debug('upsertUserProfile...', userProfileData, this.storageService);
-
-        this.upsertLocalUserData(userProfileData);
+        this.userProfile = {
+            ...this.userProfile,
+            ...userProfileData
+        }
 
         try {
 

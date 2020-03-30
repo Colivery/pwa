@@ -24,10 +24,6 @@ export class AuthService {
     @context(USER_CONTEXT)
     userContext: IUserContext = getUserContext();
 
-    constructor() {
-        st.debug('AuthService created', this.cryptoService, this.storageService, this.firebaseService)
-    }
-
     async isLoggedIn() {
         await this.autoLogin();
         return this.firebaseService.isLoggedIn();
@@ -47,7 +43,6 @@ export class AuthService {
     }
 
     async autoLogin() {
-        st.debug('auto-login');
 
         const email = this.getEmail();
         const passwordHash = this.getPasswordHash();
@@ -56,7 +51,6 @@ export class AuthService {
             if (email && passwordHash) {
                 const result = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
                 this.userContext = {userId: result.user.uid, email: email};
-                st.debug('result.user.uid this.userContext', result.user.uid, this.userContext);
                 return true;
             }
         } catch (e) {
@@ -69,7 +63,6 @@ export class AuthService {
         const passwordHash = this.cryptoService.hash(password);
         const result = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
         this.userContext = {userId: result.user.uid, email: email};
-        st.debug('LOGIN result.user.uid this.userContext', result, result.user.uid, this.userContext);
         this.storeCredentials(email, passwordHash);
 
         st.route = {
@@ -81,9 +74,8 @@ export class AuthService {
         await this.firebaseService.logout();
         this.storeCredentials('', '');
         this.userContext = INITIAL_USER_CONTEXT_STATE;
-        st.route = {
-            path: LoginPage.ROUTE
-        };
+
+        window.location.href = window.location.href.split('/')[0];
     }
 
     async register(email: string, password: string): Promise<firebase.auth.UserCredential> {

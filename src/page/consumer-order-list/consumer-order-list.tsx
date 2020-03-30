@@ -20,7 +20,7 @@ import { MatModal } from "../../component/mat/mat-modal";
 export class ConsumerOrderListPage extends st.staticComponent implements ILifecycle {
 
     static ROUTE = "consumer-order-list";
-    
+
     class = "page-consumer-order-list";
 
     @inject(OrderService)
@@ -64,13 +64,7 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
         this.myOrdersScrollContainer.innerHTML = '';
 
         const serviceResonse = await this.orderService.getOwnOrders();
-
-        console.log('serviceResonse for my orders', serviceResonse)
-
         this.myOrdersDisplayData = serviceResonse;
-
-        console.log('this.openOrdersDisplayData ', this.myOrdersDisplayData);
-
         this.renderMyOrders();
 
         this.myOrdersScrollContainer.classList.remove('hide');
@@ -104,6 +98,8 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
         // filter-out user cancelled orders
         this.myOrdersDisplayData = this.myOrdersDisplayData.filter(order => order.status !== 'consumer_canceled');
 
+        this.myOrdersDisplayData.sort((orderA, orderB) => orderA.created < orderB.created ? 1 : -1);
+
         st.render(this.myOrdersDisplayData.map((order: any, index: number) =>
             <a href="javascript:" data-id={order.id}>
                 <div class="order-card">
@@ -125,7 +121,7 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
 
                         <div class="order-line">
                             <div class="material-align-middle truncate">
-                                <i class="material-icons order-card-icon">create</i> {formatDate(new Date(order.updated))}
+                                <i class="material-icons order-card-icon">create</i> {formatDate(new Date(order.created))}
                             </div>
                         </div>
                         <div class="order-line">
@@ -207,6 +203,13 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
                     </li>)}
                 </ul>
             </div>
+
+            <h5><span class="material-align-middle">
+                <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;Hinweise
+                </span>
+            </h5>
+
+            <p>{order.hint}</p>
 
             {order.max_price ? <fragment><h5><span class="material-align-middle">
                 <i class="material-icons order-card-icon">monetization_on</i>&nbsp;Maximalbetrag

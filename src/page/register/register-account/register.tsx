@@ -35,8 +35,6 @@ export class RegisterPage extends st.component implements ILifecycle {
                 delete data.password;
                 this.formRef.reset();
 
-                st.debug('register data', data);
-
                 st.route = {
                     path: RegisterUserAddressPage.ROUTE
                 };

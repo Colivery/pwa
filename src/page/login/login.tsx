@@ -36,7 +36,6 @@ export class LoginPage extends st.component implements ILifecycle {
 
                 const data = this.formRef.getState() as { email: string, password: string };
                 await window.authService.login(data.email, data.password);
-                st.debug('login accomplished')
             }
         } catch (e) {
             this.errorMessage.message = e.message;

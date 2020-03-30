@@ -82,7 +82,6 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
     onRouteEnter() {
         this.orderListContainer.innerHTML = '';
         this.maxPriceField.inputRef.el.value = '';
-        console.log('Local user dtaa', this.userService.getLocalUserData());
         this.articleDescription.inputRef.el.value = '';
         this.hintField.inputRef.el.value = '';
     }
@@ -93,12 +92,7 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
             this.activeShopTypeCard.classList.remove('active');
         }
 
-        const shopType = (evt.target as HTMLElement).closest('a').getAttribute('data-shop-type');
-
-        console.log('clicked on shop type', shopType);
-
         this.activeShopTypeCard = (evt.target as HTMLElement).closest('.shop-card');
-
         this.activeShopTypeCard.classList.add('active');
     };
 
@@ -226,11 +220,7 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
         this.addOrderButton.classList.add('disabled');
 
-
-        const localUserData = this.userService.getLocalUserData();
-
-        console.log('Local user dtaa', this.userService.getLocalUserData());
-
+        const localUserData = await this.userService.getUserProfile();
         const maxPrice = parseInt((this.el.querySelector('input[name=maxPrice]') as HTMLInputElement).value, 10);
 
         // TODO: move to Service API
@@ -278,7 +268,7 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
         // close modal
         this.confirmCreateOrderModal.toggle();
-        
+
         this.addOrderButton.classList.remove('disabled');
 
         st.route = {

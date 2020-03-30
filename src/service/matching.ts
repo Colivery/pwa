@@ -19,8 +19,6 @@ export class MatchingService {
             "range": rangeKm
         };
 
-        console.log('requestBody', requestBody);
-
         const abortController = new AbortController();
 
         return {

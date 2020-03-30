@@ -6,7 +6,7 @@ import { buffer } from "../function/buffer";
 export const address = (geoService: GeoService, instance: any, geoCallback: (geolocation: { lat: string; lon: string; }, address: string) => void) => {
 
     return validatorNameFactory(async (value: string) => {
-        
+
         if (value.length === 0) {
             return;
         }
@@ -23,22 +23,17 @@ export const address = (geoService: GeoService, instance: any, geoCallback: (geo
                 return;
             }
 
-            st.debug('instance', instance);
-            st.debug('address value sanitizedValue', value, sanitizedValue);
             // Google
             const esriGeoCoordinates = await geoService.geoCode(sanitizedValue);
-            st.debug('esriGeoCoordinates', esriGeoCoordinates);
 
             if (esriGeoCoordinates.results.length) {
                 const geoCodeResult = esriGeoCoordinates.results[0];
                 const userGeoLocation = geoCodeResult.geometry.location;
 
-                st.debug('userGeoLocation', userGeoLocation);
                 await geoCallback(userGeoLocation, geoCodeResult.formatted_address);
                 instance.submitButton.classList.remove('disabled');
                 await innerCallback(true);
             } else {
-                st.debug('invalid, no GPS position found');
                 await innerCallback(false);
             }
 

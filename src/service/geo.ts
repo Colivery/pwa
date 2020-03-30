@@ -96,8 +96,6 @@ export class GeoService {
                 })
             }
         }
-
-        st.debug(ways);
         return ways;
     }
 

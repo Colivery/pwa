@@ -40,13 +40,12 @@ export class LoginGuard {
             }
 
             const userProfile = await this.userService.getUserProfile();
-            st.debug('guard loggedIn userProfile', userProfile);
 
             if (!userProfile) {
                 return RegisterUserAddressPage.ROUTE;
             }
             const profile = this.preferenceService.getProfile();
-            st.debug('guard loggedIn profile', profile);
+            
             if (!profile) {
                 return RegisterChooseProfile.ROUTE;
             }

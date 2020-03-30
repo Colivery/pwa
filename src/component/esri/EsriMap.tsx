@@ -138,8 +138,6 @@ export class EsriMap extends st.staticComponent<EsriMapProps> {
 
                 this.mapView.graphics.add(pointGraphic);
 
-                console.log('added graphics');
-
                 this.markers.push(pointGraphic);
 
                 resolve(pointGraphic);

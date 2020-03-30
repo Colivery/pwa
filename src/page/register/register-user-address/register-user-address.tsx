@@ -85,7 +85,6 @@ export class RegisterUserAddressPage extends st.staticComponent implements ILife
 
     getDataToSave = () => {
         const formState = this.formRef.getState() as any as IRegisterUserAddressFormState;
-        st.debug('register user address data', formState);
         return {
             first_name: formState.first_name,
             phone: formState.phone,

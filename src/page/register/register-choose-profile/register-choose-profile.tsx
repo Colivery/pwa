@@ -21,8 +21,6 @@ export class RegisterChooseProfile extends st.component implements ILifecycle {
 
     async onNextClick(profile: Profile) {
         this.preferenceService.setProfile(profile);
-
-        st.debug('register user address data', profile);
         st.route = {
             path: profile + '-order-list'
         };

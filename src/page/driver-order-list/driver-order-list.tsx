@@ -144,21 +144,11 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         this.openOrdersScrollContainer.classList.add('hide');
         this.loadingIndicator.setVisible(true);
 
-        this.openOrdersScrollContainer.innerHTML = '';
-
         const currentPosition = await this.geoService.getCurrentLocation();
         const serviceResonse = await this.engineService.search(currentPosition.latitude, currentPosition.longitude, this.range);
 
-
-
-
-        console.log('serviceResonse', serviceResonse)
-
         const unionOrders = [];
-
         const ownUserProfile = await this.userService.getUserProfile();
-
-        console.log('ownUserProfile',ownUserProfile);
 
         for (let order of (await serviceResonse.data).orders) {
             
@@ -174,9 +164,12 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                 unionOrders.push(order);
             }
         }
+
+        unionOrders.sort((orderA, orderB) => orderA.created > orderB.created ? 1 : -1);
+
         this.openOrdersDisplayData = unionOrders;
 
-        console.log('this.openOrdersDisplayData ', this.openOrdersDisplayData);
+        this.openOrdersScrollContainer.innerHTML = '';
 
         this.renderOpenOrders();
 
@@ -207,7 +200,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                         </h4>
                         <div class="order-line">
                             <div class="material-align-middle truncate">
-                                <i class="material-icons order-card-icon">search</i> {formatDate(new Date(order.updated))}
+                                <i class="material-icons order-card-icon">search</i> {formatDate(new Date(order.created))}
                             </div>
                         </div>
                         <div class="order-line">
@@ -255,7 +248,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                         </div>
                         <div class="order-line">
                             <div class="material-align-middle truncate">
-                                <i class="material-icons order-card-icon">search</i> {formatDate(new Date(orderUnion.order.updated))}
+                                <i class="material-icons order-card-icon">search</i> {formatDate(new Date(orderUnion.order.created))}
                             </div>
                         </div>
                         <div class="order-line">
@@ -276,7 +269,6 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
 
         const myOrdersDataIndex = parseInt((evt.target as HTMLElement).closest('a').getAttribute('data-index'));
         const orderUnion = this.myOrdersDisplayData[myOrdersDataIndex];
-        console.log('onOrderShowDetails', orderUnion);
 
         this.myOrderDetailsContainer.innerHTML = '';
 
@@ -318,6 +310,13 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                     </li>)}
                 </ul>
             </div>
+
+            <h5><span class="material-align-middle">
+                <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;Hinweise
+                </span>
+            </h5>
+
+            <p>{orderUnion.order.hint}</p>
 
             {orderUnion.order.max_price ? <fragment><h5><span class="material-align-middle">
                 <i class="material-icons order-card-icon">monetization_on</i>&nbsp;Maximalbetrag
@@ -398,9 +397,9 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
 
         const driverOwnOrders = await this.orderService.getDriverOwnOrders();
 
-        this.myOrdersDisplayData = driverOwnOrders;
+        driverOwnOrders.sort((orderA, orderB) => orderA.created > orderB.created ? 1 : -1);
 
-        console.log('this.myOrdersDisplayData', this.myOrdersDisplayData, this.myOrdersScrollContainer)
+        this.myOrdersDisplayData = driverOwnOrders;
 
         this.renderMyOrders();
 
@@ -465,10 +464,6 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
     onOrderClick = async (evt: MouseEvent) => {
 
         const card = ((evt.target as HTMLElement).closest('.order-card-container') as HTMLElement);
-
-
-        console.log('card', card);
-
         const id = card.getAttribute('data-id');
 
         for (let item of this.openOrdersDisplayData) {

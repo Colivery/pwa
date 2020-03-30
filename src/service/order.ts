@@ -122,8 +122,6 @@ export class OrderService {
 
     async createOrder(order: any) {
 
-        console.log('createOrder...', order);
-
         const response = await fetch(`${SERVICE_API_ENDPOINT}/order`, {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
