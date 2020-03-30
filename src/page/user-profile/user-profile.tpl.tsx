@@ -46,10 +46,6 @@ export default (component: UserProfile) => (
     </fragment>
 )
 
-const getFormInputs = (component: UserProfile) => {
-    
-};
-
 export interface IUserProfileFromState {
     id: string;
     email: string

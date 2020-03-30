@@ -55,6 +55,8 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     toggleMenu = () => {
 
+        this.renderMenuItems();
+
         if (this.menuIcon.classList.contains('open')) {
             this.resetBodyOverflowBehaviour();
         } else {
@@ -93,38 +95,45 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 </div>
             </nav>
 
-            <div class="menu-overlay" ref={{ menuOverlay: this }}>
-                <a href="javascript:" onClick={() => {
-                    this.onUserProfileClick()
-                }}>
-                    <div class="material-align-middle">
-                        <i class="material-icons">account_circle</i> Mein Profil
-                    </div>
-                </a>
-                {this.getActiveMode()}
-
-                <a href={TERMS_OF_USE_URL} target="_blank">
-                    <div class="material-align-middle">
-                        <i class="material-icons">description</i> AGB
-                    </div>
-                </a>
-
-                <a href={PRIVACY_STATEMENT_URL} target="_blank">
-                    <div class="material-align-middle">
-                        <i class="material-icons">security</i> Datenschutz
-                    </div>
-                </a>
-
-                <a href="javascript:" onclick={() => {
-                    this.onLogoutClick()
-                }}>
-                    <div class="material-align-middle">
-                        <i class="material-icons">directions_run</i> Ausloggen
-                    </div>
-                </a>
-            </div>
+            <div class="menu-overlay" ref={{ menuOverlay: this }}></div>
 
         </fragment>
+    }
+
+    renderMenuItems = () => {
+
+        this.menuOverlay.innerHTML = '';
+
+        st.render(<fragment>
+            <a href="javascript:" onClick={() => {
+                this.onUserProfileClick()
+            }}>
+                <div class="material-align-middle">
+                    <i class="material-icons">account_circle</i> Mein Profil
+                    </div>
+            </a>
+            {this.getActiveMode()}
+
+            <a href={TERMS_OF_USE_URL} target="_blank">
+                <div class="material-align-middle">
+                    <i class="material-icons">description</i> AGB
+                    </div>
+            </a>
+
+            <a href={PRIVACY_STATEMENT_URL} target="_blank">
+                <div class="material-align-middle">
+                    <i class="material-icons">security</i> Datenschutz
+                    </div>
+            </a>
+
+            <a href="javascript:" onclick={() => {
+                this.onLogoutClick()
+            }}>
+                <div class="material-align-middle">
+                    <i class="material-icons">directions_run</i> Ausloggen
+                    </div>
+            </a>
+        </fragment>, this.menuOverlay)
     }
 
     onUserProfileClick = () => {

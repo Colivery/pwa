@@ -74,8 +74,7 @@ export class UserProfile extends st.staticComponent implements ILifecycle {
 
     validatedUserAddress: string;
 
-    constructor() {
-        super();
+    onRouteEnter() {
         this.loadData();
     }
 

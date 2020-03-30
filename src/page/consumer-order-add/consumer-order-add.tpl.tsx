@@ -196,7 +196,7 @@ export default (component: ConsumerOrderAddPage) => (
 
             <h4 class={'center'}>Auftrag aufgeben</h4>
 
-            Hast Du geprüft, dass Du genug Bargeld zuhause hast? Bist Du Dir sicher?
+                Das wars schon. Du kannst den Auftrag jetzt einreichen. Aber hast Du auch geprüft, dass Du genug Bargeld zuhause hast, um die Fahrer*in zu bezahlen? Bist Du Dir sicher?
 
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
@@ -206,9 +206,9 @@ export default (component: ConsumerOrderAddPage) => (
 
         <MatModal ref={{ warnAtLeastOneItemModal: component }}>
 
-            <h4 class={'center'}>Achtung</h4>
+            <h4 class={'center'}>Fehler</h4>
 
-            Bitte schreib mindestens einen Artikel auf Deinen Einkaufszettel.
+            Bitte schreib mindestens einen Artikel auf Deinen Einkaufszettel. Drücke anschließend den Plus (+)-Button.
 
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
