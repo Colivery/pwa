@@ -1,8 +1,8 @@
 import { tsx } from "springtype/web/vdom";
-import { NavHeader } from "../../../component/nav-header/nav-header";
+import { NavHeader } from "../../component/nav-header/nav-header";
 import { DriverOrderList } from "./driver-order-list";
-import { MatLoadingIndicator } from "../../../component/mat/mat-loading-indicator";
-import { MatModal } from "../../../component/mat/mat-modal";
+import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import { MatModal } from "../../component/mat/mat-modal";
 
 export default (component: DriverOrderList) => (
     <fragment>

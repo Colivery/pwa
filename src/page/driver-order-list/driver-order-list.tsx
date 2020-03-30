@@ -4,19 +4,19 @@ import { st } from "springtype/core";
 import { component } from "springtype/web/component";
 import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import tpl from "./driver-order-list.tpl";
-import { MatLoadingIndicator } from "../../../component/mat/mat-loading-indicator";
+import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { ref } from "springtype/core/ref";
 import { inject } from "springtype/core/di";
-import { MatchingService } from "../../../service/matching";
-import { GeoService } from "../../../service/geo";
-import { OrderService } from "../../../service/order";
-import { UserService } from "../../../service/user";
+import { MatchingService } from "../../service/matching";
+import { GeoService } from "../../service/geo";
+import { OrderService } from "../../service/order";
+import { UserService } from "../../service/user";
 import { tsx } from "springtype/web/vdom";
 import { IVirtualNode } from "springtype/web/vdom/interface";
-import { MatModal } from "../../../component/mat/mat-modal";
-import { formatDate } from "../../../function/formatDate";
-import { COLOR_COLIVERY_PRIMARY } from "../../../config/colors";
-import { calculateAvailableHeightPercent } from "../../../function/calculate-available-height-percent";
+import { MatModal } from "../../component/mat/mat-modal";
+import { formatDate } from "../../function/formatDate";
+import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
+import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
 
 export interface ILocation {
     latitude: number;

@@ -8,7 +8,7 @@ import { UserProfile } from "../../page/user-profile/user-profile";
 import { inject } from "springtype/core/di";
 import { PreferenceService } from "../../service/preference";
 import { ConsumerOrderListPage } from "../../page/consumer-order-list/consumer-order-list";
-import { DriverOrderList } from "../../page/driver/driver-order-list/driver-order-list";
+import { DriverOrderList } from "../../page/driver-order-list/driver-order-list";
 import { TERMS_OF_USE_URL, PRIVACY_STATEMENT_URL } from "../../config/website-urls";
 
 export interface NavHeaderProps {
