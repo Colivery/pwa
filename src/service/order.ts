@@ -7,7 +7,7 @@ export class OrderService {
     async declide(id: string) {
 
         // TODO: FIXME: https://colivery.atlassian.net/secure/RapidBoard.jspa?rapidView=3&modal=detail&selectedIssue=API-5
-        /*
+        
         const response = await fetch(`${SERVICE_API_ENDPOINT}/order/declide?order_id=${id}`, {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
@@ -20,10 +20,7 @@ export class OrderService {
             redirect: 'follow',
             referrerPolicy: 'no-referrer' // no-referrer, *client
         });
-        */
-        //return await response.json();
-
-        return Promise.resolve();
+        return await response.json();
     }
 
     async userCancelOrder(id: string) {

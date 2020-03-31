@@ -66,7 +66,7 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
     @ref
     addOrderButton: HTMLElement;
-
+    
     lookupTimeout: any;
     pickupLat = 0;
     pickupLon = 0;
@@ -164,6 +164,13 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
     }
 
     renderOrderListContainer() {
+
+        st.renderFragment(this.orderListContainer, <div data-index={index} class="row">
+        <div class="col s11 truncate" ref={{col: this}} style={{ lineHeight: '30px' }}>
+            {orderItem.description}
+        </div><div class="col s1">
+            <a class="btn-floating btn-small waves-effect waves-light red" style={{ left: '-20px' }} onClick={this.onOrderItemRemoveClick}><i class="material-icons">delete</i></a>
+        </div></div>);
 
         this.orderListContainer.innerHTML = '';
 
