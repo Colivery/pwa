@@ -79,13 +79,6 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
     orderItems = [];
     activeShopTypeCard: HTMLElement;
 
-    onRouteEnter() {
-        this.orderListContainer.innerHTML = '';
-        this.maxPriceField.inputRef.el.value = '';
-        this.articleDescription.inputRef.el.value = '';
-        this.hintField.inputRef.el.value = '';
-    }
-
     activateShopType = (evt: MouseEvent) => {
 
         if (this.activeShopTypeCard) {
@@ -194,11 +187,11 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
     onOrderItemAddClick = () => {
 
         this.orderItems.push({
-            description: this.articleDescription.inputRef.el.value
+            description: (this.articleDescription.inputRef.el as HTMLInputElement).value
         });
 
         // reset value
-        this.articleDescription.inputRef.el.value = '';
+        (this.articleDescription.inputRef.el as HTMLInputElement).value = '';
 
         this.renderOrderListContainer();
 
@@ -270,6 +263,11 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
         this.confirmCreateOrderModal.toggle();
 
         this.addOrderButton.classList.remove('disabled');
+
+        this.orderListContainer.innerHTML = '';
+        (this.maxPriceField.inputRef.el as HTMLInputElement).value = '';
+        (this.articleDescription.inputRef.el as HTMLInputElement).value = '';
+        (this.hintField.inputRef.el as HTMLInputElement).value = '';
 
         st.route = {
             path: ConsumerOrderListPage.ROUTE

@@ -140,6 +140,7 @@ input[type="radio"]:not(:checked).valid + span:after {
 
 .btn-floating.halfway-fab {
   position: fixed;
+  top: 15px !important;
 }
 
 .order-card {

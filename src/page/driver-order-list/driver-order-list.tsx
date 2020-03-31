@@ -95,6 +95,9 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
     @ref
     declideOrderModal: MatModal;
 
+    @ref
+    confirmOrderItemListContainer: HTMLElement;
+
     // local state
     range: number = 20;
     isLoading: boolean = true;
@@ -151,9 +154,10 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         const ownUserProfile = await this.userService.getUserProfile();
 
         for (let order of (await serviceResonse.data).orders) {
-            
-            const orderData = await this.orderService.getById(order.order_id);
-            
+
+            // TODO: remove when created and updated is in place
+            const orderData = await this.orderService.getById(order.id);
+
             order = {
                 ...order,
                 ...orderData
@@ -458,7 +462,49 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
     }
 
     onOrderAccept = () => {
-        this.confirmAcceptOrderModal.toggle();
+
+        setTimeout(() => {
+
+            this.confirmOrderItemListContainer.innerHTML = '';
+
+            const orderUnion = {
+                order: this.activeOrderContext
+            };
+
+            st.render(<fragment>
+
+
+                <h5><span class="material-align-middle">
+                    <i class="material-icons order-card-icon">shopping_cart</i>&nbsp;Artikel
+                </span>
+                </h5>
+
+                <div class="row">
+                    <ul>
+                        {orderUnion.order.items.map((orderItem: any) => <li>
+                            &ndash; {orderItem.description}
+                        </li>)}
+                    </ul>
+                </div>
+
+                <h5><span class="material-align-middle">
+                    <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;Hinweise
+                </span>
+                </h5>
+
+                <p>{orderUnion.order.hint}</p>
+
+                {orderUnion.order.max_price ? <fragment><h5><span class="material-align-middle">
+                    <i class="material-icons order-card-icon">monetization_on</i>&nbsp;Maximalbetrag
+                </span>
+                </h5>
+
+                    <p>Der Einkauf darf <strong>maximal {orderUnion.order.max_price} kosten.</strong></p></fragment> : ''}
+
+            </fragment>, this.confirmOrderItemListContainer);
+
+            this.confirmAcceptOrderModal.toggle();
+        }, 50)
     }
 
     onOrderClick = async (evt: MouseEvent) => {

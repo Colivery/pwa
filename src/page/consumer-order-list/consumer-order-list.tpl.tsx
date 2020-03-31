@@ -52,7 +52,7 @@ export default (component: ConsumerOrderListPage) => (
 
             <h4 class={'center'}><i class="material-icons">cancel</i> Auftrag abbrechen</h4>
 
-            Bist Du Dir sicher, dass Du den Einkaufsauftrag abbrechen möchtest? 
+            Bist Du Dir sicher, dass Du den Einkaufsauftrag abbrechen möchtest?
 
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.cancelOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
@@ -62,6 +62,11 @@ export default (component: ConsumerOrderListPage) => (
 
         <a onClick={component.onAddButtonClick} class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
             <i class="material-icons">add</i>
+        </a>
+
+
+        <a onClick={component.onRefreshButtonClick} ref={{ refreshButton: component }} style={{ marginRight: '80px', marginTop: '10px' }} class="action-button btn-floating btn-large halfway-fab waves-effect waves-light btn-small red pulse">
+            <i class="material-icons">refresh</i>
         </a>
 
     </fragment>

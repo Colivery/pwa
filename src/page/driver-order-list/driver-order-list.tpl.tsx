@@ -35,7 +35,7 @@ export default (component: DriverOrderList) => (
                 <span class="valign-wrapper hide" style={{ flexDirection: 'column' }} ref={{ openOrdersLoadingComponent: component }}>
 
                     Wir suchen nach Fahrten <br />
-                in Deiner Gegend...<br />
+                    in Deiner Gegend...<br />
                     <br />
                     <div class="preloader-wrapper active center-align">
                         <div class="spinner-layer spinner-green-only">
@@ -78,7 +78,9 @@ export default (component: DriverOrderList) => (
 
             <h4 class={'center'}><i class="material-icons">done_all</i> Auftrag annehmen</h4>
 
-            Bist Du Dir sicher, dass Du diese Fahrt übernehmen kannst? Es ist sehr frustrierend für die andere Person, wenn es doch nicht klappt.
+            Bist Du Dir sicher, dass Du diese Fahrt übernehmen kannst? Es ist sehr frustrierend für die andere Person, wenn es doch nicht klappt. Folgendes müsstest Du für die Person kaufen:
+
+            <div ref={{ confirmOrderItemListContainer: component }}></div>
 
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={component.onCancelAccept} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>

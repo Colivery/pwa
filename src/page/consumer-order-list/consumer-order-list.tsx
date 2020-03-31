@@ -44,19 +44,26 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
     @ref
     cancelOrderModal: MatModal;
 
+    @ref
+    refreshButton: HTMLElement;
+
     myOrdersDisplayData = [];
     isLoading: boolean = true;
     selectedOrder;
 
     async onRouteEnter() {
-
-        this.updateMyOrdersList();
         this.loadingIndicator.setVisible(false);
+        this.updateMyOrdersList();
+    }
+
+    onRefreshButtonClick = () => {
+        this.updateMyOrdersList();
     }
 
     async updateMyOrdersList() {
 
         this.isLoading = true;
+        this.refreshButton.classList.add('disabled');
         this.loadingComponent.classList.remove('hide');
         this.myOrdersScrollContainer.classList.add('hide');
         this.loadingIndicator.setVisible(true);
@@ -70,6 +77,7 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
         this.myOrdersScrollContainer.classList.remove('hide');
         this.loadingIndicator.setVisible(false);
         this.loadingComponent.classList.add('hide');
+        this.refreshButton.classList.remove('disabled');
         this.isLoading = false;
     }
 
