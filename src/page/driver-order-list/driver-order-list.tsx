@@ -156,12 +156,13 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         for (let order of (await serviceResonse.data).orders) {
 
             // TODO: remove when created and updated is in place
+            /*
             const orderData = await this.orderService.getById(order.id);
 
             order = {
                 ...order,
                 ...orderData
-            }
+            }*/
 
             // do not allow to self-assign; don't even show own orders
             if (ownUserProfile.user_id !== order.user_id) {
@@ -327,7 +328,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                 </span>
             </h5>
 
-                <p>Der Einkauf darf <strong>maximal {orderUnion.order.max_price} kosten.</strong></p></fragment> : ''}
+                <p>Der Einkauf darf <strong>maximal {orderUnion.order.max_price} (€) kosten.</strong></p></fragment> : ''}
 
         </div>, this.myOrderDetailsContainer);
 
@@ -499,7 +500,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                 </span>
                 </h5>
 
-                    <p>Der Einkauf darf <strong>maximal {orderUnion.order.max_price} kosten.</strong></p></fragment> : ''}
+                    <p>Der Einkauf darf <strong>maximal {orderUnion.order.max_price} (€) kosten.</strong></p></fragment> : ''}
 
             </fragment>, this.confirmOrderItemListContainer);
 

@@ -154,6 +154,9 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
     onCreateOrderButtonClick = () => {
 
+        // UX improvement: apply last written item
+        this.onOrderItemAddClick();
+
         if (this.orderItems.length === 0) {
             this.warnAtLeastOneItemModal.toggle();
             return;
@@ -177,11 +180,13 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
     articleDescriptionKeyDown = (event: KeyboardEvent) => {
 
+        /*
         if (event.key === "Enter") {
             setTimeout(() => {
                 this.onOrderItemAddClick();
             }, 100)
         }
+        */
     }
 
     onOrderItemAddClick = () => {

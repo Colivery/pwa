@@ -224,7 +224,7 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
                 </span>
             </h5>
 
-                <p>Der Einkauf darf <strong>maximal {order.max_price} kosten.</strong></p></fragment> : ''}
+                <p>Der Einkauf darf <strong>maximal {order.max_price} (€) kosten.</strong></p></fragment> : ''}
 
 
         </div>, this.myOrderDetailsContainer);

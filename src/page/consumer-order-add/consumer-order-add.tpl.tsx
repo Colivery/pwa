@@ -148,13 +148,13 @@ export default (component: ConsumerOrderAddPage) => (
                     <div ref={{ orderListContainer: component }}></div>
 
                     <div class="row">
-                        <MatInput
+                        <MatTextarea
                             name="description"
                             ref={{ articleDescription: component }}
                             label="Was brauchst Du?"
                             onKeyDown={component.articleDescriptionKeyDown}
                             class={['col', 's11']}>
-                        </MatInput>
+                        </MatTextarea>
 
                         <div class="col s1">
                             <a class="btn-floating btn-small waves-effect waves-light red" style={{ left: '-20px', top: '25px' }} onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
