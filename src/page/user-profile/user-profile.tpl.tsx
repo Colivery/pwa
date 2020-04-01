@@ -2,12 +2,12 @@ import "./user-profile.scss";
 
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
-import { UserProfile } from "./user-profile";
+import { UserProfilePage } from "./user-profile";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { MatModal } from "../../component/mat/mat-modal";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 
-export default (component: UserProfile) => (
+export default (component: UserProfilePage) => (
     <fragment>
         <NavHeader showBackButton={true} />
 

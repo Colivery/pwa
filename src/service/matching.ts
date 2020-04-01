@@ -1,8 +1,11 @@
 import { injectable } from "springtype/core/di";
 import { MATCHING_API_ENDPOINT } from "../config/endpoints";
+import { Order } from "../datamodel/order";
 
 export interface IMatchingResponse {
-    data: any;
+    data: Promise<{
+        orders: Array<Order>
+    }>;
     abortController: AbortController;
 }
 

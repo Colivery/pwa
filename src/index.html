@@ -6,10 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Colivery.app</title>
   <meta name="theme-color" content="#FF6A2A" />
-  <meta name="description" content="Distraction-free writing." />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
   <link rel="manifest" href="static/manifest.json">
   <link rel="shortcut icon" type="image/x-icon" href="static/assets/icons/icon-96x96.png">
   <link rel="apple-touch-icon" href="static/assets/icons/icon-192x192.png">
@@ -28,6 +25,15 @@
       padding: 0;
     }
   </style>
+
+  <script>
+    // vh fix for mobile browsers
+    let fixVh = function () {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    }
+    fixVh();
+    window.addEventListener('resize', fixVh);
+  </script>
 </head>
 
 <body>

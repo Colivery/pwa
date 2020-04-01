@@ -20,7 +20,7 @@ import { LoginGuard } from "./guard/login-guard";
 import { RegisterGuard } from "./guard/register-guard";
 import { MatLoadingIndicator } from "./component/mat/mat-loading-indicator";
 import { RegisterRoute } from "./page/register/register-route";
-import { UserProfile } from "./page/user-profile/user-profile";
+import { UserProfilePage } from "./page/user-profile/user-profile";
 import { DriverOrderList } from "./page/driver-order-list/driver-order-list";
 
 st.form = {
@@ -72,11 +72,11 @@ export class App extends st.component implements ILifecycle {
                         </template>
                         <ConsumerOrderAddPage />
                     </Route>
-                    <Route path={[UserProfile.ROUTE]} displayStyle={'inline'} guard={this.loginGuard.loggedIn}>
+                    <Route path={[UserProfilePage.ROUTE]} displayStyle={'inline'} guard={this.loginGuard.loggedIn}>
                         <template slot={Route.SLOT_NAME_LOADING_COMPONENT}>
                             <MatLoadingIndicator />
                         </template>
-                        <UserProfile />
+                        <UserProfilePage />
                     </Route>
 
                     <Route path={[DriverOrderList.ROUTE]} displayStyle={'inline'} guard={this.loginGuard.loggedIn}>

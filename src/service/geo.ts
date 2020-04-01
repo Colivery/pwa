@@ -1,14 +1,20 @@
-import { injectable } from "springtype/core/di";
+import { injectable, inject } from "springtype/core/di";
 import { Shop } from "../datamodel/shop";
-import { st } from "springtype/core";
 import Geohash from 'latlon-geohash';
 import { REVERSE_GEOCODE_API_ENDPOINT, ESRI_API_TOKEN, GEOCODE_API_ENDPOINT, GOOGLE_MAPS_GEOCODE_API_ENDPOINT, GOOGLE_MAPS_API_KEY, GOOGLE_MAPS_STATIC_API_ENDPOINT } from "../config/endpoints";
+import { UserService } from "./user";
+import { GPSLocation } from "../datamodel/gps-location";
 
 @injectable
 export class GeoService {
 
     // cache
     currentLocation: Coordinates;
+
+    static readonly EARTH_RADIUS_KM: number = 6372.8;
+
+    @inject(UserService)
+    userService: UserService;
 
     // https://docs.mapbox.com/api/search/#forward-geocoding
     async forwardGeoCode(searchText: string) {
@@ -43,7 +49,7 @@ export class GeoService {
         return await response.json();
     }
 
-    getStaticMapImageSrc(address: string, markerPosition: {lat: number, lng: number, lable: string, color: string}, width: number = 300, height: number = 200, zoomLevel: number = 13, mapType: 'roadmap' = 'roadmap') {
+    getStaticMapImageSrc(address: string, markerPosition: { lat: number, lng: number, lable: string, color: string }, width: number = 300, height: number = 200, zoomLevel: number = 13, mapType: 'roadmap' = 'roadmap') {
         // https://developers.google.com/maps/documentation/maps-static/intro
         return `${GOOGLE_MAPS_STATIC_API_ENDPOINT}?center=${address}&markers=color:${markerPosition.color.replace('#', '0x')}%7Clabel:${markerPosition.lable}%7C${markerPosition.lat},${markerPosition.lng}&size=${width.toFixed()}x${height.toFixed()}&zoom=${zoomLevel}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`;
     }
@@ -99,23 +105,29 @@ export class GeoService {
         return ways;
     }
 
-    async getCurrentLocation(): Promise<Coordinates> {
+    async getCurrentLocation(): Promise<GPSLocation> {
+
         if (this.currentLocation) {
             return this.currentLocation;
         }
-        this.currentLocation = await new Promise((resolve: Function, reject: Function) => {
-            navigator.geolocation.getCurrentPosition((pos) => {
-                resolve(pos.coords);
-            }, (err) => {
-                reject(err);
-            }, {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            });
-        });
 
-        return this.currentLocation;
+        try {
+            this.currentLocation = await new Promise((resolve: Function, reject: Function) => {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    resolve(pos.coords);
+                }, (err) => {
+                    reject(err);
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                });
+            }); 
+            return this.currentLocation;
+        } catch (e) {
+            const ownUserProfile = await this.userService.getUserProfile();
+            return ownUserProfile.geo_location;
+        }
     }
 
     toRad(n: number): number {
@@ -126,16 +138,19 @@ export class GeoService {
         return Geohash.encode(lat, lon, precision);
     }
 
-    getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
-        const radLat1 = Math.PI * lat1 / 180;
-        const radLat2 = Math.PI * lat2 / 180;
-        const theta = lon1 - lon2;
-        const radtheta = Math.PI * theta / 180;
-        let dist = Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radtheta);
-        dist = Math.acos(dist);
-        dist = this.toRad(dist);
-        dist = dist * 60 * 1.1515;
-        return dist * 1.609344
+    roundTo1Decimal(x: number): number {
+        return Math.round(x * 10) / 10;
+    }
+
+    haversine(position: GPSLocation, position2: GPSLocation): number {
+        let dLat = this.toRad(position2.latitude - position.latitude);
+        let dLon = this.toRad(position2.longitude - position.longitude);
+        let originLat = this.toRad(position.latitude);
+        let destinationLat = this.toRad(position2.latitude);
+
+        let a = Math.pow(Math.sin(dLat / 2), 2) + Math.pow(Math.sin(dLon / 2), 2) * Math.cos(originLat) * Math.cos(destinationLat);
+        let c = 2 * Math.asin(Math.sqrt(a));
+        return GeoService.EARTH_RADIUS_KM * c;
     }
 
     getBBoxWithDistance(lat: number, lon: number, distanceMeters: number) {

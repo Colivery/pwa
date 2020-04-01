@@ -18,6 +18,10 @@ html, body {
   background-color: $colivery-green;
 }
 
+.hint {
+  color: #ccc;
+}
+
 .header {
   font-weight: bold;
   margin-top: 50px;
@@ -121,6 +125,7 @@ input[type="radio"]:not(:checked).valid + span:after {
     height: 100vh !important;
     width: 100% !important;
     max-height: 100vh !important;
+    height: calc(var(--vh, 1vh) * 100) !important;
   }
   .modal.modal-fixed-footer .modal-content {
     height: calc(100vh - 56px) !important;
@@ -130,6 +135,10 @@ input[type="radio"]:not(:checked).valid + span:after {
   ::-webkit-scrollbar {
     display: none;
   }
+}
+
+h5 .order-card-icon {
+  font-size: 1.7rem;
 }
 
 .static-map {

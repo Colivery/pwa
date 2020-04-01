@@ -1,4 +1,6 @@
-export const getOrderStatusText = (status: string) => {
+import { OrderStatus } from "../datamodel/order";
+
+export const getOrderStatusText = (status: OrderStatus) => {
     switch (status) {
         case "accepted":
             return "Auf dem Weg zu Dir";

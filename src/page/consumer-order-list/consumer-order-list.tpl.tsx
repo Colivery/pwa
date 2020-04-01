@@ -16,8 +16,6 @@ export default (component: ConsumerOrderListPage) => (
 
             <div class="horizontal-scroll hide" ref={{ myOrdersScrollContainer: component }}></div>
 
-            <br /><br /><br />
-
             <span class="valign-wrapper hide" style={{ flexDirection: 'column' }} ref={{ loadingComponent: component }}>
                 <div class="preloader-wrapper active center-align">
                     <div class="spinner-layer spinner-green-only">
@@ -30,7 +28,20 @@ export default (component: ConsumerOrderListPage) => (
                         </div>
                     </div>
                 </div>
+                <br /><br />
             </span>
+
+            <center>
+                <p class="hint material-align-middle">
+                    <i class="material-icons">arrow_left</i> scrollen / swipen <i class="material-icons">arrow_right</i>
+                </p>
+            </center>
+
+            <br />
+            <center>
+                <a href="javascript:" onClick={component.onAddButtonClick} class="btn btn-large red pulse waves-effect waves-light material-align-middle"><i class="material-icons">add</i> Neuer Auftrag</a>
+            </center>
+
         </div>
 
         <MatModal ref={{ myOrderDetailsModal: component }}>
@@ -60,12 +71,7 @@ export default (component: ConsumerOrderListPage) => (
             </template>
         </MatModal>
 
-        <a onClick={component.onAddButtonClick} class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
-            <i class="material-icons">add</i>
-        </a>
-
-
-        <a onClick={component.onRefreshButtonClick} ref={{ refreshButton: component }} style={{ marginRight: '80px', marginTop: '10px' }} class="action-button btn-floating btn-large halfway-fab waves-effect waves-light btn-small red pulse">
+        <a onClick={component.onRefreshButtonClick} ref={{ refreshButton: component }} class="action-button btn-floating btn-large halfway-fab waves-effect waves-light red pulse">
             <i class="material-icons">refresh</i>
         </a>
 

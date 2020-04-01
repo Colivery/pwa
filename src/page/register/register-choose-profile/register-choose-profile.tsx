@@ -6,7 +6,7 @@ import {component} from "springtype/web/component";
 import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
 import tpl from "./register-choose-profile.tpl";
 import {PreferenceService} from "../../../service/preference";
-import {Profile} from "../../../types/profile";
+import {Profile} from "../../../datamodel/profile";
 
 @component({
     tpl

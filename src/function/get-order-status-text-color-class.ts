@@ -1,8 +1,9 @@
-export const getOrderStatusTextColorClass = (status: string) => {
+import { OrderStatus } from "../datamodel/order";
+
+export const getOrderStatusTextColorClass = (status: OrderStatus) => {
     switch (status) {
         default:
         case "accepted":
-        case "open":
             return "green-text";
         case "to_be_delivered":
             return "red-text";

@@ -197,6 +197,9 @@ export default (component: ConsumerOrderAddPage) => (
             <h4 class={'center'}>Auftrag aufgeben</h4>
 
                 Das wars schon. Du kannst den Auftrag jetzt einreichen. Aber hast Du auch geprüft, dass Du genug Bargeld zuhause hast, um die Fahrer*in zu bezahlen? Bist Du Dir sicher?
+                
+                <br /><br />
+                p.s.: Wenn du deinen Auftrag abschickst, kann der Fahrer, der deinen Auftrag annimmt, deine Kontaktinformationen und Adresse sehen.
 
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>

@@ -1,17 +1,14 @@
-import {Location} from "./location";
+import { GPSLocation } from "./gps-location";
 
-export interface IUserProfileRequest {
-    geo_location: Location,
+export interface UserProfile {
+    user_id?: string;
+    geo_location: GPSLocation,
     phone: string;
+    email?: string;
     first_name: string;
     last_name: string;
-    address: string
+    address: string;
 }
 
-export interface IUserProfileResponse extends IUserProfileRequest {
-    user_id: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    support_member: boolean;
+export interface IUserProfileResponse extends UserProfile {
 }

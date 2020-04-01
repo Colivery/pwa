@@ -11,7 +11,7 @@ import { MatModal } from "../../component/mat/mat-modal";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { address } from "../../validators/address";
 import { UserService } from "../../service/user";
-import { IUserProfileResponse } from "../../datamodel/user";
+import { IUserProfileResponse, UserProfile } from "../../datamodel/user";
 import { EsriMap } from "../../component/esri/EsriMap";
 import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
 import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
@@ -24,7 +24,7 @@ import { MatTextarea } from "../../component/mat/mat-textarea";
 @component({
     tpl
 })
-export class UserProfile extends st.staticComponent implements ILifecycle {
+export class UserProfilePage extends st.staticComponent implements ILifecycle {
 
     static ROUTE = "user-profile";
 
@@ -109,7 +109,7 @@ export class UserProfile extends st.staticComponent implements ILifecycle {
         });
     };
 
-    getDataToSave = () => {
+    getDataToSave = (): UserProfile => {
         const formState = this.formRef.getState() as any as IUserProfileFromState;
         return {
             first_name: formState.first_name,

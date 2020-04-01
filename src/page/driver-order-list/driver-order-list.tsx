@@ -7,9 +7,9 @@ import tpl from "./driver-order-list.tpl";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { ref } from "springtype/core/ref";
 import { inject } from "springtype/core/di";
-import { MatchingService } from "../../service/matching";
+import { MatchingService, IMatchingResponse } from "../../service/matching";
 import { GeoService } from "../../service/geo";
-import { OrderService } from "../../service/order";
+import { OrderService, DriverOwnOrdersResponse, DriverOwnOrderUnion, OwnOrderUnion } from "../../service/order";
 import { UserService } from "../../service/user";
 import { tsx } from "springtype/web/vdom";
 import { IVirtualNode } from "springtype/web/vdom/interface";
@@ -17,6 +17,8 @@ import { MatModal } from "../../component/mat/mat-modal";
 import { formatDate } from "../../function/formatDate";
 import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
 import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
+import { Order } from "../../datamodel/order";
+import { GPSLocation } from "../../datamodel/gps-location";
 
 export interface ILocation {
     latitude: number;
@@ -103,10 +105,10 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
     isLoading: boolean = true;
     activeCard: HTMLElement;
     activeTab: 'my-orders' | 'open-orders' = 'open-orders';
-    openOrdersDisplayData = [];
-    myOrdersDisplayData = [];
-    activeOrderContext: any;
-    mySelectedOrderUnion;
+    openOrdersDisplayData: Array<Order> = [];
+    myOrdersDisplayData: DriverOwnOrdersResponse = [];
+    activeOrderContext: Order;
+    mySelectedOrderUnion: DriverOwnOrderUnion;
 
     async onRouteEnter() {
         this.updateOpenOrdersList();
@@ -128,7 +130,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         lat: number,
         lng: number
     }) {
-
+        
         // update static map
         const mapSrc = this.geoService.getStaticMapImageSrc('', {
             ...location,
@@ -147,22 +149,13 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         this.openOrdersScrollContainer.classList.add('hide');
         this.loadingIndicator.setVisible(true);
 
-        const currentPosition = await this.geoService.getCurrentLocation();
-        const serviceResonse = await this.engineService.search(currentPosition.latitude, currentPosition.longitude, this.range);
-
-        const unionOrders = [];
+        let currentPosition: GPSLocation = await this.geoService.getCurrentLocation();
         const ownUserProfile = await this.userService.getUserProfile();
 
+        const serviceResonse = await this.engineService.search(currentPosition.latitude, currentPosition.longitude, this.range);
+        const unionOrders = [];
+
         for (let order of (await serviceResonse.data).orders) {
-
-            // TODO: remove when created and updated is in place
-            /*
-            const orderData = await this.orderService.getById(order.id);
-
-            order = {
-                ...order,
-                ...orderData
-            }*/
 
             // do not allow to self-assign; don't even show own orders
             if (ownUserProfile.user_id !== order.user_id) {
@@ -185,14 +178,16 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         this.isLoading = false;
     }
 
-    renderOpenOrders = () => {
+    renderOpenOrders = async () => {
+
+        const currentPosition = await this.geoService.getCurrentLocation();
 
         if (this.openOrdersDisplayData.length === 0) {
             this.openOrdersScrollContainer.innerHTML = '<p><center><strong>Klasse, es gibt nichts zu tun 👍</strong></center></p>.';
             return;
         }
 
-        st.render(this.openOrdersDisplayData.map((order: any) =>
+        st.render(this.openOrdersDisplayData.map((order: Order) =>
             <a href="javascript:" class="order-card-container" data-id={order.id} onclick={this.onOrderClick}>
                 <div class="order-card">
                     <div class="order-card-inner">
@@ -213,31 +208,41 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                                 <i class="material-icons order-card-icon">shopping_cart</i> {order.items.length} Teile
                             </div>
                         </div>
+
+                        <div class="order-line">
+                            <div class="material-align-middle truncate">
+                                <i class="material-icons order-card-icon">near_me</i> {this.geoService.roundTo1Decimal(this.geoService.haversine(currentPosition, order.dropoff_location) * 1.2 /* make it more realistic */)} km entfernt
+                                </div>
+                        </div>
+
+                        {/*
                         <div class="order-line">
                             <div class="material-align-middle truncate">
                                 <i class="material-icons order-card-icon">fingerprint</i> <code>{order.id.substring(0, 6)}</code>
                             </div>
-                        </div>
-                        <a href="javascript:" data-id={order.id} onClick={this.onOrderAccept} class="btn material-align-middle success-button"><i class="material-icons">done</i> &nbsp;Auftrag Annehmen</a>
+                        </div> */}
+                        <a href="javascript:" data-id={order.id} class="btn material-align-middle success-button"><i class="material-icons">done</i> &nbsp;Annehmen</a>
                     </div>
                 </div>
             </a>
         ) as unknown as IVirtualNode, this.openOrdersScrollContainer)
     }
 
-    renderMyOrders = () => {
+    renderMyOrders = async () => {
+
+        const currentPosition = await this.geoService.getCurrentLocation();
 
         if (this.myOrdersDisplayData.length === 0) {
             this.myOrdersScrollContainer.innerHTML = '<p><center><strong>Du hast noch keine Fahrten.</strong></center></p>';
             return;
         }
 
-        st.render(this.myOrdersDisplayData.map((orderUnion: any, index: number) =>
+        st.render(this.myOrdersDisplayData.map((orderUnion: DriverOwnOrderUnion, index: number) =>
             <a href="javascript:" data-id={orderUnion.order.id}>
                 <div class="order-card">
                     <div class="order-card-inner">
                         <div class={["order-header", "material-align-middle", "order-header-orange", orderUnion.order.status === 'delivered' ? "order-header-green" : '']}>
-                            Auftrag: &nbsp; <i class="material-icons order-card-icon">fingerprint</i> <code>{orderUnion.order.id.substring(0, 6)}</code>
+                            Auftrag von:
                         </div>
                         <h4 class="order-title truncate">
                             {/*order.shop_name*/}
@@ -261,6 +266,19 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                                 <i class="material-icons order-card-icon">shopping_cart</i> {orderUnion.order.items.length} Teile
                             </div>
                         </div>
+
+                        <div class="order-line">
+                            <div class="material-align-middle truncate">
+                                <i class="material-icons order-card-icon">near_me</i> {this.geoService.roundTo1Decimal(this.geoService.haversine(currentPosition, orderUnion.order.dropoff_location) * 1.2)} km entfernt
+                                </div>
+                        </div>
+
+                        {/*
+                        <div class="order-line">
+                            <div class="material-align-middle truncate">
+                                <i class="material-icons order-card-icon">fingerprint</i> <code>{orderUnion.order.id.substring(0, 6)}</code>
+                                </div>
+                        </div> */}
                         <a href="javascript:" data-index={index} onClick={this.onOrderShowDetails} class="btn material-align-middle info-button"><i class="material-icons">visibility</i> &nbsp;Details</a>
                         {orderUnion.order.status !== 'delivered' ? <a href="javascript:" data-index={index} onClick={this.onOrderComplete} class="btn material-align-middle success-button"><i class="material-icons">done_all</i> &nbsp;Abschließen</a> : ''}
                         {orderUnion.order.status !== 'delivered' ? <a href="javascript:" data-index={index} onClick={this.onOrderDeclide} class="btn material-align-middle cancel-button"><i class="material-icons">cancel</i> &nbsp;Abbrechen</a> : ''}
@@ -278,6 +296,11 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         this.myOrderDetailsContainer.innerHTML = '';
 
         st.render(<div class="container details-modal">
+            <center>
+                <h5 class="material-align-middle">
+                    <i class="material-icons order-card-icon">fingerprint</i> <code>{orderUnion.order.id.substring(0, 6)}</code>
+                </h5>
+            </center>
 
             <br />
 
@@ -316,19 +339,22 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                 </ul>
             </div>
 
-            <h5><span class="material-align-middle">
-                <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;Hinweise
+            {orderUnion.order.hint.trim() ? <fragment>
+                <h5><span class="material-align-middle">
+                    <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;Hinweise
                 </span>
-            </h5>
+                </h5>
+                <p>{orderUnion.order.hint}</p>
+            </fragment> : null}
 
-            <p>{orderUnion.order.hint}</p>
+            {orderUnion.order.max_price ? <fragment>
+                <h5><span class="material-align-middle">
+                    <i class="material-icons order-card-icon">monetization_on</i>&nbsp;Maximalbetrag
+                    </span>
+                </h5>
 
-            {orderUnion.order.max_price ? <fragment><h5><span class="material-align-middle">
-                <i class="material-icons order-card-icon">monetization_on</i>&nbsp;Maximalbetrag
-                </span>
-            </h5>
-
-                <p>Der Einkauf darf <strong>maximal {orderUnion.order.max_price} (€) kosten.</strong></p></fragment> : ''}
+                <p>Der Einkauf darf <strong>maximal {orderUnion.order.max_price} (€) kosten.</strong></p>
+            </fragment> : ''}
 
         </div>, this.myOrderDetailsContainer);
 
@@ -346,7 +372,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         this.updateMyOrdersList();
     }
 
-    getMyOrderUnionByEvent(evt: MouseEvent) {
+    getMyOrderUnionByEvent(evt: MouseEvent): DriverOwnOrderUnion {
         const orderIndex = parseInt((evt.target as HTMLElement).closest('a').getAttribute('data-index'));
         return this.myOrdersDisplayData[orderIndex];
     }
@@ -402,7 +428,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
 
         const driverOwnOrders = await this.orderService.getDriverOwnOrders();
 
-        driverOwnOrders.sort((orderA, orderB) => orderA.created > orderB.created ? 1 : -1);
+        driverOwnOrders.sort((unionA: DriverOwnOrderUnion, unionB: DriverOwnOrderUnion) => unionA.order.created > unionB.order.created ? 1 : -1);
 
         this.myOrdersDisplayData = driverOwnOrders;
 
@@ -473,7 +499,15 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
             };
 
             st.render(<fragment>
+                <center>
+                    <h5 class="material-align-middle">
+                        <i class="material-icons order-card-icon">fingerprint</i> <code>{orderUnion.order.id.substring(0, 6)}</code>
+                    </h5>
+                </center>
+                <br />
+                Bist Du Dir sicher, dass Du diese Fahrt übernehmen kannst? Es ist sehr frustrierend für die andere Person, wenn es doch nicht klappt.
 
+                Folgendes müsstest Du für die Person kaufen:
 
                 <h5><span class="material-align-middle">
                     <i class="material-icons order-card-icon">shopping_cart</i>&nbsp;Artikel
@@ -488,12 +522,14 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
                     </ul>
                 </div>
 
-                <h5><span class="material-align-middle">
-                    <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;Hinweise
+                {orderUnion.order.hint.trim() ? <fragment>
+                    <h5><span class="material-align-middle">
+                        <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;Hinweise
                 </span>
-                </h5>
+                    </h5>
 
-                <p>{orderUnion.order.hint}</p>
+                    <p>{orderUnion.order.hint}</p>
+                </fragment> : null}
 
                 {orderUnion.order.max_price ? <fragment><h5><span class="material-align-middle">
                     <i class="material-icons order-card-icon">monetization_on</i>&nbsp;Maximalbetrag
@@ -505,7 +541,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
             </fragment>, this.confirmOrderItemListContainer);
 
             this.confirmAcceptOrderModal.toggle();
-        }, 50)
+        }, 150)
     }
 
     onOrderClick = async (evt: MouseEvent) => {
@@ -543,5 +579,8 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
 
         // activate card
         this.toggleCardActivation(card);
+
+        // open modal for accept
+        this.onOrderAccept();
     }
 }

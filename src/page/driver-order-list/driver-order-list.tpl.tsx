@@ -30,6 +30,13 @@ export default (component: DriverOrderList) => (
 
                 <br />
                 <div class="horizontal-scroll hide" ref={{ openOrdersScrollContainer: component }}></div>
+
+                <center>
+                    <p class="hint material-align-middle">
+                        <i class="material-icons">arrow_left</i> scrollen / swipen <i class="material-icons">arrow_right</i>
+                    </p>
+                </center>
+
                 <br /><br /><br />
 
                 <span class="valign-wrapper hide" style={{ flexDirection: 'column' }} ref={{ openOrdersLoadingComponent: component }}>
@@ -53,7 +60,14 @@ export default (component: DriverOrderList) => (
 
             <span id="my-orders" class="hide" ref={{ myOrdersTab: component }}>
                 <div class="horizontal-scroll hide" ref={{ myOrdersScrollContainer: component }}></div>
-                <br /><br /><br />
+
+                <center>
+                    <p class="hint material-align-middle">
+                        <i class="material-icons">arrow_left</i> scrollen / swipen <i class="material-icons">arrow_right</i>
+                    </p>
+                </center>
+                
+                <br /><br />
 
                 <span class="valign-wrapper hide" style={{ flexDirection: 'column' }} ref={{ myOrdersLoadingComponent: component }}>
 
@@ -71,6 +85,7 @@ export default (component: DriverOrderList) => (
                         </div>
                     </div>
                 </span>
+                <br />
             </span>
         </div>
 
@@ -78,9 +93,9 @@ export default (component: DriverOrderList) => (
 
             <h4 class={'center'}><i class="material-icons">done_all</i> Auftrag annehmen</h4>
 
-            Bist Du Dir sicher, dass Du diese Fahrt übernehmen kannst? Es ist sehr frustrierend für die andere Person, wenn es doch nicht klappt. Folgendes müsstest Du für die Person kaufen:
-
             <div ref={{ confirmOrderItemListContainer: component }}></div>
+
+            p.s.: Wenn du einen Auftrag übernimmst, werden deine Kontaktinformationen an den Auftraggeber übermittelt.
 
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={component.onCancelAccept} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>

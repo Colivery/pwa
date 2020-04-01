@@ -1,19 +1,8 @@
 import { injectable, inject } from "springtype/core/di";
 import { st } from "springtype/core";
-import { IUserProfileRequest, IUserProfileResponse } from "../datamodel/user";
+import { UserProfile, IUserProfileResponse } from "../datamodel/user";
 import { SERVICE_API_ENDPOINT } from "../config/endpoints";
 import { StorageService } from "./storage";
-
-export interface UserData {
-    first_name: string;
-    phone: string;
-    last_name: string;
-    address: string;
-    geo_location: {
-        latitude: number;
-        longitude: number;
-    }
-}
 
 @injectable
 export class UserService {
@@ -53,7 +42,7 @@ export class UserService {
         }
     }
 
-    async upsertUserProfile(userProfileData: IUserProfileRequest): Promise<void> {
+    async upsertUserProfile(userProfileData: UserProfile): Promise<void> {
 
         this.userProfile = {
             ...this.userProfile,

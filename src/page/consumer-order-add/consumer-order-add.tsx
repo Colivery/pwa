@@ -10,13 +10,15 @@ import { MatInput } from "../../component/mat/mat-input";
 import { MatModal } from "../../component/mat/mat-modal";
 import { ConsumerOrderListPage } from "../consumer-order-list/consumer-order-list";
 import { OrderService } from "../../service/order";
-import { OrderStatus } from "../../types/order-status";
-import { OrderItemStatus } from "../../types/order-item-status";
+import { OrderStatus } from "../../datamodel/order-status";
+import { OrderItemStatus } from "../../datamodel/order-item-status";
 import { Shop } from "../../datamodel/shop";
 import { EsriMap } from "../../component/esri/EsriMap";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { tsx } from "springtype/web/vdom";
 import { UserService } from "../../service/user";
+import { GPSLocation } from "../../datamodel/gps-location";
+import { OrderItem } from "../../datamodel/order";
 
 @component({
     tpl
@@ -226,10 +228,10 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
             localUserData.geo_location.latitude, localUserData.geo_location.longitude, 5
         );
 
-        let pickupAddress;
-        let pickupLocation;
-        let shopName;
-        let pickupLocationGeohash;
+        let pickupAddress: string;
+        let pickupLocation: GPSLocation;
+        let shopName: string;
+        let pickupLocationGeohash: string;
 
         // optional selected location (otherwise determined by matching service API)
         if (this.selectedLocation) {
@@ -258,10 +260,10 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
                 "latitude": localUserData.geo_location.latitude,
                 "longitude": localUserData.geo_location.longitude
             },
-            "items": this.orderItems.map((orderItem) => {
+            "items": this.orderItems.map((orderItem: OrderItem) => {
                 orderItem.status = OrderItemStatus.TODO;
                 return orderItem;
-            })
+            }).filter((orderItem: OrderItem) => !!orderItem.description)
         });
 
         // close modal
@@ -281,8 +283,6 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
     }
 
     async onAfterRender() {
-
-        (this.articleDescription.inputRef.el as HTMLInputElement).maxLength = 30;
 
         if (this.olMapRef) {
             this.updateMapMarker();

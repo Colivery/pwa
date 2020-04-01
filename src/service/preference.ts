@@ -2,7 +2,7 @@ import { injectable, inject } from "springtype/core/di";
 import { FirebaseService } from "./firebase";
 import { FIREBASE_CONFIG } from "../config/firebase";
 import { StorageService } from "./storage";
-import { Profile } from "../types/profile";
+import { Profile } from "../datamodel/profile";
 
 const PROFILE = 'profile';
 

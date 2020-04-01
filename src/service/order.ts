@@ -1,5 +1,23 @@
 import { injectable } from "springtype/core/di";
 import { SERVICE_API_ENDPOINT } from "../config/endpoints";
+import { Order } from "../datamodel/order";
+import { UserProfile } from "../datamodel/user";
+
+export interface OwnOrderUnion {
+    order: Order;
+    creator: UserProfile;
+    driver?: UserProfile;
+}
+
+export type OwnOrdersResponse = Array<OwnOrderUnion>;
+
+export interface DriverOwnOrderUnion {
+    order: Order;
+    creator?: UserProfile;
+    driver: UserProfile;
+}
+
+export type DriverOwnOrdersResponse = Array<DriverOwnOrderUnion>
 
 @injectable
 export class OrderService {
@@ -50,7 +68,7 @@ export class OrderService {
         });
     }
 
-    async accept(id: string) {
+    async accept(id: string): Promise<UserProfile> {
         const response = await fetch(`${SERVICE_API_ENDPOINT}/order/accept?order_id=${id}`, {
             method: 'POST',
             mode: 'cors', // no-cors, *cors, same-origin
@@ -66,7 +84,7 @@ export class OrderService {
         return await response.json();
     }
 
-    async getById(id: string) {
+    async getById(id: string): Promise<Order> {
         const response = await fetch(`${SERVICE_API_ENDPOINT}/order?order_id=${id}`, {
             method: 'GET',
             mode: 'cors', // no-cors, *cors, same-origin
@@ -82,7 +100,7 @@ export class OrderService {
         return await response.json();
     }
 
-    async getOwnOrders() {
+    async getOwnOrders(): Promise<OwnOrdersResponse> {
 
         return (await fetch(`${SERVICE_API_ENDPOINT}/order/own`, {
             method: 'GET',
@@ -98,7 +116,7 @@ export class OrderService {
         })).json();
     }
 
-    async getDriverOwnOrders() {
+    async getDriverOwnOrders(): Promise<DriverOwnOrdersResponse> {
 
         return (await fetch(`${SERVICE_API_ENDPOINT}/order/driver/own`, {
             method: 'GET',
@@ -114,7 +132,7 @@ export class OrderService {
         })).json();
     }
 
-    async createOrder(order: any) {
+    async createOrder(order: any): Promise<Order> {
 
         const response = await fetch(`${SERVICE_API_ENDPOINT}/order`, {
             method: 'POST',

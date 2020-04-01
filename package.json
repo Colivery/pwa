@@ -4,7 +4,7 @@
   "description": "MVP PWA",
   "scripts": {
     "clean": "st-run st-rm-rf dist",
-    "prestart:prod": "st-run st-mkdir public/static/assets/icons ++ st-cp static/manifest.json public/static ++ st-cp static/assets/icons public/static/assets",
+    "prestart:prod": "st-run st-mkdir public/static/assets/icons ++ st-cp static/manifest.json public/static ++ st-cp static/assets/icons/* public/static/assets/icons",
     "start:prod": "cross-env NODE_ENV=production st-start",
     "start": "cross-env NODE_ENV=development st-start",
     "deploy": "firebase deploy"
