@@ -7,9 +7,9 @@ import tpl from "./driver-order-list.tpl";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { ref } from "springtype/core/ref";
 import { inject } from "springtype/core/di";
-import { MatchingService, IMatchingResponse } from "../../service/matching";
+import { MatchingService } from "../../service/matching";
 import { GeoService } from "../../service/geo";
-import { OrderService, DriverOwnOrdersResponse, DriverOwnOrderUnion, OwnOrderUnion } from "../../service/order";
+import { OrderService, DriverOwnOrdersResponse, DriverOwnOrderUnion } from "../../service/order";
 import { UserService } from "../../service/user";
 import { tsx } from "springtype/web/vdom";
 import { IVirtualNode } from "springtype/web/vdom/interface";
@@ -28,7 +28,7 @@ export interface ILocation {
 @component({
     tpl
 })
-export class DriverOrderList extends st.staticComponent implements ILifecycle {
+export class DriverOrderList extends st.component implements ILifecycle {
 
     static ROUTE = "driver-order-list";
 
@@ -130,7 +130,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         lat: number,
         lng: number
     }) {
-        
+
         // update static map
         const mapSrc = this.geoService.getStaticMapImageSrc('', {
             ...location,
@@ -167,8 +167,6 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
 
         this.openOrdersDisplayData = unionOrders;
 
-        this.openOrdersScrollContainer.innerHTML = '';
-
         this.renderOpenOrders();
 
         this.openOrdersScrollContainer.classList.remove('hide');
@@ -183,11 +181,16 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         const currentPosition = await this.geoService.getCurrentLocation();
 
         if (this.openOrdersDisplayData.length === 0) {
-            this.openOrdersScrollContainer.innerHTML = '<p><center><strong>Klasse, es gibt nichts zu tun 👍</strong></center></p>.';
+            this.renderPartial(
+                <p>
+                    <center><strong>Klasse, es gibt nichts zu tun 👍</strong></center>
+                </p>, 
+                this.openOrdersScrollContainer
+            );
             return;
         }
 
-        st.render(this.openOrdersDisplayData.map((order: Order) =>
+        this.renderPartial(this.openOrdersDisplayData.map((order: Order) =>
             <a href="javascript:" class="order-card-container" data-id={order.id} onclick={this.onOrderClick}>
                 <div class="order-card">
                     <div class="order-card-inner">
@@ -233,11 +236,11 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         const currentPosition = await this.geoService.getCurrentLocation();
 
         if (this.myOrdersDisplayData.length === 0) {
-            this.myOrdersScrollContainer.innerHTML = '<p><center><strong>Du hast noch keine Fahrten.</strong></center></p>';
+            this.renderPartial(<p><center><strong>Du hast noch keine Fahrten.</strong></center></p>, this.myOrdersScrollContainer);
             return;
         }
 
-        st.render(this.myOrdersDisplayData.map((orderUnion: DriverOwnOrderUnion, index: number) =>
+        this.renderPartial(this.myOrdersDisplayData.map((orderUnion: DriverOwnOrderUnion, index: number) =>
             <a href="javascript:" data-id={orderUnion.order.id}>
                 <div class="order-card">
                     <div class="order-card-inner">
@@ -293,9 +296,7 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         const myOrdersDataIndex = parseInt((evt.target as HTMLElement).closest('a').getAttribute('data-index'));
         const orderUnion = this.myOrdersDisplayData[myOrdersDataIndex];
 
-        this.myOrderDetailsContainer.innerHTML = '';
-
-        st.render(<div class="container details-modal">
+        this.renderPartial(<div class="container details-modal">
             <center>
                 <h5 class="material-align-middle">
                     <i class="material-icons order-card-icon">fingerprint</i> <code>{orderUnion.order.id.substring(0, 6)}</code>
@@ -424,8 +425,6 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
         this.loadingIndicator.setVisible(true);
         this.myOrdersLoadingComponent.classList.remove('hide');
 
-        this.myOrdersScrollContainer.innerHTML = '';
-
         const driverOwnOrders = await this.orderService.getDriverOwnOrders();
 
         driverOwnOrders.sort((unionA: DriverOwnOrderUnion, unionB: DriverOwnOrderUnion) => unionA.order.created > unionB.order.created ? 1 : -1);
@@ -492,13 +491,11 @@ export class DriverOrderList extends st.staticComponent implements ILifecycle {
 
         setTimeout(() => {
 
-            this.confirmOrderItemListContainer.innerHTML = '';
-
             const orderUnion = {
                 order: this.activeOrderContext
             };
 
-            st.render(<fragment>
+            this.renderPartial(<fragment>
                 <center>
                     <h5 class="material-align-middle">
                         <i class="material-icons order-card-icon">fingerprint</i> <code>{orderUnion.order.id.substring(0, 6)}</code>

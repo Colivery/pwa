@@ -21,7 +21,7 @@ export interface EsriMapProps {
 }
 
 @component
-export class EsriMap extends st.staticComponent<EsriMapProps> {
+export class EsriMap extends st.component<EsriMapProps> {
 
     tag: 'div';
 

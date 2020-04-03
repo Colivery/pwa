@@ -25,5 +25,4 @@ export class RegisterChooseProfile extends st.component implements ILifecycle {
             path: profile + '-order-list'
         };
     }
-
 }

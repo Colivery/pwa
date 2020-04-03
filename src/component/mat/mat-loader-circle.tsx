@@ -4,7 +4,7 @@ import { ILifecycle } from "springtype/web/component/interface";
 import { tsx } from "springtype/web/vdom";
 
 @component({ tag: 'span' })
-export class MatLoaderCircle extends st.staticComponent implements ILifecycle {
+export class MatLoaderCircle extends st.component implements ILifecycle {
 
     class = ['valign-wrapper', 'hide'];
 

@@ -16,7 +16,7 @@ export interface NavHeaderProps {
 }
 
 @component
-export class NavHeader extends st.staticComponent<NavHeaderProps> {
+export class NavHeader extends st.component<NavHeaderProps> {
 
     @inject(PreferenceService)
     preferenceService: PreferenceService;
@@ -102,9 +102,7 @@ export class NavHeader extends st.staticComponent<NavHeaderProps> {
 
     renderMenuItems = () => {
 
-        this.menuOverlay.innerHTML = '';
-
-        st.render(<fragment>
+        this.renderPartial(<fragment>
             <a href="javascript:" onClick={() => {
                 this.onUserProfileClick()
             }}>

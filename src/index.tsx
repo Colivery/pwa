@@ -22,6 +22,7 @@ import { MatLoadingIndicator } from "./component/mat/mat-loading-indicator";
 import { RegisterRoute } from "./page/register/register-route";
 import { UserProfilePage } from "./page/user-profile/user-profile";
 import { DriverOrderList } from "./page/driver-order-list/driver-order-list";
+import { GeoService } from "./service/geo";
 
 st.form = {
     ...st.form,
@@ -38,6 +39,23 @@ export class App extends st.component implements ILifecycle {
 
     @inject(RegisterGuard)
     registerGuard: RegisterGuard;
+
+    @inject(GeoService)
+    geoService: GeoService;
+
+    /*
+    constructor() {
+        super();
+
+        console.log('geoService', this.geoService.haversine({
+            latitude: 48.330713,
+            longitude: 12.003011
+        }, {
+            latitude: 48.348057,
+            longitude: 12.077770
+        }));
+    }
+    */
 
     render() {
         return (

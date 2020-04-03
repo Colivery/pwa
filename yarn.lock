@@ -8185,10 +8185,10 @@ split-string@^3.0.1, split-string@^3.0.2:
   dependencies:
     extend-shallow "^3.0.0"
 
-springtype@springtype@2.0.0-beta.50:
-  version "2.0.0-beta.50"
-  resolved "https://registry.yarnpkg.com/springtype/-/springtype-2.0.0-beta.50.tgz#ce4087b9eb9359458e6a3cd22f22a25f400cf916"
-  integrity sha512-gjg+ug2WWxe0Ukr7+HIyEPk/QwWs0H4P7S6fOW5BzxBdPsAFEWNeEoOksLkC/q4yctj5z9YixphspwcdlhHOHQ==
+springtype@springtype@2.0.0-beta.64:
+  version "2.0.0-beta.64"
+  resolved "https://registry.yarnpkg.com/springtype/-/springtype-2.0.0-beta.64.tgz#d363a66e2b445eef8be5579828a5ce434df16bbd"
+  integrity sha512-cX2uZmAMqyDs10AiT0aJSJQngLvS5R7d+tYCKFcGYU2MkqPARCJFY89WsF6vt9quE/lwbTqa14QN/Ywy9CTmQg==
 
 sprintf-js@~1.0.2:
   version "1.0.3"

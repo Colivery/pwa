@@ -1,12 +1,13 @@
-import {st} from "springtype/core";
-import {component} from "springtype/web/component";
-import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
-import {ref} from "springtype/core/ref";
-import {Form} from "springtype/web/form";
+import { st } from "springtype/core";
+import { component } from "springtype/web/component";
+import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
+import { ref } from "springtype/core/ref";
+import { Form } from "springtype/web/form";
 import "./register.scss";
-import tpl, {IRegisterFormState} from "./register.tpl";
-import {RegisterUserAddressPage} from "../register-user-address/register-user-address";
-import {ErrorMessage} from "../../../component/error-message/error-message";
+import tpl, { IRegisterFormState } from "./register.tpl";
+import { RegisterUserAddressPage } from "../register-user-address/register-user-address";
+import { ErrorMessage } from "../../../component/error-message/error-message";
+import { tsx } from "springtype/web/vdom";
 
 @component({
     tpl
@@ -14,12 +15,11 @@ import {ErrorMessage} from "../../../component/error-message/error-message";
 export class RegisterPage extends st.component implements ILifecycle {
     static ROUTE = "register";
 
-
     @ref
     formRef: Form;
 
     @ref
-    errorMessage: ErrorMessage;
+    errorMessage: HTMLElement;
 
     class = ['wrapper', 'valign-wrapper'];
 
@@ -29,8 +29,18 @@ export class RegisterPage extends st.component implements ILifecycle {
 
     async onNextClick() {
         try {
+
+            const data = this.formRef.getState() as any as IRegisterFormState;
+
+            if (data.password !== data.password_again) {
+
+                this.renderPartial(<ErrorMessage message={"Beide Passwörter müssen übereinstimmen."} class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />, this.errorMessage);
+                return;
+            } else {
+                this.renderPartial('', this.errorMessage);
+            }
+
             if (await this.formRef.validate()) {
-                const data = this.formRef.getState() as any as IRegisterFormState;
                 await window.authService.register(data.email, data.password);
                 delete data.password;
                 this.formRef.reset();
@@ -40,9 +50,8 @@ export class RegisterPage extends st.component implements ILifecycle {
                 };
             }
         } catch (e) {
-            this.errorMessage.message = e.message;
+
+            this.renderPartial(<ErrorMessage message={e.message} class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />, this.errorMessage);
         }
-
     }
-
 }

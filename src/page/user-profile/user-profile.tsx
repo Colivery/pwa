@@ -1,5 +1,5 @@
 import { st } from "springtype/core";
-import { component, state } from "springtype/web/component";
+import { component } from "springtype/web/component";
 import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import tpl, { IUserProfileFromState } from "./user-profile.tpl";
 import { inject } from "springtype/core/di";
@@ -12,7 +12,6 @@ import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { address } from "../../validators/address";
 import { UserService } from "../../service/user";
 import { IUserProfileResponse, UserProfile } from "../../datamodel/user";
-import { EsriMap } from "../../component/esri/EsriMap";
 import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
 import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
 import { MatLoaderCircle } from "../../component/mat/mat-loader-circle";
@@ -24,7 +23,7 @@ import { MatTextarea } from "../../component/mat/mat-textarea";
 @component({
     tpl
 })
-export class UserProfilePage extends st.staticComponent implements ILifecycle {
+export class UserProfilePage extends st.component implements ILifecycle {
 
     static ROUTE = "user-profile";
 
@@ -43,7 +42,6 @@ export class UserProfilePage extends st.staticComponent implements ILifecycle {
     @ref
     afterSaveModal: MatModal;
 
-    @state
     state: IUserProfileResponse;
 
     @ref
@@ -79,6 +77,7 @@ export class UserProfilePage extends st.staticComponent implements ILifecycle {
     }
 
     onAfterRender(): void {
+        this.loadingIndicator.toggle();
         if (this.state) {
             this.addressValidator()(this.state.address)
         }
@@ -101,7 +100,7 @@ export class UserProfilePage extends st.staticComponent implements ILifecycle {
             // render/update validated address display
             this.validatedUserAddress = address;
 
-            this.addressField.innerHTML = this.validatedUserAddress;
+            this.renderPartial(this.validatedUserAddress, this.addressField);
 
             // hide loaders, show map
             this.mapContainer.classList.remove('hide');
@@ -140,9 +139,7 @@ export class UserProfilePage extends st.staticComponent implements ILifecycle {
     private async loadData() {
         this.state = await this.userService.getUserProfile();
 
-        this.formContainer.innerHTML = '';
-
-        st.render(
+        this.renderPartial(
             <Form ref={{ formRef: this }}>
                 {this.getFormInputs()}
             </Form>, this.formContainer)
@@ -214,9 +211,5 @@ export class UserProfilePage extends st.staticComponent implements ILifecycle {
 
             <MatLoaderCircle ref={{ matLoaderCircle: this }} class={['col', 's12',]} />
         </fragment>
-    }
-
-    onAfterInitialRender() {
-        this.loadingIndicator.toggle();
     }
 }

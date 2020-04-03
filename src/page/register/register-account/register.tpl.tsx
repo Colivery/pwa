@@ -31,6 +31,15 @@ export default (component: RegisterPage) => (
                             'min-length': 'Bitte mindestens 7 Zeichen'
                         }}>
                     </MatInput>
+                    <MatInput name="password_again" label="Passwort Wiederholung" type="password"
+                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
+                        helperText="Bitte bestätige das Passwort"
+                        validators={[required, minLength(7)]}
+                        errorMessage={{
+                            required: 'Das ist ein Pflichtfeld',
+                            'min-length': 'Bitte mindestens 7 Zeichen'
+                        }}>
+                    </MatInput>
                 </div>
 
                 <div class="row">
@@ -39,9 +48,8 @@ export default (component: RegisterPage) => (
                     </div>
                 </div>
 
-                <div class="row">
-                    <ErrorMessage ref={{ errorMessage: component }}
-                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
+                <div class="row" ref={{ errorMessage: component }}>
+                   
                 </div>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's5', 'offset-m3', 'm2', 'offset-l3', 'l2']}
@@ -58,6 +66,5 @@ export default (component: RegisterPage) => (
 export interface IRegisterFormState {
     email: string;
     password: string;
-    accepted_privacy_policy: boolean;
-    accepted_terms_of_use: boolean;
+    password_again: string;
 }

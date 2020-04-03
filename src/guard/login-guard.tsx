@@ -14,13 +14,11 @@ import {UserService} from "../service/user";
 @injectable
 export class LoginGuard {
 
-
     @inject(AuthService)
     authService: AuthService;
 
     @inject(UserService)
     userService: UserService;
-
 
     @inject(PreferenceService)
     preferenceService: PreferenceService;

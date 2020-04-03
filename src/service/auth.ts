@@ -1,13 +1,12 @@
-import {inject, injectable} from "springtype/core/di";
-import {CryptoService} from "./crypto";
-import {FirebaseService} from "./firebase";
-import {FIREBASE_CONFIG} from "../config/firebase";
-import {st} from "springtype/core";
-import {StorageService} from "./storage";
-import {ConsumerOrderListPage} from "../page/consumer-order-list/consumer-order-list";
-import {LoginPage} from "../page/login/login";
-import {context} from "springtype/core/context";
-import {getUserContext, INITIAL_USER_CONTEXT_STATE, IUserContext, USER_CONTEXT} from "../context/user";
+import { inject, injectable } from "springtype/core/di";
+import { CryptoService } from "./crypto";
+import { FirebaseService } from "./firebase";
+import { FIREBASE_CONFIG } from "../config/firebase";
+import { st } from "springtype/core";
+import { StorageService } from "./storage";
+import { ConsumerOrderListPage } from "../page/consumer-order-list/consumer-order-list";
+import { context } from "springtype/core/context";
+import { getUserContext, INITIAL_USER_CONTEXT_STATE, IUserContext, USER_CONTEXT } from "../context/user";
 
 @injectable
 export class AuthService {
@@ -23,6 +22,8 @@ export class AuthService {
 
     @context(USER_CONTEXT)
     userContext: IUserContext = getUserContext();
+
+    userCredential: firebase.auth.UserCredential;
 
     async isLoggedIn() {
         await this.autoLogin();
@@ -49,8 +50,8 @@ export class AuthService {
 
         try {
             if (email && passwordHash) {
-                const result = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
-                this.userContext = {userId: result.user.uid, email: email};
+                this.userCredential = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
+                this.userContext = { userId: this.userCredential.user.uid, email: email };
                 return true;
             }
         } catch (e) {
@@ -59,10 +60,14 @@ export class AuthService {
         return false;
     }
 
+    async sendEmailVerification() {
+        this.firebaseService.auth().currentUser.sendEmailVerification();
+    }
+
     async login(email: string, password: string) {
         const passwordHash = this.cryptoService.hash(password);
         const result = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
-        this.userContext = {userId: result.user.uid, email: email};
+        this.userContext = { userId: result.user.uid, email: email };
         this.storeCredentials(email, passwordHash);
 
         st.route = {
@@ -79,10 +84,12 @@ export class AuthService {
     }
 
     async register(email: string, password: string): Promise<firebase.auth.UserCredential> {
+        this.firebaseService.auth().useDeviceLanguage();
         const passwordHash = this.cryptoService.hash(password);
         const result = await this.firebaseService.auth().createUserWithEmailAndPassword(email, passwordHash);
-        this.userContext = {userId: result.user.uid, email: email};
+        this.userContext = { userId: result.user.uid, email: email };
         this.storeCredentials(email, passwordHash);
+        this.sendEmailVerification();
         return result;
     }
 

@@ -18,7 +18,7 @@ import { Order, OrderItem } from "../../datamodel/order";
 @component({
     tpl
 })
-export class ConsumerOrderListPage extends st.staticComponent implements ILifecycle {
+export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
     static ROUTE = "consumer-order-list";
 
@@ -69,8 +69,6 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
         this.myOrdersScrollContainer.classList.add('hide');
         this.loadingIndicator.setVisible(true);
 
-        this.myOrdersScrollContainer.innerHTML = '';
-
         this.myOrdersDisplayData = await this.orderService.getOwnOrders();
         this.renderMyOrders();
 
@@ -98,7 +96,19 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
     renderMyOrders = () => {
 
         if (this.myOrdersDisplayData.length === 0) {
-            this.myOrdersScrollContainer.innerHTML = '<center><h6><strong>Brauchst Du Hilfe beim Einkaufen?</strong><br />Klicke auf den Button: "Neuer Auftrag".<br /><br /><strong>Möchtest Du lieber helfen?</strong> <br />Dann klick auf das Menü links oben und <br />wechsel in den Fahrer-Modus.<br /><br /></h6></center>';
+            this.renderPartial(
+                <center>
+                    <h6>
+                        <strong>Brauchst Du Hilfe beim Einkaufen?</strong><br />
+                        Klicke auf den Button: "Neuer Auftrag".
+                        <br /><br />
+                        <strong>Möchtest Du lieber helfen?</strong> <br />
+                        Dann klick auf das Menü links oben und <br />
+                        wechsel in den Fahrer-Modus.
+                        <br /><br />
+                    </h6>
+                </center>,
+                this.myOrdersScrollContainer);
             return;
         }
 
@@ -107,7 +117,7 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
 
         this.myOrdersDisplayData.sort((unionA: OwnOrderUnion, unionB: OwnOrderUnion) => unionA.order.created < unionB.order.created ? 1 : -1);
 
-        st.render(this.myOrdersDisplayData.map((union: OwnOrderUnion, index: number) =>
+        this.renderPartial(this.myOrdersDisplayData.map((union: OwnOrderUnion, index: number) =>
             <a href="javascript:" data-id={union.order.id}>
                 <div class="order-card">
                     <div class="order-card-inner">
@@ -179,9 +189,7 @@ export class ConsumerOrderListPage extends st.staticComponent implements ILifecy
 
         const union = this.getOwnOrderUnionByEvent(evt);
 
-        this.myOrderDetailsContainer.innerHTML = '';
-
-        st.render(<div class="container details-modal">
+        this.renderPartial(<div class="container details-modal">
 
             <center>
                 <h5 class="material-align-middle">

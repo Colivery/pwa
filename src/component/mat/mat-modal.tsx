@@ -2,7 +2,8 @@ import "./mat-modal.css"
 import {st} from "springtype/core";
 import {ILifecycle} from "springtype/web/component/interface";
 import {tsx} from "springtype/web/vdom";
-import {attr, component, state} from "springtype/web/component";
+import {attr, component} from "springtype/web/component";
+import { ref } from "springtype/core/ref";
 
 export interface IAttrMatModal {
 
@@ -23,14 +24,16 @@ export class MatModal extends st.component<IAttrMatModal> implements ILifecycle 
     @attr
     fixedFooter = true;
     
-    @state
+    @ref
+    container: HTMLElement;
+
     state: IMatModalState = {
         open: false
     };
 
     render() {
         return <fragment>
-            <div class={['modal', ...this.geOpenClass()]} tabindex="0">
+            <div ref={{ container: this }} class={['modal', this.fixedFooter ? 'modal-fixed-footer' : '']} tabindex="0">
                 <div class="modal-content">
                     {this.renderChildren()}
                 </div>
@@ -42,16 +45,13 @@ export class MatModal extends st.component<IAttrMatModal> implements ILifecycle 
         </fragment>
     }
 
-    geOpenClass() {
-        const classes = this.fixedFooter?['modal-fixed-footer']:[];
-        if (this.state.open) {
-            classes.push('open');
-        }
-        return classes;
-    }
-
     toggle() {
         this.state.open = !this.state.open;
-    }
 
+        if (this.state.open) {
+            this.container.classList.add('open');
+        } else {
+            this.container.classList.remove('open');
+        }
+    }
 }

@@ -73,11 +73,13 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
 
     render() {
         const id = getUniqueHTMLId();
+
         return <div class={['input-field']}>
             {this.renderSlot(MatInput.MAT_INPUT_BEFORE_INPUT_SLOT_NAME)}
             <Input ref={{inputRef: this}} id={id} type={this.type} name={this.name} validators={this.validators}
-                   disabled={this.disabled} value={this.value}
+                   disabled={this.disabled}
                    rows={this.rows}
+                   value={this.value}
                    max={this.max.toString()}
                    onStValidation={(evt) => {
                        this.onChange(evt)
@@ -89,8 +91,9 @@ export class MatInput extends st.component<IAttrMatInput> implements ILifecycle 
     }
 
     onAfterRender(hasDOMChanged: boolean): void {
-        if(this.internalValue){
+        if(typeof this.value !== 'undefined'){
            this.labelRef.classList.add(...this.inputRef.getActiveLabelClasses());
+           this.inputRef.el.value = this.value;
         }
     }
 

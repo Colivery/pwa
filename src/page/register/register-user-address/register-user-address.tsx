@@ -19,7 +19,7 @@ import { calculateAvailableHeightPercent } from "../../../function/calculate-ava
 @component({
     tpl
 })
-export class RegisterUserAddressPage extends st.staticComponent implements ILifecycle {
+export class RegisterUserAddressPage extends st.component implements ILifecycle {
 
     static ROUTE = "register-user-address";
 
@@ -75,7 +75,7 @@ export class RegisterUserAddressPage extends st.staticComponent implements ILife
             // render/update validated address display
             this.validatedUserAddress = address;
 
-            this.addressField.innerHTML = this.validatedUserAddress;
+            this.renderPartial(this.validatedUserAddress, this.addressField);
 
             // hide loaders, show map
             this.mapContainer.classList.remove('hide');

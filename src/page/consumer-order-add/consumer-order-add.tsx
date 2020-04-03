@@ -23,7 +23,7 @@ import { OrderItem } from "../../datamodel/order";
 @component({
     tpl
 })
-export class ConsumerOrderAddPage extends st.staticComponent implements ILifecycle {
+export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
     static ROUTE = "consumer-order-add";
 
@@ -102,6 +102,7 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
         this.doesNotCareForLocation = this.dontCareForLocationSwitch.checked;
     }
 
+    /*
     onLocationKeyUp = () => {
         const searchTerm = (this.locationField as any).el.querySelector('input').value;
 
@@ -111,7 +112,6 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
             this.isLoading = true;
             this.loadingIndicator.setVisible(true);
-            this.doRender();
 
             const currentLocation = await this.geoService.getCurrentLocation();
             this.locationOptions = await this.geoService.forwardLocalPlacesSearch(searchTerm);
@@ -125,10 +125,10 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
             this.isLoading = false;
             this.loadingIndicator.setVisible(false);
-            this.doRender();
         });
         searchForPlacesBuffered();
     }
+    */
 
     onLocationOptionSelect = (evt: MouseEvent) => {
 
@@ -139,7 +139,6 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
         this.selectedLocationType = locationOption.shop;
         this.selectedLocation = locationOption;
 
-        this.doRender();
         this.updateMapMarker();
     }
 
@@ -170,9 +169,7 @@ export class ConsumerOrderAddPage extends st.staticComponent implements ILifecyc
 
     renderOrderListContainer() {
 
-        this.orderListContainer.innerHTML = '';
-
-        st.render(this.orderItems.map((orderItem, index) => <div data-index={index} class="row">
+        this.renderPartial(this.orderItems.map((orderItem, index) => <div data-index={index} class="row">
             <div class="col s11 truncate" style={{ lineHeight: '30px' }}>
                 {orderItem.description}
             </div><div class="col s1">
