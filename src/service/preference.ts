@@ -4,8 +4,6 @@ import { FIREBASE_CONFIG } from "../config/firebase";
 import { StorageService } from "./storage";
 import { Profile } from "../datamodel/profile";
 
-const PROFILE = 'profile';
-
 @injectable
 export class PreferenceService {
 
@@ -15,7 +13,7 @@ export class PreferenceService {
     @inject(FirebaseService, FIREBASE_CONFIG)
     firebaseService: FirebaseService;
 
-    profile;
+    static readonly PREFERENCE_PROFILE = 'preference_profile';
 
     constructor() {
         this.syncPreferences();
@@ -23,16 +21,18 @@ export class PreferenceService {
 
     syncPreferences() {
 
+        // TODO: Maybe in future: cross-device preference sync
+
         // fetch firebase storage (if online and logged in)
 
         // fetch localStorage
     }
 
     getProfile() {
-        return this.profile || 'consumer';
+        return this.storageService.get(PreferenceService.PREFERENCE_PROFILE) || 'consumer';
     }
 
     setProfile(profile: Profile) {
-        this.profile = profile;
+        this.storageService.set(PreferenceService.PREFERENCE_PROFILE, profile);
     }
 }

@@ -33,7 +33,6 @@ export class RegisterPage extends st.component implements ILifecycle {
             const data = this.formRef.getState() as any as IRegisterFormState;
 
             if (data.password !== data.password_again) {
-
                 this.renderPartial(<ErrorMessage message={"Beide Passwörter müssen übereinstimmen."} class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />, this.errorMessage);
                 return;
             } else {

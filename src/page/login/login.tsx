@@ -1,12 +1,12 @@
+import "./login.scss";
+
 import { st } from "springtype/core";
 import { component } from "springtype/web/component";
 import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { ref } from "springtype/core/ref";
 import tpl from "./login.tpl";
-import "./login.scss";
 import { Form } from "springtype/web/form";
-import { tsx } from "springtype/web/vdom";
 import { RegisterPage } from "../register/register-account/register";
 
 @component({

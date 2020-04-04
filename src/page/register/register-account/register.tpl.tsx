@@ -1,10 +1,9 @@
 import { tsx } from "springtype/web/vdom";
-import { MatInput } from "../../../component/mat/mat-input";
+import { MatInput } from "st-materialize";
 import { email, minLength, required } from "springtype/core/validate";
 import { Form } from "springtype/web/form";
 import { RegisterPage } from "./register";
 import { LogoRow } from "../../../component/logo-row/logo-row";
-import { ErrorMessage } from "../../../component/error-message/error-message";
 import { TERMS_OF_USE_URL, PRIVACY_STATEMENT_URL } from "../../../config/website-urls";
 
 export default (component: RegisterPage) => (
@@ -17,7 +16,7 @@ export default (component: RegisterPage) => (
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText="Deine E-Mail-Adresse"
                         validators={[required, email]}
-                        errorMessage={{
+                        validationErrorMessages={{
                             required: 'Das ist ein Pflichtfeld',
                             'email': 'Keine gültige E-Mail'
                         }}>
@@ -26,7 +25,7 @@ export default (component: RegisterPage) => (
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText="Bitte wähle ein Passwort"
                         validators={[required, minLength(7)]}
-                        errorMessage={{
+                        validationErrorMessages={{
                             required: 'Das ist ein Pflichtfeld',
                             'min-length': 'Bitte mindestens 7 Zeichen'
                         }}>
@@ -35,7 +34,7 @@ export default (component: RegisterPage) => (
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText="Bitte bestätige das Passwort"
                         validators={[required, minLength(7)]}
-                        errorMessage={{
+                        validationErrorMessages={{
                             required: 'Das ist ein Pflichtfeld',
                             'min-length': 'Bitte mindestens 7 Zeichen'
                         }}>

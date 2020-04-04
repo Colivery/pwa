@@ -16,7 +16,7 @@ import { calculateAvailableHeightPercent } from "../../function/calculate-availa
 import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
 import { MatLoaderCircle } from "../../component/mat/mat-loader-circle";
 import { tsx } from "springtype/web/vdom";
-import { MatInput } from "../../component/mat/mat-input";
+import { MatInput } from "st-materialize";
 import { required, email } from "springtype/core/validate";
 import { MatTextarea } from "../../component/mat/mat-textarea";
 
@@ -154,7 +154,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
                 helperText="Deine E-Mail-Adresse"
                 validators={[required, email]}
                 value={this.state.email}
-                errorMessage={{
+                validationErrorMessages={{
                     required: 'Das ist ein Pflichtfeld',
                     'email': 'Keine gültige E-Mail'
                 }}>
@@ -164,7 +164,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
                 helperText="z.B. Max"
                 validators={[required]}
                 value={this.state.first_name}
-                errorMessage={{
+                validationErrorMessages={{
                     required: 'Das ist ein Pflichtfeld'
                 }}>
             </MatInput>
@@ -174,7 +174,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
                 helperText="z.B. Mustermann"
                 validators={[required]}
                 value={this.state.last_name}
-                errorMessage={{
+                validationErrorMessages={{
                     required: 'Das ist ein Pflichtfeld'
                 }}>
             </MatInput>
@@ -183,7 +183,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
                 helperText="Enter your phone number here"
                 validators={[required]}
                 value={this.state.phone}
-                errorMessage={{
+                validationErrorMessages={{
                     required: 'Das ist ein Pflichtfeld'
                 }}>
             </MatInput>

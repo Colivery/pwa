@@ -1,7 +1,7 @@
 import { LoginPage } from "./login";
 import { tsx } from "springtype/web/vdom";
 import { ErrorMessage } from "../../component/error-message/error-message";
-import { MatInput } from "../../component/mat/mat-input";
+import { MatInput } from "st-materialize";
 import { email, minLength, required } from "springtype/core/validate";
 import { Form } from "springtype/web/form";
 import { LogoRow } from "../../component/logo-row/logo-row";
@@ -21,7 +21,7 @@ export default (component: LoginPage) => (
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText="Deine E-Mail-Adresse"
                         validators={[required, email]}
-                        errorMessage={{
+                        validationErrorMessages={{
                             required: 'Das ist ein Pflichtfeld',
                             'email': 'Keine gültige E-Mail'
                         }}>
@@ -31,7 +31,7 @@ export default (component: LoginPage) => (
                         helperText="Dein Passwort"
                         onKeyDown={component.onPasswordFieldKeyUp}
                         validators={[required, minLength(7)]}
-                        errorMessage={{
+                        validationErrorMessages={{
                             required: 'Das ist ein Pflichtfeld',
                             'min-length': 'Bitte mindestens 7 Zeichen'
                         }}>
@@ -41,8 +41,8 @@ export default (component: LoginPage) => (
                     <ErrorMessage ref={{ errorMessage: component }}
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
                 </div>
-                <div class="row">
-                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
+                <div class="row" ref={{ loginButtonContainer: component }}>
+                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3', 'login-button']}
                         onClick={component.onLoginClick}>Einloggen</a>
                 </div>
                 <div class="row">

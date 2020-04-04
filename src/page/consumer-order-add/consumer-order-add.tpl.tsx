@@ -1,7 +1,7 @@
 import { ConsumerOrderAddPage } from "./consumer-order-add";
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
-import { MatInput } from "../../component/mat/mat-input";
+import { MatInput } from "st-materialize";
 import { MatTextarea } from "../../component/mat/mat-textarea";
 import { MatModal } from "../../component/mat/mat-modal";
 

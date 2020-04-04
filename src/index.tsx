@@ -1,5 +1,6 @@
 import "../node_modules/materialize-css/dist/js/materialize.min.js";
 import "../assets/materialize.scss";
+import "st-materialize";
 import "../assets/global-styles.scss";
 //import here injectable fix
 import "./service/auth"
@@ -23,6 +24,8 @@ import { RegisterRoute } from "./page/register/register-route";
 import { UserProfilePage } from "./page/user-profile/user-profile";
 import { DriverOrderList } from "./page/driver-order-list/driver-order-list";
 import { GeoService } from "./service/geo";
+import { I18nService, SupportedLanguages } from "./service/i18n";
+import { T } from "springtype/web/i18n/t";
 
 st.form = {
     ...st.form,
@@ -34,6 +37,9 @@ st.form = {
 @component
 export class App extends st.component implements ILifecycle {
 
+    @inject(I18nService)
+    i18nService: I18nService;
+
     @inject(LoginGuard)
     loginGuard: LoginGuard;
 
@@ -43,10 +49,19 @@ export class App extends st.component implements ILifecycle {
     @inject(GeoService)
     geoService: GeoService;
 
-    /*
+
     constructor() {
         super();
 
+        // example:
+        this.i18nService.setLanguage(SupportedLanguages.DE);
+
+        console.log('i18n test', st.t('Hello, world!'));
+
+        console.log('i18n virtualNode (used with render())', <T tag="p" style={{ color: '#cc0000' }}>Hello, world</T>);
+
+
+        /*
         console.log('geoService', this.geoService.haversine({
             latitude: 48.330713,
             longitude: 12.003011
@@ -54,8 +69,9 @@ export class App extends st.component implements ILifecycle {
             latitude: 48.348057,
             longitude: 12.077770
         }));
+        */
     }
-    */
+
 
     render() {
         return (

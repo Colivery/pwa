@@ -89,7 +89,7 @@ export class AuthService {
         const result = await this.firebaseService.auth().createUserWithEmailAndPassword(email, passwordHash);
         this.userContext = { userId: result.user.uid, email: email };
         this.storeCredentials(email, passwordHash);
-        this.sendEmailVerification();
+        //this.sendEmailVerification();
         return result;
     }
 

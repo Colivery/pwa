@@ -45,7 +45,7 @@ export class MatCheckbox extends st.component<IAttrMatInput> implements ILifecyc
         </fragment>
     }
 
-    onAfterRender(hasDOMChanged: boolean): void {
+    onAfterRender(): void {
         (this.inputRef.el as HTMLInputElement).checked = this.checked;
     }
 
