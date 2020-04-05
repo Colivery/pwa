@@ -5,6 +5,7 @@ import { MatInput } from "st-materialize";
 import { email, minLength, required } from "springtype/core/validate";
 import { Form } from "springtype/web/form";
 import { LogoRow } from "../../component/logo-row/logo-row";
+import { st } from "springtype/core";
 
 export default (component: LoginPage) => (
     <fragment>
@@ -12,28 +13,28 @@ export default (component: LoginPage) => (
             <LogoRow />
 
             <h3 class="slogan">
-                Gemeinsam besser versorgt!
+                {st.t("Together better supplied!")}
             </h3>
 
             <Form ref={{ formRef: component }}>
                 <div class="row">
-                    <MatInput name="email" label="E-Mail"
+                    <MatInput name="email" label={st.t("E-mail")}
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
-                        helperText="Deine E-Mail-Adresse"
+                        helperText={st.t("Your e-mail address")}
                         validators={[required, email]}
                         validationErrorMessages={{
-                            required: 'Das ist ein Pflichtfeld',
-                            'email': 'Keine gültige E-Mail'
+                            required: st.t("This is a required field"),
+                            'email': st.t("Not a valid e-mail address")
                         }}>
                     </MatInput>
-                    <MatInput name="password" label="Passwort" type="password"
+                    <MatInput name="password" label={st.t("Password")} type="password"
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
-                        helperText="Dein Passwort"
+                        helperText={st.t("Your password")}
                         onKeyDown={component.onPasswordFieldKeyUp}
                         validators={[required, minLength(7)]}
                         validationErrorMessages={{
-                            required: 'Das ist ein Pflichtfeld',
-                            'min-length': 'Bitte mindestens 7 Zeichen'
+                            required: st.t("This is a required field"),
+                            'min-length': st.t("Passwords consist of atleast 7 characters")
                         }}>
                     </MatInput>
                 </div>
@@ -43,18 +44,18 @@ export default (component: LoginPage) => (
                 </div>
                 <div class="row" ref={{ loginButtonContainer: component }}>
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3', 'login-button']}
-                        onClick={component.onLoginClick}>Einloggen</a>
+                        onClick={component.onLoginClick}>{st.t("Login")}</a>
                 </div>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
-                        onClick={component.onRegisterClick}>Registrieren</a>
+                        onClick={component.onRegisterClick}>{st.t("Sign up")}</a>
                 </div>
 
                 {/* 
                 <div class="row center-align">
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
                         <a href="javascript:" class="login-forgot-password" onClick={component.onForgotPassword}>
-                            Ich habe mein Passwort vergessen
+                            {st.t("I forgot my password")}
                         </a>
                     </div>
                 </div>*/}

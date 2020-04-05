@@ -66,7 +66,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
             // render/update static map image
             const mapSrc = this.geoService.getStaticMapImageSrc(address, {
                 ...geolocation,
-                lable: 'Hier bist Du',
+                lable: st.t("You are here"),
                 color: COLOR_COLIVERY_PRIMARY
             }, this.staticMapImage.closest('.row').clientWidth, calculateAvailableHeightPercent(20), 15);
 

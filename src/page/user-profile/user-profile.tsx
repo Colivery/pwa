@@ -91,7 +91,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
             // render/update static map image
             const mapSrc = this.geoService.getStaticMapImageSrc(address, {
                 ...geolocation,
-                lable: 'Hier bist Du',
+                lable: st.t("You are here"),
                 color: COLOR_COLIVERY_PRIMARY
             }, this.staticMapImage.closest('.row').clientWidth, calculateAvailableHeightPercent(20), 15);
 
@@ -148,60 +148,60 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
     getFormInputs() {
         return <fragment>
-            <MatInput name="email" label="E-Mail"
+            <MatInput name="email" label={st.t("E-mail")}
                 class={['col', 's12', 'm6']}
                 disabled={true}
-                helperText="Deine E-Mail-Adresse"
+                helperText={st.t("Your e-mail address")}
                 validators={[required, email]}
                 value={this.state.email}
                 validationErrorMessages={{
-                    required: 'Das ist ein Pflichtfeld',
-                    'email': 'Keine gültige E-Mail'
+                    required: st.t("This is a required field"),
+                    'email': st.t("Not a valid e-mail address")
                 }}>
             </MatInput>
-            <MatInput name="first_name" label="Vorname"
+            <MatInput name="first_name" label={st.t("Firstname")}
                 class={['col', 's6', 'm3']}
-                helperText="z.B. Max"
+                helperText={st.t("i.e. John")}
                 validators={[required]}
                 value={this.state.first_name}
                 validationErrorMessages={{
-                    required: 'Das ist ein Pflichtfeld'
+                    required: st.t("This is a required field")
                 }}>
             </MatInput>
 
-            <MatInput name="last_name" label="Nachname"
+            <MatInput name="last_name" label={st.t("Lastname")}
                 class={['col', 's6', 'm3']}
-                helperText="z.B. Mustermann"
+                helperText={st.t("i.e. Doe")}
                 validators={[required]}
                 value={this.state.last_name}
                 validationErrorMessages={{
-                    required: 'Das ist ein Pflichtfeld'
+                    required: st.t("This is a required field")
                 }}>
             </MatInput>
-            <MatInput name="phone" label="Phone"
+            <MatInput name="phone" label={st.t("Phone number")}
                 class={['col', 's12', 'm6']}
-                helperText="Enter your phone number here"
+                helperText={st.t("Enter your phone number here")}
                 validators={[required]}
                 value={this.state.phone}
                 validationErrorMessages={{
-                    required: 'Das ist ein Pflichtfeld'
+                    required: st.t("This is a required field")
                 }}>
             </MatInput>
-            <MatTextarea ref={{ addressRef: this }} name="address" label="Wohl/Lieferadresse"
+            <MatTextarea ref={{ addressRef: this }} name="address" label={st.t("Home/Delivery address")}
                 class={['col', 's12', 'm6']}
                 rows={2}
-                helperText="Wohin die Fahrer*in kommen soll"
+                helperText={st.t("Where goods should be delivered")}
                 validators={[required, this.addressValidator()]}
                 value={this.state.address}
                 errorMessage={{
-                    required: 'Das ist ein Pflichtfeld',
-                    address: 'Diese Adresse können wir nicht verstehen'
+                    required: st.t("This is a required field"),
+                    address: st.t("This address does not seem valid")
                 }}>
             </MatTextarea>
             <div class={['col', 's12', 'hide']} ref={{ mapContainer: this }}>
 
                 <center>
-                    <strong>Wir haben folgende Adresse erkannt:<br /></strong>
+                    <strong>{st.t("We understood this address:")}<br /></strong>
 
                     <span ref={{ addressField: this }}></span>
                     <img class="static-map" ref={{ staticMapImage: this }} />

@@ -7,6 +7,7 @@ import { MatTextarea } from "../../../component/mat/mat-textarea";
 import { LogoRow } from "../../../component/logo-row/logo-row";
 import { ErrorMessage } from "../../../component/error-message/error-message";
 import { MatLoaderCircle } from "../../../component/mat/mat-loader-circle";
+import { st } from "springtype/core";
 
 export default (component: RegisterUserAddressPage) => (
     <fragment>
@@ -15,45 +16,45 @@ export default (component: RegisterUserAddressPage) => (
                 <LogoRow />
                 <div class="row">
 
-                    <MatInput name="first_name" label="Vorname"
+                    <MatInput name="first_name" label={st.t("Firstname")}
                         class={['col', 's6', 'm3', 'offset-m3', 'l3', 'offset-l3']}
-                        helperText="z.B. Max"
+                        helperText={st.t("i.e. John")}
                         validators={[required]}
                         errorMessage={{
-                            required: 'Das ist ein Pflichtfeld'
+                            required: st.t("This is a required field")
                         }}>
                     </MatInput>
 
-                    <MatInput name="last_name" label="Nachname"
+                    <MatInput name="last_name" label={st.t("Lastname")}
                         class={['col', 's6', 'm3', 'l3']}
-                        helperText="z.B. Mustermann"
+                        helperText={st.t("i.e. Doe")}
                         validators={[required]}
                         errorMessage={{
-                            required: 'Das ist ein Pflichtfeld'
+                            required: st.t("This is a required field")
                         }}>
                     </MatInput>
 
-                    <MatInput name="phone" label="Telefonnummer"
+                    <MatInput name="phone" label={st.t("Phone number")}
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
-                        helperText="z.B. 0170 11 22 33 44"
+                        helperText={st.t("i.e. 0170 11 22 33 44")}
                         validators={[required]}
                         errorMessage={{
-                            required: 'Das ist ein Pflichtfeld'
+                            required: st.t("This is a required field")
                         }}>
                     </MatInput>
-                    <MatTextarea name="address" label="Wohn/Lieferadresse"
+                    <MatTextarea name="address" label={st.t("Home/Delivery address")}
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
-                        helperText="Wohin die Fahrer*in kommen soll"
+                        helperText={st.t("Where goods should be delivered")}
                         validators={[required, component.addressValidator()]}
                         errorMessage={{
-                            required: 'Das ist ein Pflichtfeld',
-                            address: 'Diese Adresse können wir nicht verstehen'
+                            required: st.t("This is a required field"),
+                            address: st.t("This address does not seem valid")
                         }}>
                     </MatTextarea>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3', 'hide']} ref={{ mapContainer: component }}>
 
                         <center>
-                            <strong>Wir haben folgende Adresse erkannt:<br /></strong>
+                            <strong>{st.t("We understood this address:")}<br /></strong>
 
                             <span ref={{ addressField: component }}></span>
 
@@ -68,7 +69,7 @@ export default (component: RegisterUserAddressPage) => (
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
 
                     <a ref={{ submitButton: component }} style={{ marginTop: '10px' }} class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
-                        onClick={() => component.onNextClick()}>Weiter</a>
+                        onClick={() => component.onNextClick()}>{st.t("Next")}</a>
                 </div>
             </Form>
         </div>

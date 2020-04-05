@@ -56,8 +56,6 @@ export class App extends st.component implements ILifecycle {
         // example:
         this.i18nService.setLanguage(SupportedLanguages.DE);
 
-        console.log('i18n test', st.t('Hello, world!'));
-
         console.log('i18n virtualNode (used with render())', <T tag="p" style={{ color: '#cc0000' }}>Hello, world</T>);
 
 
