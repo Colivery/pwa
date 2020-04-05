@@ -14,7 +14,29 @@ export class UserService {
     @inject(StorageService)
     storageService: StorageService;
 
-    async getUserProfile(): Promise<IUserProfileResponse | undefined> {
+    async deleteOwnUser(): Promise<void> {
+
+        try {
+            await fetch(`${SERVICE_API_ENDPOINT}/user/own/delete`, {
+                method: 'GET',
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${await window.authService.getIdToken()}`
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer', // no-referrer, *client
+            });
+
+        } catch (e) {
+            st.error('error in deleting user profile', e)
+        }
+    }
+
+    async getUserProfile(): Promise<IUserProfileResponse | void> {
 
         if (this.userProfile) {
             return this.userProfile;

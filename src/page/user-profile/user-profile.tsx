@@ -65,6 +65,9 @@ export class UserProfilePage extends st.component implements ILifecycle {
     @ref
     formContainer: HTMLElement;
 
+    @ref
+    deleteButton: HTMLElement;
+
     userGeoLocation: {
         lat: number;
         lng: number;
@@ -211,5 +214,9 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
             <MatLoaderCircle ref={{ matLoaderCircle: this }} class={['col', 's12',]} />
         </fragment>
+    }
+
+    deleteUserProfile = () => {
+        console.log('deleteUserProfile')
     }
 }

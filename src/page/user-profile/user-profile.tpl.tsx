@@ -6,6 +6,7 @@ import { UserProfilePage } from "./user-profile";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { MatModal } from "../../component/mat/mat-modal";
 import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import { MatCard } from "../../component/mat/mat-card";
 
 export default (component: UserProfilePage) => (
     <fragment>
@@ -21,13 +22,28 @@ export default (component: UserProfilePage) => (
                     </center>
                 </div>
 
-                <div ref={{ formContainer: component}}>
+                <div ref={{ formContainer: component }}>
                 </div>
                 <ErrorMessage ref={{ errorMessage: component }}
                     class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']} />
 
                 <a ref={{ submitButton: component }} style={{ marginTop: '10px' }} class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}
                     onClick={component.updateUserProfile}>Speichern</a>
+
+            </div>
+            <div class="row">
+                <MatCard>
+                    <center>
+                        <h5>Achtung</h5>
+                        <p>
+                            Diese Aktion kann nicht rückgängig gemacht werden.
+                        <br />
+                        <br />
+                        </p>
+                        <a ref={{ deleteButton: component }} class={['waves-effect', 'waves-light', 'btn', 'cancel-button']}
+                            onClick={component.deleteUserProfile}>Benutzerkonto löschen</a>
+                    </center>
+                </MatCard>
             </div>
         </div>
 
