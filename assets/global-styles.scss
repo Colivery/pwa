@@ -1,4 +1,8 @@
-@import "components/color-variables";
+@import "./materialize.scss";
+@import "st-materialize/index.scss";
+@import "./splashscreen";
+@import "./mat-modal";
+@import "./mat-button";
 
 html, body {
   height: 100%;
@@ -50,56 +54,8 @@ h3.slogan {
   float: left;
 }
 
-.modal-footer {
-  height: 65px !important;
-}
-
 .btn {
-  border-radius: 30px;
-  box-shadow: none;
-  font-weight: bold;
-  line-height: 45px;
-  height: 45px;
-}
-
-/* style for switches */
-.switch input[type="checkbox"].invalid + span {
-  background-color: $colivery-orange !important;
-}
-
-.switch input[type="checkbox"].valid + span {
-  background-color: $colivery-green !important;
-}
-
-/* checkbox style*/
-input[type="checkbox"] + span:not(.lever){
-  margin-left: 4px;
-}
-input[type="checkbox"]:not(:checked):not(.filled-in).invalid + span:not(.lever):before{
-  border: 2px solid $colivery-orange !important;
-}
-
-input[type="checkbox"].invalid + span:not(.lever):after {
-  border: 2px solid $colivery-orange !important;
-}
-
-input[type="checkbox"]:not(:checked):not(.filled-in).valid + span:not(.lever):before{
-  border: 2px solid $colivery-green;
-}
-
-input[type="checkbox"].valid + span:not(.lever):after {
-  border: 2px solid $colivery-green !important;
-}
-
-/* radio button style*/
-input[type="radio"]:not(:checked).invalid + span:before,
-input[type="radio"]:not(:checked).invalid + span:after {
-  border: 2px solid $colivery-orange !important;
-}
-
-input[type="radio"]:not(:checked).valid + span:before,
-input[type="radio"]:not(:checked).valid + span:after {
-  border: 2px solid $colivery-green !important;
+  @include btn;
 }
 
 .btn.inverted {
@@ -119,19 +75,6 @@ input[type="radio"]:not(:checked).valid + span:after {
 
 /* Mobile */
 @media screen and (max-width: 768px) {
-
-  .modal.open {
-    top: 0 !important;
-    height: 100vh !important;
-    width: 100% !important;
-    max-height: 100vh !important;
-    height: calc(var(--vh, 1vh) * 100) !important;
-  }
-  .modal.modal-fixed-footer .modal-content {
-    height: calc(100vh - 56px) !important;
-    max-height: calc(100vh - 56px) !important;
-  }
-
   ::-webkit-scrollbar {
     display: none;
   }

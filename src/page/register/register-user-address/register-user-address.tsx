@@ -6,15 +6,14 @@ import { inject } from "springtype/core/di";
 import { component } from "springtype/web/component";
 import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import { ref } from "springtype/core/ref";
-import { Form } from "springtype/web/form";
 import tpl, { IRegisterUserAddressFormState } from "./register-user-address.tpl";
 import { RegisterChooseProfile } from "../register-choose-profile/register-choose-profile";
 import { ErrorMessage } from "../../../component/error-message/error-message";
 import { address } from "../../../validators/address";
 import { UserService } from "../../../service/user";
-import { MatLoaderCircle } from "../../../component/mat/mat-loader-circle";
 import { COLOR_COLIVERY_PRIMARY } from "../../../config/colors";
 import { calculateAvailableHeightPercent } from "../../../function/calculate-available-height-percent";
+import { Form, MatLoaderCircle } from "st-materialize";
 
 @component({
     tpl
@@ -60,13 +59,16 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     class = ['wrapper', 'valign-wrapper'];
 
     addressValidator = () => {
+
+
         return address(this.geoService, this, async (geolocation: any, address: string) => {
             this.userGeoLocation = geolocation;
 
+            console.log('addressValidator called')
             // render/update static map image
             const mapSrc = this.geoService.getStaticMapImageSrc(address, {
                 ...geolocation,
-                lable: 'Hier bist Du',
+                lable: st.t("You are here"),
                 color: COLOR_COLIVERY_PRIMARY
             }, this.staticMapImage.closest('.row').clientWidth, calculateAvailableHeightPercent(20), 15);
 
@@ -100,7 +102,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     async onNextClick() {
         try {
 
-            if (await this.formRef.validate()) {
+            if (await this.formRef.validate(true)) {
 
                 await this.userService.upsertUserProfile(this.getDataToSave());
 

@@ -6,15 +6,13 @@ import "./consumer-order-add.scss";
 import { inject } from "springtype/core/di";
 import { GeoService } from "../../service/geo";
 import { ref } from "springtype/core/ref";
-import { MatInput } from "../../component/mat/mat-input";
-import { MatModal } from "../../component/mat/mat-modal";
+import { MatInput, MatModal, MatLoadingIndicator, MatTextArea } from "st-materialize";
 import { ConsumerOrderListPage } from "../consumer-order-list/consumer-order-list";
 import { OrderService } from "../../service/order";
 import { OrderStatus } from "../../datamodel/order-status";
 import { OrderItemStatus } from "../../datamodel/order-item-status";
 import { Shop } from "../../datamodel/shop";
 import { EsriMap } from "../../component/esri/EsriMap";
-import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { tsx } from "springtype/web/vdom";
 import { UserService } from "../../service/user";
 import { GPSLocation } from "../../datamodel/gps-location";
@@ -43,7 +41,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     loadingIndicator: MatLoadingIndicator;
 
     @ref
-    articleDescription: MatInput;
+    articleDescription: MatTextArea;
 
     @ref
     olMapRef: EsriMap;
@@ -58,7 +56,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     warnAtLeastOneItemModal: MatModal;
 
     @ref
-    hintField: MatInput;
+    hintField: MatTextArea;
 
     @ref
     orderListContainer: HTMLElement;
@@ -156,13 +154,17 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     onCreateOrderButtonClick = () => {
 
         // UX improvement: apply last written item
-        this.onOrderItemAddClick();
+        if (this.articleDescription.textAreaRef.value.length > 0) {
+            this.onOrderItemAddClick();
+        }
 
         if (this.orderItems.length === 0) {
             this.warnAtLeastOneItemModal.toggle();
             return;
         }
 
+
+        console.log('confirmCreateOrderModal', this.confirmCreateOrderModal);
         // open modal
         this.confirmCreateOrderModal.toggle();
     }
@@ -191,15 +193,15 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     onOrderItemAddClick = () => {
 
         this.orderItems.push({
-            description: (this.articleDescription.inputRef.el as HTMLInputElement).value
+            description: this.articleDescription.textAreaRef.value
         });
 
         // reset value
-        (this.articleDescription.inputRef.el as HTMLInputElement).value = '';
+        this.articleDescription.textAreaRef.value = '';
 
         this.renderOrderListContainer();
 
-        this.articleDescription.inputRef.el.focus();
+        this.articleDescription.textAreaRef.focus();
     }
 
     onOrderItemRemoveClick = (evt: MouseEvent) => {
@@ -210,7 +212,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
         this.renderOrderListContainer();
 
-        this.articleDescription.inputRef.el.focus();
+        this.articleDescription.textAreaRef.focus();
     }
 
     onReallyCreateOrderClick = async () => {
@@ -251,7 +253,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             "max_price": maxPrice,
             "shop_type": this.selectedLocationType,
             "status": OrderStatus.TO_BE_DELIVERED,
-            "hint": this.hintField.inputRef.getValue(),
+            "hint": this.hintField.textAreaRef.value,
             "dropoff_location_geohash": dropoffLocationGeohash, // TODO: move to Service API
             "dropoff_location": {
                 "latitude": localUserData.geo_location.latitude,
@@ -270,9 +272,9 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
         this.orderItems = [];
         this.renderOrderListContainer();
-        (this.maxPriceField.inputRef.el as HTMLInputElement).value = '';
-        (this.articleDescription.inputRef.el as HTMLInputElement).value = '';
-        (this.hintField.inputRef.el as HTMLInputElement).value = '';
+        (this.maxPriceField.inputRef).value = '';
+        (this.articleDescription.textAreaRef).value = '';
+        (this.hintField.textAreaRef).value = '';
 
         st.route = {
             path: ConsumerOrderListPage.ROUTE

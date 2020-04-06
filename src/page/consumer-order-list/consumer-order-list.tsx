@@ -7,13 +7,13 @@ import { ConsumerOrderAddPage } from "../consumer-order-add/consumer-order-add";
 import { ref } from "springtype/core/ref";
 import { inject } from "springtype/core/di";
 import { OrderService, OwnOrdersResponse, OwnOrderUnion } from "../../service/order";
-import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
 import { tsx } from "springtype/web/vdom";
 import { IVirtualNode } from "springtype/web/vdom/interface";
 import { getOrderStatusText } from "../../function/get-order-status-text";
 import { formatDate } from "../../function/formatDate";
-import { MatModal } from "../../component/mat/mat-modal";
+import { MatModal, MatLoadingIndicator } from "st-materialize";
 import { Order, OrderItem } from "../../datamodel/order";
+import { Center } from "../../component/center/center";
 
 @component({
     tpl
@@ -97,7 +97,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
         if (this.myOrdersDisplayData.length === 0) {
             this.renderPartial(
-                <center>
+                <Center>
                     <h6>
                         <strong>Brauchst Du Hilfe beim Einkaufen?</strong><br />
                         Klicke auf den Button: "Neuer Auftrag".
@@ -107,7 +107,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                         wechsel in den Fahrer-Modus.
                         <br /><br />
                     </h6>
-                </center>,
+                </Center>,
                 this.myOrdersScrollContainer);
             return;
         }
@@ -191,11 +191,11 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
         this.renderPartial(<div class="container details-modal">
 
-            <center>
+            <Center>
                 <h5 class="material-align-middle">
                     <i class="material-icons order-card-icon">fingerprint</i> <code>{union.order.id.substring(0, 6)}</code>
                 </h5>
-            </center>
+            </Center>
 
             <br />
 

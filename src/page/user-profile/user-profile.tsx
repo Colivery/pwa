@@ -4,21 +4,21 @@ import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import tpl, { IUserProfileFromState } from "./user-profile.tpl";
 import { inject } from "springtype/core/di";
 import { ref } from "springtype/core/ref";
-import { Form, Input } from "springtype/web/form";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { GeoService } from "../../service/geo";
-import { MatModal } from "../../component/mat/mat-modal";
-import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
+import { MatModal, MatLoadingIndicator, MatLoaderCircle, MatTextArea, Form } from "st-materialize";
 import { address } from "../../validators/address";
 import { UserService } from "../../service/user";
 import { IUserProfileResponse, UserProfile } from "../../datamodel/user";
 import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
 import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
-import { MatLoaderCircle } from "../../component/mat/mat-loader-circle";
 import { tsx } from "springtype/web/vdom";
 import { MatInput } from "st-materialize";
 import { required, email } from "springtype/core/validate";
-import { MatTextarea } from "../../component/mat/mat-textarea";
+import { LoginPage } from "../login/login";
+import { SupportedLanguages, I18nService } from "../../service/i18n";
+import { SplashscreenService } from "../../service/splashscreen";
+import { Center } from "../../component/center/center";
 
 @component({
     tpl
@@ -27,11 +27,17 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
     static ROUTE = "user-profile";
 
+    @inject(SplashscreenService)
+    splashscreenService: SplashscreenService;
+
     @inject(UserService)
     userService: UserService;
 
     @inject(GeoService)
     geoService: GeoService;
+
+    @inject(I18nService)
+    i18nService: I18nService;
 
     @ref
     formRef: Form;
@@ -60,13 +66,13 @@ export class UserProfilePage extends st.component implements ILifecycle {
     matLoaderCircle: MatLoaderCircle;
 
     @ref
-    submitButton: HTMLElement;
+    submitButton: HTMLAnchorElement;
 
     @ref
     formContainer: HTMLElement;
 
     @ref
-    deleteButton: HTMLElement;
+    deleteButton: HTMLAnchorElement;
 
     userGeoLocation: {
         lat: number;
@@ -86,6 +92,13 @@ export class UserProfilePage extends st.component implements ILifecycle {
         }
     }
 
+    setLanguage = (language: SupportedLanguages) => {
+
+        this.splashscreenService.show();
+
+        setTimeout(() => this.i18nService.setLanguage(language), 100);
+    }
+
     addressValidator = () => {
         return address(this.geoService, this, async (geolocation: any, address: string) => {
 
@@ -94,7 +107,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
             // render/update static map image
             const mapSrc = this.geoService.getStaticMapImageSrc(address, {
                 ...geolocation,
-                lable: 'Hier bist Du',
+                lable: st.t("You are here"),
                 color: COLOR_COLIVERY_PRIMARY
             }, this.staticMapImage.closest('.row').clientWidth, calculateAvailableHeightPercent(20), 15);
 
@@ -128,7 +141,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
     updateUserProfile = async () => {
         try {
             this.loadingIndicator.toggle();
-            if (await this.formRef.validate()) {
+            if (await this.formRef.validate(true)) {
 
                 await this.userService.upsertUserProfile(this.getDataToSave());
                 this.afterSaveModal.toggle();
@@ -140,75 +153,80 @@ export class UserProfilePage extends st.component implements ILifecycle {
     };
 
     private async loadData() {
-        this.state = await this.userService.getUserProfile();
+        this.state = (await this.userService.getUserProfile(false)) as IUserProfileResponse;
+
+        console.log('after loadData UserProfile', this.state)
 
         this.renderPartial(
             <Form ref={{ formRef: this }}>
                 {this.getFormInputs()}
-            </Form>, this.formContainer)
-    }
+            </Form>, this.formContainer);
 
+        setImmediate(() => {
+            this.addressValidator()(this.state.address);
+        })
+    }
 
     getFormInputs() {
         return <fragment>
-            <MatInput name="email" label="E-Mail"
+            <MatInput name="email" label={st.t("E-mail")}
                 class={['col', 's12', 'm6']}
                 disabled={true}
-                helperText="Deine E-Mail-Adresse"
+                helperText={st.t("Your e-mail address")}
                 validators={[required, email]}
                 value={this.state.email}
                 validationErrorMessages={{
-                    required: 'Das ist ein Pflichtfeld',
-                    'email': 'Keine gültige E-Mail'
+                    required: st.t("This is a required field"),
+                    'email': st.t("Not a valid e-mail address")
                 }}>
             </MatInput>
-            <MatInput name="first_name" label="Vorname"
+            <MatInput name="first_name" label={st.t("Firstname")}
                 class={['col', 's6', 'm3']}
-                helperText="z.B. Max"
+                helperText={st.t("i.e. John")}
                 validators={[required]}
                 value={this.state.first_name}
                 validationErrorMessages={{
-                    required: 'Das ist ein Pflichtfeld'
+                    required: st.t("This is a required field")
                 }}>
             </MatInput>
 
-            <MatInput name="last_name" label="Nachname"
+            <MatInput name="last_name" label={st.t("Lastname")}
                 class={['col', 's6', 'm3']}
-                helperText="z.B. Mustermann"
+                helperText={st.t("i.e. Doe")}
                 validators={[required]}
                 value={this.state.last_name}
                 validationErrorMessages={{
-                    required: 'Das ist ein Pflichtfeld'
+                    required: st.t("This is a required field")
                 }}>
             </MatInput>
-            <MatInput name="phone" label="Phone"
+            <MatInput name="phone" label={st.t("Phone number")}
                 class={['col', 's12', 'm6']}
-                helperText="Enter your phone number here"
+                helperText={st.t("Enter your phone number here")}
                 validators={[required]}
                 value={this.state.phone}
                 validationErrorMessages={{
-                    required: 'Das ist ein Pflichtfeld'
+                    required: st.t("This is a required field")
                 }}>
             </MatInput>
-            <MatTextarea ref={{ addressRef: this }} name="address" label="Wohl/Lieferadresse"
+            <MatTextArea name="address" label={st.t("Home/Delivery address")}
                 class={['col', 's12', 'm6']}
                 rows={2}
-                helperText="Wohin die Fahrer*in kommen soll"
+                helperText={st.t("Where goods should be delivered")}
                 validators={[required, this.addressValidator()]}
                 value={this.state.address}
-                errorMessage={{
-                    required: 'Das ist ein Pflichtfeld',
-                    address: 'Diese Adresse können wir nicht verstehen'
+                validationErrorMessages={{
+                    required: st.t("This is a required field"),
+                    address: st.t("This address does not seem valid")
                 }}>
-            </MatTextarea>
+            </MatTextArea>
             <div class={['col', 's12', 'hide']} ref={{ mapContainer: this }}>
 
-                <center>
-                    <strong>Wir haben folgende Adresse erkannt:<br /></strong>
+                <Center>
+                    <strong>{st.t("We understood this address:")}<br /></strong>
 
                     <span ref={{ addressField: this }}></span>
                     <img class="static-map" ref={{ staticMapImage: this }} />
-                </center>
+                </Center>
 
             </div>
 
@@ -216,7 +234,15 @@ export class UserProfilePage extends st.component implements ILifecycle {
         </fragment>
     }
 
-    deleteUserProfile = () => {
-        console.log('deleteUserProfile')
+    deleteUserProfile = async () => {
+        console.log('deleteUserProfile');
+
+        this.loadingIndicator.setVisible(true);
+
+        await this.userService.deleteOwnUser();
+
+        st.route = {
+            path: LoginPage.ROUTE
+        };
     }
 }

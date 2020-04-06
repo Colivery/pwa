@@ -1,8 +1,9 @@
 import { ConsumerOrderListPage } from "./consumer-order-list";
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
-import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
-import { MatModal } from "../../component/mat/mat-modal";
+import { MatModal, MatLoadingIndicator } from "st-materialize";
+import { ModalMiddleContent } from "../../component/modal-middle-content/modal-middle-content";
+import { Center } from "../../component/center/center";
 
 export default (component: ConsumerOrderListPage) => (
     <fragment>
@@ -31,25 +32,27 @@ export default (component: ConsumerOrderListPage) => (
                 <br /><br />
             </span>
 
-            <center>
+            <Center>
                 <p class="hint material-align-middle">
                     <i class="material-icons">arrow_left</i> scrollen / swipen <i class="material-icons">arrow_right</i>
                 </p>
-            </center>
+            </Center>
 
             <br />
-            <center>
+            <Center>
                 <a href="javascript:" onClick={component.onAddButtonClick} class="btn btn-large red pulse waves-effect waves-light material-align-middle"><i class="material-icons">add</i> Neuer Auftrag</a>
-            </center>
+            </Center>
 
         </div>
 
         <MatModal ref={{ myOrderDetailsModal: component }}>
 
-            <h3 class={'center'}>Einkauf</h3>
 
-            <div ref={{ myOrderDetailsContainer: component }}></div>
+            <ModalMiddleContent>
+                <h3 class={'center'}>Einkauf</h3>
 
+                <div ref={{ myOrderDetailsContainer: component }}></div>
+            </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
                     component.myOrderDetailsModal.toggle();
@@ -61,10 +64,11 @@ export default (component: ConsumerOrderListPage) => (
 
         <MatModal ref={{ cancelOrderModal: component }}>
 
-            <h4 class={'center'}><i class="material-icons">cancel</i> Auftrag abbrechen</h4>
+            <ModalMiddleContent>
+                <h4 class={'center'}><i class="material-icons">cancel</i> Auftrag abbrechen</h4>
 
             Bist Du Dir sicher, dass Du den Einkaufsauftrag abbrechen möchtest?
-
+            </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.cancelOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
                 <a href="javascript:" onclick={component.onReallyCancelOrder} class="modal-close waves-effect btn waves-white material-align-middle cancel-button"><i class="material-icons">done_all</i> &nbsp;Ja</a>

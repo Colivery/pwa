@@ -5,8 +5,11 @@ import { FIREBASE_CONFIG } from "../config/firebase";
 import { st } from "springtype/core";
 import { StorageService } from "./storage";
 import { ConsumerOrderListPage } from "../page/consumer-order-list/consumer-order-list";
-import { context } from "springtype/core/context";
-import { getUserContext, INITIAL_USER_CONTEXT_STATE, IUserContext, USER_CONTEXT } from "../context/user";
+
+export interface IUserContext {
+    userId: string;
+    email: string;
+}
 
 @injectable
 export class AuthService {
@@ -20,8 +23,7 @@ export class AuthService {
     @inject(FirebaseService, FIREBASE_CONFIG)
     firebaseService: FirebaseService; // leads to: new FirebaseService(FIREBASE_CONFIG)
 
-    @context(USER_CONTEXT)
-    userContext: IUserContext = getUserContext();
+    userContext: IUserContext;
 
     userCredential: firebase.auth.UserCredential;
 
@@ -78,7 +80,6 @@ export class AuthService {
     async logout() {
         await this.firebaseService.logout();
         this.storeCredentials('', '');
-        this.userContext = INITIAL_USER_CONTEXT_STATE;
 
         window.location.href = window.location.href.split('/')[0];
     }

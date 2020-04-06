@@ -3,6 +3,7 @@ import { FirebaseService } from "./firebase";
 import { FIREBASE_CONFIG } from "../config/firebase";
 import { StorageService } from "./storage";
 import { Profile } from "../datamodel/profile";
+import { SupportedLanguages } from "./i18n";
 
 @injectable
 export class PreferenceService {
@@ -13,7 +14,8 @@ export class PreferenceService {
     @inject(FirebaseService, FIREBASE_CONFIG)
     firebaseService: FirebaseService;
 
-    static readonly PREFERENCE_PROFILE = 'preference_profile';
+    static readonly PREFERENCE_PROFILE = 'PREFERENCE_PROFILE';
+    static readonly PREFERENCE_LANGUAGE = 'PREFERENCE_LANGUAGE';
 
     constructor() {
         this.syncPreferences();
@@ -26,6 +28,14 @@ export class PreferenceService {
         // fetch firebase storage (if online and logged in)
 
         // fetch localStorage
+    }
+
+    setLanguage(language: SupportedLanguages) {
+        this.storageService.set(PreferenceService.PREFERENCE_LANGUAGE, language);
+    }
+
+    getLanguage(): SupportedLanguages {
+        return this.storageService.get(PreferenceService.PREFERENCE_LANGUAGE);
     }
 
     getProfile() {

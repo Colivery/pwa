@@ -1,8 +1,10 @@
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { DriverOrderList } from "./driver-order-list";
-import { MatLoadingIndicator } from "../../component/mat/mat-loading-indicator";
-import { MatModal } from "../../component/mat/mat-modal";
+import { MatLoadingIndicator, MatModal } from "st-materialize";
+import { st } from "springtype/core";
+import { ModalMiddleContent } from "../../component/modal-middle-content/modal-middle-content";
+import { Center } from "../../component/center/center";
 
 export default (component: DriverOrderList) => (
     <fragment>
@@ -12,37 +14,37 @@ export default (component: DriverOrderList) => (
 
         <div class="container">
             <div class="order-tabs">
-                <a href="javascript:" ref={{ openOrdersTabLink: component }} onClick={component.activateOpenOrdersTab} class="order-active-tab"><h3 class="slogan">Offene Fahrten</h3></a>
+                <a href="javascript:" ref={{ openOrdersTabLink: component }} onClick={component.activateOpenOrdersTab} class="order-active-tab"><h3 class="slogan">{st.t("Open Requests")}</h3></a>
                 <h3 class="slogan">&nbsp;/&nbsp;</h3>
-                <a href="javascript:" ref={{ myOrdersTabLink: component }} onClick={component.activateMyOrdersTab}><h3 class="slogan">Meine Aufträge</h3></a>
+                <a href="javascript:" ref={{ myOrdersTabLink: component }} onClick={component.activateMyOrdersTab}><h3 class="slogan">{st.t("My Requests")}</h3></a>
             </div>
 
             <div id="open-orders" ref={{ openOrdersTab: component }}>
 
                 <p class="range-field order-range-field">
-                    <p>Im Umkreis von: <span class="badge"><span ref={{ rangeDisplay: component }}>{component.range}</span> km</span></p>
+                    <p>{st.t("In a Radius of:")} <span class="badge"><span ref={{ rangeDisplay: component }}>{component.range}</span> {st.t("km")}</span></p>
                     <input type="range" min="1" max="50" value={component.range} onChange={component.onRangeChange} />
                 </p>
 
-                <center>
+                <Center>
                     <img class="static-map" ref={{ map: component }} />
-                </center>
+                </Center>
 
                 <br />
                 <div class="horizontal-scroll hide" ref={{ openOrdersScrollContainer: component }}></div>
 
-                <center>
+                <Center>
                     <p class="hint material-align-middle">
-                        <i class="material-icons">arrow_left</i> scrollen / swipen <i class="material-icons">arrow_right</i>
+                        <i class="material-icons">arrow_left</i> {st.t("scroll / swipe")} <i class="material-icons">arrow_right</i>
                     </p>
-                </center>
+                </Center>
 
                 <br /><br /><br />
 
                 <span class="valign-wrapper hide" style={{ flexDirection: 'column' }} ref={{ openOrdersLoadingComponent: component }}>
 
-                    Wir suchen nach Fahrten <br />
-                    in Deiner Gegend...<br />
+                    {st.t("Searching for requests")} <br />
+                    {st.t("in your area...")} <br />
                     <br />
                     <div class="preloader-wrapper active center-align">
                         <div class="spinner-layer spinner-green-only">
@@ -61,17 +63,17 @@ export default (component: DriverOrderList) => (
             <span id="my-orders" class="hide" ref={{ myOrdersTab: component }}>
                 <div class="horizontal-scroll hide" ref={{ myOrdersScrollContainer: component }}></div>
 
-                <center>
+                <Center>
                     <p class="hint material-align-middle">
-                        <i class="material-icons">arrow_left</i> scrollen / swipen <i class="material-icons">arrow_right</i>
+                        <i class="material-icons">arrow_left</i> {st.t("scroll / swipe")} <i class="material-icons">arrow_right</i>
                     </p>
-                </center>
-                
+                </Center>
+
                 <br /><br />
 
                 <span class="valign-wrapper hide" style={{ flexDirection: 'column' }} ref={{ myOrdersLoadingComponent: component }}>
 
-                    Wir suchen nach Deinen Fahrten...<br />
+                    {st.t("Searching for your requests...")}<br />
                     <br />
                     <div class="preloader-wrapper active center-align">
                         <div class="spinner-layer spinner-green-only">
@@ -91,55 +93,61 @@ export default (component: DriverOrderList) => (
 
         <MatModal ref={{ confirmAcceptOrderModal: component }}>
 
-            <h4 class={'center'}><i class="material-icons">done_all</i> Auftrag annehmen</h4>
+            <ModalMiddleContent>
+                <h4 class={'center'}><i class="material-icons">done_all</i> {st.t("Accept request")}</h4>
 
-            <div ref={{ confirmOrderItemListContainer: component }}></div>
+                <div ref={{ confirmOrderItemListContainer: component }}></div>
 
-            p.s.: Wenn du einen Auftrag übernimmst, werden deine Kontaktinformationen an den Auftraggeber übermittelt.
+                {st.t("* When you accept a request, your contact details, will be shared with the requestor.")}
 
+            </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
-                <a href="javascript:" onclick={component.onCancelAccept} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
-                <a href="javascript:" onclick={component.onReallyAcceptOrder} class="modal-close waves-effect btn waves-white material-align-middle success-button"><i class="material-icons">done_all</i> &nbsp;Ja</a>
+                <a href="javascript:" onclick={component.onCancelAccept} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
+                <a href="javascript:" onclick={component.onReallyAcceptOrder} class="modal-close waves-effect btn waves-white material-align-middle success-button"><i class="material-icons">done_all</i> &nbsp;{st.t("Yes")}</a>
             </template>
         </MatModal>
 
         <MatModal ref={{ markOrderDeliveredModal: component }}>
 
-            <h4 class={'center'}><i class="material-icons">done_all</i> Auftrag abschließen</h4>
+            <ModalMiddleContent>
+                <h4 class={'center'}><i class="material-icons">done_all</i> {st.t("Finish Request")}</h4>
 
-            Bist Du Dir sicher, dass Du den Einkaufsauftrag <strong>abschließen</strong> möchtest?
-            Du solltest Deinen Einkauf abgegeben und dein Geld bereits erhalten haben.
-
+                {st.t("Are you sure, you want to")} <strong>{st.t("finish")}</strong> {st.t("this request?")}
+                {st.t("You should have delivered the requested goods and have already received the money.")}
+            </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
-                <a href="javascript:" onclick={() => component.markOrderDeliveredModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
-                <a href="javascript:" onclick={component.onReallyMarkOrderDelivered} class="modal-close waves-effect btn waves-white material-align-middle success-button"><i class="material-icons">done_all</i> &nbsp;Ja</a>
+                <a href="javascript:" onclick={() => component.markOrderDeliveredModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
+                <a href="javascript:" onclick={component.onReallyMarkOrderDelivered} class="modal-close waves-effect btn waves-white material-align-middle success-button"><i class="material-icons">done_all</i> &nbsp;{st.t("Yes")}</a>
             </template>
         </MatModal>
 
         <MatModal ref={{ myOrderDetailsModal: component }}>
 
-            <h3 class={'center'}>Einkauf</h3>
+            <ModalMiddleContent>
+                <h3 class={'center'}>{st.t("Request")}</h3>
 
-            <div ref={{ myOrderDetailsContainer: component }}></div>
-
+                <div ref={{ myOrderDetailsContainer: component }}></div>
+            </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
                     component.myOrderDetailsModal.toggle();
                 }} class="modal-close waves-effect waves-red btn-flat material-align-middle">
-                    <i class="material-icons">close</i>&nbsp;Schließen
+                    <i class="material-icons">close</i>&nbsp;{st.t("Close")}
                 </a>
             </template>
         </MatModal>
 
         <MatModal ref={{ declideOrderModal: component }}>
 
-            <h4 class={'center'}><i class="material-icons">cancel</i> Auftrag abbrechen</h4>
+            <ModalMiddleContent>
+                <h4 class={'center'}><i class="material-icons">cancel</i> {st.t("Abort Request")}</h4>
 
-            Bist Du Dir sicher, dass Du den Einkaufsauftrag abbrechen möchtest?
+                {st.t("Are you sure you want to abort this request?")}
 
+            </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
-                <a href="javascript:" onclick={() => component.declideOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
-                <a href="javascript:" onclick={component.onReallyDeclideOrder} class="modal-close waves-effect btn waves-white material-align-middle cancel-button"><i class="material-icons">done_all</i> &nbsp;Ja</a>
+                <a href="javascript:" onclick={() => component.declideOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
+                <a href="javascript:" onclick={component.onReallyDeclideOrder} class="modal-close waves-effect btn waves-white material-align-middle cancel-button"><i class="material-icons">done_all</i> &nbsp;{st.t("Yes")}</a>
             </template>
         </MatModal>
 

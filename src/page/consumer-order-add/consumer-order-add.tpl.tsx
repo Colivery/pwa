@@ -1,9 +1,8 @@
 import { ConsumerOrderAddPage } from "./consumer-order-add";
 import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
-import { MatInput } from "st-materialize";
-import { MatTextarea } from "../../component/mat/mat-textarea";
-import { MatModal } from "../../component/mat/mat-modal";
+import { MatInput, MatTextArea, MatModal } from "st-materialize";
+import { ModalMiddleContent } from "../../component/modal-middle-content/modal-middle-content";
 
 export default (component: ConsumerOrderAddPage) => (
     <fragment>
@@ -148,13 +147,13 @@ export default (component: ConsumerOrderAddPage) => (
                     <div ref={{ orderListContainer: component }}></div>
 
                     <div class="row">
-                        <MatTextarea
+                        <MatTextArea
                             name="description"
                             ref={{ articleDescription: component }}
                             label="Was brauchst Du?"
                             onKeyDown={component.articleDescriptionKeyDown}
                             class={['col', 's11']}>
-                        </MatTextarea>
+                        </MatTextArea>
 
                         <div class="col s1">
                             <a class="btn-floating btn-small waves-effect waves-light red" style={{ left: '-20px', top: '25px' }} onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
@@ -162,6 +161,7 @@ export default (component: ConsumerOrderAddPage) => (
 
                         <MatInput
                             name="maxPrice"
+                            type="number"
                             ref={{ maxPriceField: component }}
                             label="Was darf es max. kosten? (€)"
                             class={['col', 's12']}>
@@ -171,12 +171,12 @@ export default (component: ConsumerOrderAddPage) => (
                     <h5 class="header" style={{ marginTop: 0, marginBottom: 0 }}>Hinweise</h5>
 
                     <div class="row">
-                        <MatTextarea
+                        <MatTextArea
                             ref={{ hintField: component }}
                             name="hint"
                             label="Woran muss die Fahrer*in denken?"
                             class={['col', 's12']}>
-                        </MatTextarea>
+                        </MatTextArea>
                     </div>
 
                     <div class="card green darken-2">
@@ -194,13 +194,15 @@ export default (component: ConsumerOrderAddPage) => (
 
         <MatModal ref={{ confirmCreateOrderModal: component }}>
 
-            <h4 class={'center'}>Auftrag aufgeben</h4>
+            <ModalMiddleContent>
+
+                <h4 class={'center'}>Auftrag aufgeben</h4>
 
                 Das wars schon. Du kannst den Auftrag jetzt einreichen. Aber hast Du auch geprüft, dass Du genug Bargeld zuhause hast, um die Fahrer*in zu bezahlen? Bist Du Dir sicher?
-                
+
                 <br /><br />
                 p.s.: Wenn du deinen Auftrag abschickst, kann der Fahrer, der deinen Auftrag annimmt, deine Kontaktinformationen und Adresse sehen.
-
+            </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
                 <a href="javascript:" ref={{ addOrderButton: component }} onclick={component.onReallyCreateOrderClick} class="modal-close waves-effect waves-green btn success-button material-align-middle"><i class="material-icons">done_all</i>&nbsp;Ja</a>
@@ -208,17 +210,18 @@ export default (component: ConsumerOrderAddPage) => (
         </MatModal>
 
         <MatModal ref={{ warnAtLeastOneItemModal: component }}>
-
-            <h4 class={'center'}>Fehler</h4>
+            <ModalMiddleContent>
+                <h4 class={'center'}>Fehler</h4>
 
             Bitte schreib mindestens einen Artikel auf Deinen Einkaufszettel. Drücke anschließend den Plus (+)-Button.
-
+            </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
                     component.warnAtLeastOneItemModal.toggle();
                 }} class="modal-close waves-effect waves-green btn success-button">OK</a>
             </template>
-        </MatModal>
 
-    </fragment>
+        </MatModal >
+
+    </fragment >
 )

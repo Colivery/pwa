@@ -6,7 +6,7 @@ import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { ref } from "springtype/core/ref";
 import tpl from "./login.tpl";
-import { Form } from "springtype/web/form";
+import { Form } from "st-materialize";
 import { RegisterPage } from "../register/register-account/register";
 
 @component({
@@ -17,7 +17,7 @@ export class LoginPage extends st.component implements ILifecycle {
     static ROUTE = "login";
 
     @ref
-    formRef: Form;
+    form: Form;
 
     @ref
     errorMessage: ErrorMessage;
@@ -32,12 +32,18 @@ export class LoginPage extends st.component implements ILifecycle {
     doLogin = async () => {
 
         try {
-            if (await this.formRef.validate()) {
+            if (await this.form.validate(true)) {
 
-                const data = this.formRef.getState() as { email: string, password: string };
+                console.log('valid');
+
+                const data = this.form.getState() as { email: string, password: string };
                 await window.authService.login(data.email, data.password);
+            } else {
+                console.log('fu ck', await this.form.validate(true));
             }
         } catch (e) {
+            console.log('not valid', e);
+
             this.errorMessage.message = e.message;
         }
     }
@@ -54,8 +60,11 @@ export class LoginPage extends st.component implements ILifecycle {
 
     onPasswordFieldKeyUp = (event: KeyboardEvent) => {
 
+        console.log('onKeyDown!!', event)
+
         if (event.key === "Enter") {
             setTimeout(() => {
+                console.log('akljdalsLOGIN')
                 this.doLogin();
             }, 100)
         }

@@ -3,6 +3,7 @@ import { st } from "springtype/core";
 import { UserProfile, IUserProfileResponse } from "../datamodel/user";
 import { SERVICE_API_ENDPOINT } from "../config/endpoints";
 import { StorageService } from "./storage";
+import { ErrorService } from "./error";
 
 @injectable
 export class UserService {
@@ -14,11 +15,14 @@ export class UserService {
     @inject(StorageService)
     storageService: StorageService;
 
+    @inject(ErrorService)
+    errorService: ErrorService;
+
     async deleteOwnUser(): Promise<void> {
 
         try {
-            await fetch(`${SERVICE_API_ENDPOINT}/user/own/delete`, {
-                method: 'GET',
+            await fetch(`${SERVICE_API_ENDPOINT}/user/own`, {
+                method: 'DELETE',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
@@ -32,13 +36,16 @@ export class UserService {
             });
 
         } catch (e) {
-            st.error('error in deleting user profile', e)
+            st.error('error in deleting user profile', e);
+            this.errorService.show();
         }
     }
 
-    async getUserProfile(): Promise<IUserProfileResponse | void> {
+    async getUserProfile(useCache: boolean = true): Promise<IUserProfileResponse> {
 
-        if (this.userProfile) {
+        //this.errorService.show();
+
+        if (this.userProfile && useCache) {
             return this.userProfile;
         }
 
@@ -60,7 +67,8 @@ export class UserService {
             return this.userProfile;
 
         } catch (e) {
-            st.error('error in get user profile request', e)
+            st.error('error in get user profile request', e);
+            this.errorService.show();
         }
     }
 
@@ -89,7 +97,8 @@ export class UserService {
             });
 
         } catch (e) {
-            st.error('error in get user profile request', e)
+            st.error('error in get user profile request', e);
+            this.errorService.show();
         }
     }
 }

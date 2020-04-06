@@ -8185,10 +8185,10 @@ split-string@^3.0.1, split-string@^3.0.2:
   dependencies:
     extend-shallow "^3.0.0"
 
-springtype@^2.0.0-beta.64, springtype@springtype@2.0.0-beta.64:
-  version "2.0.0-beta.64"
-  resolved "https://registry.yarnpkg.com/springtype/-/springtype-2.0.0-beta.64.tgz#d363a66e2b445eef8be5579828a5ce434df16bbd"
-  integrity sha512-cX2uZmAMqyDs10AiT0aJSJQngLvS5R7d+tYCKFcGYU2MkqPARCJFY89WsF6vt9quE/lwbTqa14QN/Ywy9CTmQg==
+springtype@springtype@2.0.0-beta.65:
+  version "2.0.0-beta.65"
+  resolved "https://registry.yarnpkg.com/springtype/-/springtype-2.0.0-beta.65.tgz#b2862e83149d64a638f07b1e72bb03dfc348fef8"
+  integrity sha512-A0B361rxB49e6fGiiWow1E+oXMGIlfYo2J7qP+n+RlL67k3zfkzmXTFTLLYLeoiC80u3Hx7nRZ+bt9eJDZMZ+A==
 
 sprintf-js@~1.0.2:
   version "1.0.3"
@@ -8232,12 +8232,10 @@ st-cp@^2.0.0-alpha.4:
   dependencies:
     chalk "^2.4.2"
 
-st-materialize@^1.0.0-beta.4:
-  version "1.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/st-materialize/-/st-materialize-1.0.0-beta.4.tgz#bb861030ef0448bb4b0971d4152ff74ad96bdbf5"
-  integrity sha512-zv/6wztA953LPZauaDXOWRmA5Vcicw5i66dGbEGpVzS5JvPU9XWlmqt73T5pL9J1hC1uMPkgZyRDlOZgF6JPlA==
-  dependencies:
-    springtype "^2.0.0-beta.64"
+st-materialize@^1.0.0-beta.10:
+  version "1.0.0-beta.10"
+  resolved "https://registry.yarnpkg.com/st-materialize/-/st-materialize-1.0.0-beta.10.tgz#c7a9229cd796c719593b4c337f1cf5eba4cdd785"
+  integrity sha512-jtcNC4EcM909PaftjleWhkroFZKkoYAhWkBozXc+n+sWgioS9SkwjEZ/I7xCkCDR+KGnhOOwPlE0+PUCXFT7vg==
 
 st-mkdir@^1.0.0-alpha.4, st-mkdir@^1.0.0-alpha.5:
   version "1.0.0-alpha.6"
