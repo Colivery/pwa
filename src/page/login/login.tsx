@@ -25,7 +25,6 @@ export class LoginPage extends st.component implements ILifecycle {
     class = ['wrapper', 'valign-wrapper'];
 
     onLoginClick = async () => {
-
         this.doLogin();
     };
 
@@ -33,17 +32,12 @@ export class LoginPage extends st.component implements ILifecycle {
 
         try {
             if (await this.form.validate(true)) {
-
-                console.log('valid');
-
                 const data = this.form.getState() as { email: string, password: string };
                 await window.authService.login(data.email, data.password);
-            } else {
-                console.log('fu ck', await this.form.validate(true));
             }
         } catch (e) {
-            console.log('not valid', e);
 
+            // TODO: partial Render; 
             this.errorMessage.message = e.message;
         }
     }
@@ -55,16 +49,14 @@ export class LoginPage extends st.component implements ILifecycle {
     };
 
     onForgotPassword = () => {
+        // TODO: Implement
         st.warn('onForgotPassword')
     };
 
     onPasswordFieldKeyUp = (event: KeyboardEvent) => {
 
-        console.log('onKeyDown!!', event)
-
         if (event.key === "Enter") {
             setTimeout(() => {
-                console.log('akljdalsLOGIN')
                 this.doLogin();
             }, 100)
         }

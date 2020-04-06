@@ -163,6 +163,8 @@ export class DriverOrderList extends st.component implements ILifecycle {
             }
         }
 
+        console.log('unionOrders', unionOrders);
+
         unionOrders.sort((orderA, orderB) => orderA.created > orderB.created ? 1 : -1);
 
         this.openOrdersDisplayData = unionOrders;

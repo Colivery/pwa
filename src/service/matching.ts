@@ -1,6 +1,7 @@
-import { injectable } from "springtype/core/di";
+import { injectable, inject } from "springtype/core/di";
 import { MATCHING_API_ENDPOINT } from "../config/endpoints";
 import { Order } from "../datamodel/order";
+import { ErrorService } from "./error";
 
 export interface IMatchingResponse {
     data: Promise<{
@@ -12,33 +13,42 @@ export interface IMatchingResponse {
 @injectable
 export class MatchingService {
 
+    @inject(ErrorService)
+    errorService: ErrorService;
+    
     async search(lat: number, lon: number, rangeKm: number): Promise<IMatchingResponse> {
 
-        const requestBody = {
-            "coordinate": {
-                "latitude": lat,
-                "longitude": lon
-            },
-            "range": rangeKm
-        };
-
-        const abortController = new AbortController();
-
-        return {
-            data: (await fetch(`${MATCHING_API_ENDPOINT}/search/query`, {
-                method: 'POST',
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json'
+        try {
+            const requestBody = {
+                "coordinate": {
+                    "latitude": lat,
+                    "longitude": lon
                 },
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer',
-                body: JSON.stringify(requestBody),
-                signal: abortController.signal
-            })).json(),
-            abortController
-        };
+                "range": rangeKm
+            };
+
+            const abortController = new AbortController();
+
+            return {
+                data: (await fetch(`${MATCHING_API_ENDPOINT}/search/query`, {
+                    method: 'POST',
+                    mode: 'cors', // no-cors, *cors, same-origin
+                    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                    credentials: 'same-origin', // include, *same-origin, omit
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify(requestBody),
+                    signal: abortController.signal
+                })).json(),
+                abortController
+            };
+        } catch (e) {
+
+            console.error('error finding matches', lat, lon, rangeKm);
+            this.errorService.show();
+        }
     }
 }
