@@ -140,13 +140,14 @@ export default (component: ConsumerOrderAddPage) => (
 
                     <h5 class="header">{st.t("New Shoppinglist")}</h5>
 
-                    <p>{st.t("Write what you need and for instance where from, how many and how imporant it is to you.")}</p>
+                    <p>{st.t("Write down what you need. You can describe, how much, from what brand or from what store the item should be.")}</p>
 
                     <div ref={{ orderListContainer: component }}></div>
 
                     <div class="row">
                         <MatTextArea
                             name="description"
+                            helperText={st.t("i. e. 300g bio tomatos or 2L oatly oat milk")}
                             ref={{ articleDescription: component }}
                             label={st.t("What do you need?")}
                             onKeyDown={component.articleDescriptionKeyDown}
@@ -172,7 +173,8 @@ export default (component: ConsumerOrderAddPage) => (
                         <MatTextArea
                             ref={{ hintField: component }}
                             name="hint"
-                            label={st.t("What does the driver need to think of?")}
+                            helperText={st.t("i. e. Please give me a call when you are infront of my door.")}
+                            label={st.t("Something else you need to tell the driver?")}
                             class={['col', 's12']}>
                         </MatTextArea>
                     </div>
@@ -196,10 +198,10 @@ export default (component: ConsumerOrderAddPage) => (
 
                 <h4 class={'center'}>{st.t("Send Request")}</h4>
 
-                {st.t("That was it. You can send the request now. Did you check if you have enough cash at hand, to pay the driver? Are you sure?")}
+                {st.t("Nearly finished! Now you only need to confirm. Did you check if you have enough cash at hand to pay the shopping request?")}
 
                 <br /><br />
-                {st.t("* When a driver accepts your request, the driver will be able to view your contact information and address.")}
+                {st.t("Please Note: If a driver accepts your request, the driver will be able to view your contact information and address, to deliver the items.")}
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>

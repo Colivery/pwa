@@ -153,7 +153,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                             </div>
                         </div>
                          */}
-                        <a href="javascript:" data-index={index} onClick={this.onOrderShowDetails} class="btn material-align-middle info-button"><i class="material-icons">visibility</i> &nbsp;{st.t("View Details")}</a>
+                        <a href="javascript:" data-index={index} onClick={this.onOrderShowDetails} class="btn material-align-middle info-button"><i class="material-icons">visibility</i> &nbsp;{st.t("Details")}</a>
                         {union.order.status === 'to_be_delivered' ? <a href="javascript:" data-index={index} onClick={this.onOrderCancel} class="btn material-align-middle cancel-button"><i class="material-icons">cancel</i> &nbsp;{st.t("Cancel")}</a> : ''}
                     </div>
                 </div>
