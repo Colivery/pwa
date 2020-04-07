@@ -127,5 +127,18 @@
     "Please write at least one item on your shoppinglist. After that press the plus (+)-button.": "Please write at least one item on your shoppinglist. After that press the plus (+)-button.",
     "OK": "OK",
 
+    "-- Consumer Order List Page -- ": null,
+    "New Request": "New Request",
+    "Cancel Request": "Cancel Request",
+    "Are you sure you want to cancel this shopping request?": "Are you sure you want to cancel this shopping request?",
+    "Do you need help with shopping?": "Do you need help with shopping?",
+    "Press the button: \"New Request\".": "Press the button: \"New Request\".",
+    "Would you rather want to help?": "Would you rather want to help?",
+    "Press on the menu on the top left and": "Press on the menu on the top left and",
+    "change to the driver mode.": "change to the driver mode.",
+    "Requested at:": "Requested at:",
+    "View Details": "View Details",
+    "Your driver": "Your driver",
+
     "-- Next Page -- ": null
 }

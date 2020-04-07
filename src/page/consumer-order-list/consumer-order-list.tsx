@@ -99,12 +99,12 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
             this.renderPartial(
                 <Center>
                     <h6>
-                        <strong>Brauchst Du Hilfe beim Einkaufen?</strong><br />
-                        Klicke auf den Button: "Neuer Auftrag".
+                        <strong>{st.t("Do you need help with shopping?")}</strong><br />
+                        {st.t("Press the button: \"New Request\".")}
                         <br /><br />
-                        <strong>Möchtest Du lieber helfen?</strong> <br />
-                        Dann klick auf das Menü links oben und <br />
-                        wechsel in den Fahrer-Modus.
+                        <strong>{st.t("Would you rather want to help?")}</strong> <br />
+                        {st.t("Press on the menu on the top left and")} <br />
+                        {st.t("change to the driver mode.")}
                         <br /><br />
                     </h6>
                 </Center>,
@@ -127,7 +127,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                         </div>
                         {/*
                         <div class="order-date">
-                            Eingetragen: 
+                            {st.t("Requested at:")}
                         </div>
                         */}
 
@@ -143,7 +143,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                         </div>
                         <div class="order-line">
                             <div class="material-align-middle truncate">
-                                <i class="material-icons order-card-icon">shopping_cart</i> {union.order.items.length} Teile
+                                <i class="material-icons order-card-icon">shopping_cart</i> {union.order.items.length} {st.t("Items")}
                             </div>
                         </div>
                         {/*
@@ -153,8 +153,8 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                             </div>
                         </div>
                          */}
-                        <a href="javascript:" data-index={index} onClick={this.onOrderShowDetails} class="btn material-align-middle info-button"><i class="material-icons">visibility</i> &nbsp;Details ansehen</a>
-                        {union.order.status === 'to_be_delivered' ? <a href="javascript:" data-index={index} onClick={this.onOrderCancel} class="btn material-align-middle cancel-button"><i class="material-icons">cancel</i> &nbsp;Abbrechen</a> : ''}
+                        <a href="javascript:" data-index={index} onClick={this.onOrderShowDetails} class="btn material-align-middle info-button"><i class="material-icons">visibility</i> &nbsp;{st.t("View Details")}</a>
+                        {union.order.status === 'to_be_delivered' ? <a href="javascript:" data-index={index} onClick={this.onOrderCancel} class="btn material-align-middle cancel-button"><i class="material-icons">cancel</i> &nbsp;{st.t("Cancel")}</a> : ''}
                     </div>
                 </div>
             </a>
@@ -199,7 +199,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
             <br />
 
-            {union.order.status === 'accepted' || union.order.status === 'delivered' ? <fragment><h5><span class="material-align-middle"><i class="material-icons">time_to_leave</i>&nbsp;Dein Fahrer</span></h5>
+            {union.order.status === 'accepted' || union.order.status === 'delivered' ? <fragment><h5><span class="material-align-middle"><i class="material-icons">time_to_leave</i>&nbsp;{st.t("Your driver")}</span></h5>
 
                 <div class="row">
                     <strong>{union.driver.first_name} {union.driver.last_name}</strong><br />
@@ -212,7 +212,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                 </div> </fragment> : ''}
 
             <h5><span class="material-align-middle">
-                <i class="material-icons order-card-icon">shopping_cart</i>&nbsp;Artikel
+                <i class="material-icons order-card-icon">shopping_cart</i>&nbsp;{st.t("Items")}
                 </span>
             </h5>
 
@@ -225,7 +225,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
             </div>
 
             {union.order.hint ? <fragment><h5><span class="material-align-middle">
-                <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;Hinweise
+                <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;{st.t("Notes")}
                 </span>
             </h5>
 
@@ -235,11 +235,11 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
             </fragment> : ''}
 
             {union.order.max_price ? <fragment><h5><span class="material-align-middle">
-                <i class="material-icons order-card-icon">monetization_on</i>&nbsp;Maximalbetrag
+                <i class="material-icons order-card-icon">monetization_on</i>&nbsp;{st.t("Maximum budget")}
                 </span>
             </h5>
 
-                <p>Der Einkauf darf <strong>maximal {union.order.max_price} (€) kosten.</strong></p></fragment> : ''}
+                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at most")} {union.order.max_price} (€) {st.t("/verb/cost.")}</strong></p></fragment> : ''}
 
         </div>, this.myOrderDetailsContainer);
 

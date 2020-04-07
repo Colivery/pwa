@@ -127,5 +127,18 @@
     "Please write at least one item on your shoppinglist. After that press the plus (+)-button.": "Bitte schreib mindestens einen Artikel auf Deinen Einkaufszettel. Drücke anschließend den Plus (+)-Button.",
     "OK": "OK",
 
+    "-- Consumer Order List Page -- ": null,
+    "New Request": "Neuer Auftrag",
+    "Cancel Request": "Auftrag abbrechen",
+    "Are you sure you want to cancel this shopping request?": "Bist Du Dir sicher, dass Du diesen Einkaufsauftrag abbrechen möchtest?",
+    "Do you need help with shopping?": "Brauchst Du Hilfe beim Einkaufen?",
+    "Press the button: \"New Request\".": "Klicke auf den Button: \"Neuer Auftrag\".",
+    "Would you rather want to help?": "Möchtest Du lieber helfen?",
+    "Press on the menu on the top left and": "Dann klick auf das Menü links oben und",
+    "change to the driver mode.": "wechsel in den Fahrer-Modus.",
+    "Requested at:": "Eingetragen:",
+    "View Details": "Details ansehen",
+    "Your driver": "Dein Fahrer",
+
     "-- Next Page -- ": null
 }
