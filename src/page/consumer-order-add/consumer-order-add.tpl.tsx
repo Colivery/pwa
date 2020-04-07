@@ -3,6 +3,7 @@ import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { MatInput, MatTextArea, MatModal } from "st-materialize";
 import { ModalMiddleContent } from "../../component/modal-middle-content/modal-middle-content";
+import { st } from "springtype/core";
 
 export default (component: ConsumerOrderAddPage) => (
     <fragment>
@@ -15,14 +16,14 @@ export default (component: ConsumerOrderAddPage) => (
                 <div class={['col', 's12', 'm6', 'l8', 'offset-l2', 'offset-m3']}>
 
                     {/**
-                    <h5 class="header">Was brauchst Du?</h5>
+                    <h5 class="header">{st.t("What do you need?")}</h5>
 
                     <div class="row">
                         <div class="col s4">
                             <a href="javascript:" data-shop-type="supermarket" onClick={component.activateShopType}>
                                 <div class="shop-card">
                                     <p class="emoji-icon">🍎</p>
-                                    <strong class="truncate">Supermarkt</strong>
+                                    <strong class="truncate">{st.t("Supermarket")}</strong>
                                 </div>
                             </a>
                         </div>
@@ -30,7 +31,7 @@ export default (component: ConsumerOrderAddPage) => (
                             <a href="javascript:" data-shop-type="drugstore" onClick={component.activateShopType}>
                                 <div class="shop-card">
                                     <p class="emoji-icon">🧻</p>
-                                    <strong class="truncate">Drogerie</strong>
+                                    <strong class="truncate">{st.t("Drug store")}</strong>
                                 </div>
                             </a>
                         </div>
@@ -38,7 +39,7 @@ export default (component: ConsumerOrderAddPage) => (
                             <a href="javascript:" data-shop-type="beverages" onClick={component.activateShopType}>
                                 <div class="shop-card">
                                     <p class="emoji-icon">🥤</p>
-                                    <strong class="truncate">Getränke</strong>
+                                    <strong class="truncate">{st.t("Beverages")}</strong>
                                 </div>
                             </a>
                         </div>
@@ -46,7 +47,7 @@ export default (component: ConsumerOrderAddPage) => (
                             <a href="javascript:" data-shop-type="bakery" onClick={component.activateShopType}>
                                 <div class="shop-card">
                                     <p class="emoji-icon">🍞</p>
-                                    <strong class="truncate">Bäckerei</strong>
+                                    <strong class="truncate">{st.t("Bakery")}</strong>
                                 </div>
                             </a>
                         </div>
@@ -54,7 +55,7 @@ export default (component: ConsumerOrderAddPage) => (
                             <a href="javascript:" data-shop-type="butcher" onClick={component.activateShopType}>
                                 <div class="shop-card">
                                     <p class="emoji-icon">🥩</p>
-                                    <strong class="truncate">Metzgerei</strong>
+                                    <strong class="truncate">{st.t("Butcher")}</strong>
                                 </div>
                             </a>
                         </div>
@@ -62,23 +63,20 @@ export default (component: ConsumerOrderAddPage) => (
                             <a href="javascript:" data-shop-type="pharmacy" onClick={component.activateShopType}>
                                 <div class="shop-card">
                                     <p class="emoji-icon">💊</p>
-                                    <strong class="truncate">Apotheke</strong>
+                                    <strong class="truncate">{st.t("Pharmacy")}</strong>
                                 </div>
                             </a>
                         </div>
                     </div>
  */}
                     {/*
-                    <h5 class="header">Was brauchst Du?</h5>
+                    <h5 class="header">{st.t("What do you need?")}</h5>
 
                     <p>
-                        Bitte Wähle zuerst die Art des Ladens, von dem Du etwas benötigst:
+                        {st.t("Choose the type of store, where the items can be bought:")}
                     </p>
 
-                    
-
-
-                    <strong>Bestimmter Laden</strong>
+                    <strong>{st.t("Selected Store")}</strong>
 
                     <div class="row order-add-input-location">
                         <div class="col s2">
@@ -87,14 +85,14 @@ export default (component: ConsumerOrderAddPage) => (
                         <MatInput
                             name="von"
                             ref={{ locationField: component }}
-                            label="Und zwar von:"
+                            label={st.t("From:")}
                             value="&nbsp;"
                             validators={[minLength(3)]}
                             errorMessage={{
-                                'min-length': 'Bitte mindestens 3 Zeichen'
+                                'min-length': {st.t("At least 3 characters")}
                             }}
                             class={['col', 's10']}
-                            helperText="Gib hier den Namen des Ladens ein, z.B. Edeka"
+                            helperText={st.t("Type the name of the store here: i.e. Tesco"}
                             onKeyUp={component.onLocationKeyUp}>
                         </MatInput>
                     </div>
@@ -110,7 +108,7 @@ export default (component: ConsumerOrderAddPage) => (
                                     {locationOption.street} {locationOption.houseNumber}<br />
                                     {locationOption.postcode} {locationOption.city}
                                     <span class="secondary-content">
-                                        <i class="material-icons">send</i> ~{Math.round(locationOption.distance * 1000)} km
+                                        <i class="material-icons">send</i> ~{Math.round(locationOption.distance * 1000)} {st.t("km")}
                         </span>
                                 </div>
                             </a>)}
@@ -136,13 +134,13 @@ export default (component: ConsumerOrderAddPage) => (
                         {component.selectedLocation.street} {component.selectedLocation.houseNumber}<br />
                         {component.selectedLocation.postcode} {component.selectedLocation.city}
                         <span class="secondary-content">
-                            <i class="material-icons">send</i> ~{Math.round(component.selectedLocation.distance * 1000)} km
+                            <i class="material-icons">send</i> ~{Math.round(component.selectedLocation.distance * 1000)} {st.t("km")}
                         </span><br /><br /></div> : ''}
                     */}
 
-                    <h5 class="header">Neuer Einkaufszettel</h5>
+                    <h5 class="header">{st.t("New Shoppinglist")}</h5>
 
-                    <p>Schreib uns, was Du brauchst, und ggf. woher, wieviel, und wie wichtig es Dir ist.</p>
+                    <p>{st.t("Write what you need and for instance where from, how many and how imporant it is to you.")}</p>
 
                     <div ref={{ orderListContainer: component }}></div>
 
@@ -150,7 +148,7 @@ export default (component: ConsumerOrderAddPage) => (
                         <MatTextArea
                             name="description"
                             ref={{ articleDescription: component }}
-                            label="Was brauchst Du?"
+                            label={st.t("What do you need?")}
                             onKeyDown={component.articleDescriptionKeyDown}
                             class={['col', 's11']}>
                         </MatTextArea>
@@ -163,30 +161,30 @@ export default (component: ConsumerOrderAddPage) => (
                             name="maxPrice"
                             type="number"
                             ref={{ maxPriceField: component }}
-                            label="Was darf es max. kosten? (€)"
+                            label={st.t("What is the maximum price? (€)")}
                             class={['col', 's12']}>
                         </MatInput>
                     </div>
 
-                    <h5 class="header" style={{ marginTop: 0, marginBottom: 0 }}>Hinweise</h5>
+                    <h5 class="header" style={{ marginTop: 0, marginBottom: 0 }}>{st.t("Notes")}</h5>
 
                     <div class="row">
                         <MatTextArea
                             ref={{ hintField: component }}
                             name="hint"
-                            label="Woran muss die Fahrer*in denken?"
+                            label={st.t("What does the driver need to think of?")}
                             class={['col', 's12']}>
                         </MatTextArea>
                     </div>
 
                     <div class="card green darken-2">
                         <div class="card-content white-text">
-                            <p>Bitte beachte, dass nachdem ein Fahrer Deinen Auftrag angenommen hat, Du ihn nicht mehr ändern kannst. Die Bezahlung erfolgt in bar.</p>
+                            <p>{st.t("Note that you cannot change a request, after a driver has accepted your request. Payment is currently cash only.")}</p>
                         </div>
                     </div>
 
                     <div class="row">
-                        <a href="javascript:" onClick={component.onCreateOrderButtonClick} class="btn col s12"><span class="material-align-middle"><i class="material-icons">done</i> Auftrag aufgeben</span></a>
+                        <a href="javascript:" onClick={component.onCreateOrderButtonClick} class="btn col s12"><span class="material-align-middle"><i class="material-icons">done</i> {st.t("Send Request")}</span></a>
                     </div>
                 </div>
             </div>
@@ -196,29 +194,29 @@ export default (component: ConsumerOrderAddPage) => (
 
             <ModalMiddleContent>
 
-                <h4 class={'center'}>Auftrag aufgeben</h4>
+                <h4 class={'center'}>{st.t("Send Request")}</h4>
 
-                Das wars schon. Du kannst den Auftrag jetzt einreichen. Aber hast Du auch geprüft, dass Du genug Bargeld zuhause hast, um die Fahrer*in zu bezahlen? Bist Du Dir sicher?
+                {st.t("That was it. You can send the request now. Did you check if you have enough cash at hand, to pay the driver? Are you sure?")}
 
                 <br /><br />
-                p.s.: Wenn du deinen Auftrag abschickst, kann der Fahrer, der deinen Auftrag annimmt, deine Kontaktinformationen und Adresse sehen.
+                {st.t("* When a driver accepts your request, the driver will be able to view your contact information and address.")}
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
-                <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;Nein</a>
-                <a href="javascript:" ref={{ addOrderButton: component }} onclick={component.onReallyCreateOrderClick} class="modal-close waves-effect waves-green btn success-button material-align-middle"><i class="material-icons">done_all</i>&nbsp;Ja</a>
+                <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
+                <a href="javascript:" ref={{ addOrderButton: component }} onclick={component.onReallyCreateOrderClick} class="modal-close waves-effect waves-green btn success-button material-align-middle"><i class="material-icons">done_all</i>&nbsp;{st.t("Yes")}</a>
             </template>
         </MatModal>
 
         <MatModal ref={{ warnAtLeastOneItemModal: component }}>
             <ModalMiddleContent>
-                <h4 class={'center'}>Fehler</h4>
+                <h4 class={'center'}>{st.t("Error")}</h4>
 
-            Bitte schreib mindestens einen Artikel auf Deinen Einkaufszettel. Drücke anschließend den Plus (+)-Button.
+            {st.t("Please write at least one item on your shoppinglist. After that press the plus (+)-button.")}
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
                     component.warnAtLeastOneItemModal.toggle();
-                }} class="modal-close waves-effect waves-green btn success-button">OK</a>
+                }} class="modal-close waves-effect waves-green btn success-button">{st.t("OK")}</a>
             </template>
 
         </MatModal >
