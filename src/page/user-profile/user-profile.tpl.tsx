@@ -21,7 +21,7 @@ export default (component: UserProfilePage) => (
             <div class="row">
                 <div class={['col', 's12']}>
                     <Center>
-                        <T tag="h5" class="header">My Profil</T>
+                        <T tag="h5" class="header">My Profile</T>
 
                         {st.t('Choose language:')}<br />
 
@@ -53,7 +53,7 @@ export default (component: UserProfilePage) => (
                     <Center>
                         <T tag="h5">Attention</T>
                         <T tag="p">
-                            We can't undo this operation.
+                            This action cannot be undone.
                         </T>
                         <br />
                         <br />
@@ -67,12 +67,12 @@ export default (component: UserProfilePage) => (
         <MatModal ref={{ afterSaveModal: component }}>
 
             <ModalMiddleContent>
-                <T tag="h4" class={'center'}>Profil updated</T>
+                <T tag="h4" class={'center'}>Profile updated</T>
 
-                <T tag="p">Your personal data was updated successfully.</T>
+                <T tag="p">Your personal data has been updated successfully.</T>
 
             </ModalMiddleContent>
-            
+
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <T tag="a" href="javascript:" onclick={() => {
                     component.afterSaveModal.toggle();

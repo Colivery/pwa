@@ -107,27 +107,27 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 this.onUserProfileClick()
             }}>
                 <div class="material-align-middle">
-                    <i class="material-icons">account_circle</i> Mein Profil
+                    <i class="material-icons">account_circle</i> {st.t("My Profile")}
                     </div>
             </a>
             {this.getActiveProfile()}
 
             <a href={TERMS_OF_USE_URL} target="_blank">
                 <div class="material-align-middle">
-                    <i class="material-icons">description</i> AGB
+                    <i class="material-icons">description</i> {st.t("Terms of Use")}
                     </div>
             </a>
 
             <a href={PRIVACY_STATEMENT_URL} target="_blank">
                 <div class="material-align-middle">
-                    <i class="material-icons">security</i> Datenschutz
+                    <i class="material-icons">security</i> {st.t("Privacy Statement")}
                     </div>
             </a>
 
 
             <a href={LEGAL_NOTICE_URL} target="_blank">
                 <div class="material-align-middle">
-                    <i class="material-icons">policy</i> Impressum
+                    <i class="material-icons">policy</i> {st.t("Contact Details")}
                     </div>
             </a>
 
@@ -135,7 +135,7 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 this.onLogoutClick()
             }}>
                 <div class="material-align-middle">
-                    <i class="material-icons">directions_run</i> Ausloggen
+                    <i class="material-icons">directions_run</i> {st.t("Logout")}
                     </div>
             </a>
         </fragment>, this.menuOverlay)
@@ -171,14 +171,14 @@ export class NavHeader extends st.component<NavHeaderProps> {
                 this.onCustomerSwitch();
             }}>
                 <div class="material-align-middle">
-                    <i class="material-icons">local_mall</i> Käufer-Modus
+                    <i class="material-icons">local_mall</i> {st.t("Request Mode")}
                 </div>
             </a>
             <a href="javascript:" style={{ display: isDriver ? 'none' : 'block' }} onclick={() => {
                 this.onDriverSwitch();
             }}>
                 <div class="material-align-middle">
-                    <i class="material-icons">time_to_leave</i> Fahrer-Modus
+                    <i class="material-icons">time_to_leave</i> {st.t("Driver Mode")}
                 </div>
             </a>
         </fragment>

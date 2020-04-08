@@ -5,15 +5,14 @@ import { MatInput, Form } from "st-materialize";
 import { email, minLength, required } from "springtype/core/validate";
 import { LogoRow } from "../../component/logo-row/logo-row";
 import { st } from "springtype/core";
+import { T } from "springtype/web/i18n/t";
 
 export default (component: LoginPage) => (
     <fragment>
         <div class="container">
             <LogoRow />
 
-            <h3 class="slogan">
-                {st.t("Together better supplied!")}
-            </h3>
+            <T tag="h3" class="slogan">Co-operated delivery!</T>
 
             <Form ref={{ form: component }}>
                 <div class="row">
@@ -33,7 +32,7 @@ export default (component: LoginPage) => (
                         validators={[required, minLength(7)]}
                         validationErrorMessages={{
                             required: st.t("This is a required field"),
-                            'min-length': st.t("Passwords consist of atleast 7 characters")
+                            'min-length': st.t("Your password must consist of at least 7 characters")
                         }}>
                     </MatInput>
                 </div>
@@ -50,11 +49,11 @@ export default (component: LoginPage) => (
                         onClick={component.onRegisterClick}>{st.t("Sign up")}</a>
                 </div>
 
-                {/* 
+                {/*
                 <div class="row center-align">
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']}>
                         <a href="javascript:" class="login-forgot-password" onClick={component.onForgotPassword}>
-                            {st.t("I forgot my password")}
+                            {st.t("Forgot Password")}
                         </a>
                     </div>
                 </div>*/}

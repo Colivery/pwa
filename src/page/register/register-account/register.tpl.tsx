@@ -27,23 +27,23 @@ export default (component: RegisterPage) => (
                         validators={[required, minLength(7)]}
                         validationErrorMessages={{
                             required: st.t("This is a required field"),
-                            'min-length': st.t("Passwords consist of atleast 7 characters")
+                            'min-length': st.t("Your password must consist of at least 7 characters")
                         }}>
                     </MatInput>
-                    <MatInput name="password_again" label={st.t("Password Confirmation")} type="password"
+                    <MatInput name="password_again" label={st.t("Password confirmation")} type="password"
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText={st.t("Confirm your password")}
                         validators={[required, minLength(7)]}
                         validationErrorMessages={{
                             required: st.t("This is a required field"),
-                            'min-length': st.t("Passwords consist of atleast 7 characters")
+                            'min-length': st.t("Your password must consist of at least 7 characters")
                         }}>
                     </MatInput>
                 </div>
 
                 <div class="row">
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
-                        {st.t("Please check our")} <a href={TERMS_OF_USE_URL} target="_blank">{st.t("Terms of Use")}</a> {st.t("and")} <a href={PRIVACY_STATEMENT_URL} target="_blank">{st.t("Data Protection Agreement")}</a>.
+                        {st.t("Please note our")} <a href={TERMS_OF_USE_URL} target="_blank">{st.t("Terms of Use")}</a> {st.t("and")} <a href={PRIVACY_STATEMENT_URL} target="_blank">{st.t("Privacy Statement")}</a>.
                     </div>
                 </div>
 

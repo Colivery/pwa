@@ -31,7 +31,7 @@ export default (component: ConsumerOrderAddPage) => (
                             <a href="javascript:" data-shop-type="drugstore" onClick={component.activateShopType}>
                                 <div class="shop-card">
                                     <p class="emoji-icon">🧻</p>
-                                    <strong class="truncate">{st.t("Drug store")}</strong>
+                                    <strong class="truncate">{st.t("Drugstore")}</strong>
                                 </div>
                             </a>
                         </div>
@@ -39,7 +39,7 @@ export default (component: ConsumerOrderAddPage) => (
                             <a href="javascript:" data-shop-type="beverages" onClick={component.activateShopType}>
                                 <div class="shop-card">
                                     <p class="emoji-icon">🥤</p>
-                                    <strong class="truncate">{st.t("Beverages")}</strong>
+                                    <strong class="truncate">{st.t("Beverage market")}</strong>
                                 </div>
                             </a>
                         </div>
@@ -76,7 +76,7 @@ export default (component: ConsumerOrderAddPage) => (
                         {st.t("Choose the type of store, where the items can be bought:")}
                     </p>
 
-                    <strong>{st.t("Selected Store")}</strong>
+                    <strong>{st.t("Particular Store")}</strong>
 
                     <div class="row order-add-input-location">
                         <div class="col s2">
@@ -138,16 +138,16 @@ export default (component: ConsumerOrderAddPage) => (
                         </span><br /><br /></div> : ''}
                     */}
 
-                    <h5 class="header">{st.t("New Shoppinglist")}</h5>
+                    <h5 class="header">{st.t("New shopping list")}</h5>
 
-                    <p>{st.t("Write down what you need. You can describe, how much, from what brand or from what store the item should be.")}</p>
+                    <p>{st.t("Write down what you need. You can describe, how much, wich brand and what store you would like it from.")}</p>
 
                     <div ref={{ orderListContainer: component }}></div>
 
                     <div class="row">
                         <MatTextArea
                             name="description"
-                            helperText={st.t("i. e. 300g bio tomatos or 2L oatly oat milk")}
+                            helperText={st.t("i. e. 300g organic tomatoes or 2L oatly oat milk")}
                             ref={{ articleDescription: component }}
                             label={st.t("What do you need?")}
                             onKeyDown={component.articleDescriptionKeyDown}
@@ -162,7 +162,7 @@ export default (component: ConsumerOrderAddPage) => (
                             name="maxPrice"
                             type="number"
                             ref={{ maxPriceField: component }}
-                            label={st.t("What is the maximum price? (€)")}
+                            label={st.t("What is the maximum cost of your purchase? (€)")}
                             class={['col', 's12']}>
                         </MatInput>
                     </div>
@@ -173,15 +173,15 @@ export default (component: ConsumerOrderAddPage) => (
                         <MatTextArea
                             ref={{ hintField: component }}
                             name="hint"
-                            helperText={st.t("i. e. Please give me a call when you are infront of my door.")}
-                            label={st.t("Something else you need to tell the driver?")}
+                            helperText={st.t("i. e. Please call 5 minutes before arrival.")}
+                            label={st.t("Is there anything else you would like to tell the driver?")}
                             class={['col', 's12']}>
                         </MatTextArea>
                     </div>
 
                     <div class="card green darken-2">
                         <div class="card-content white-text">
-                            <p>{st.t("Note that you cannot change a request, after a driver has accepted your request. Payment is currently cash only.")}</p>
+                            <p>{st.t("Note that you cannot change a request, after a driver has accepted your request. Payment is cash on delivery.")}</p>
                         </div>
                     </div>
 
@@ -198,7 +198,7 @@ export default (component: ConsumerOrderAddPage) => (
 
                 <h4 class={'center'}>{st.t("Send Request")}</h4>
 
-                {st.t("Nearly finished! Now you only need to confirm. Did you check if you have enough cash at hand to pay the shopping request?")}
+                {st.t("Nearly finished! Only press \"yes\" if you have enough money to pay the driver on delivery.")}
 
                 <br /><br />
                 {st.t("Please Note: If a driver accepts your request, the driver will be able to view your contact information and address, to deliver the items.")}
@@ -213,7 +213,7 @@ export default (component: ConsumerOrderAddPage) => (
             <ModalMiddleContent>
                 <h4 class={'center'}>{st.t("Error")}</h4>
 
-            {st.t("Please write at least one item on your shoppinglist. After that press the plus (+)-button.")}
+            {st.t("You have no items on your shopping list.")}
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {

@@ -42,17 +42,17 @@ export default (component: RegisterUserAddressPage) => (
                     </MatInput>
                     <MatTextArea name="address" label={st.t("Home/Delivery address")}
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
-                        helperText={st.t("Where goods should be delivered")}
+                        helperText={st.t("Where should the purchases be delivered to?")}
                         validators={[required, component.addressValidator()]}
                         validationErrorMessages={{
                             required: st.t("This is a required field"),
-                            address: st.t("This address does not seem valid")
+                            address: st.t("This address doesn't seem to be valid")
                         }}>
                     </MatTextArea>
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3', 'hide']} ref={{ mapContainer: component }}>
 
                         <Center>
-                            <strong>{st.t("We understood this address:")}<br /></strong>
+                            <strong>{st.t("We recognized the following address:")}<br /></strong>
 
                             <span ref={{ addressField: component }}></span>
 

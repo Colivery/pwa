@@ -33,9 +33,9 @@ export class ErrorService extends st.component {
                     <br /><br />
                     <br /><br />
 
-                    <T tag="h4" class={'center'}>Fatal error</T>
+                    <T tag="h4" class={'center'}>Error</T>
 
-                    <T tag="p">Something went wrong. To make sure nothing worse happens, we'd like to ask you to reload now.</T>
+                    <T tag="p">Something went wrong. Please reload the app.</T>
                 </Center>
             </ModalMiddleContent>
 

@@ -14,7 +14,7 @@ export default (component: ConsumerOrderListPage) => (
 
         <div class="container">
 
-            <h3 class="slogan">Meine Aufträge</h3>
+            <h3 class="slogan">{st.t("My Requests (Requestor)")}</h3>
 
             <div class="horizontal-scroll hide" ref={{ myOrdersScrollContainer: component }}></div>
 
