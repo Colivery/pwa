@@ -69,7 +69,7 @@ export class MySelect extends st.component<SelectProps> {
                                 aria-posinset={"" + index}
                                 class={sSelectedItemKey === item.key ? "select-item select-item-selected" : "select-item"}
                                 onclick={this.itemPress.bind(this, item)}>
-                                    <img src={item.icon} />
+                                    {item.icon ? <img src={item.icon} /> : ""}
                                     <span class="select-item-text">
                                         { item.name }
                                     </span>
