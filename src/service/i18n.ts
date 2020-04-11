@@ -4,11 +4,13 @@ import { translation } from "springtype/core/i18n";
 import * as de from "../i18n/de.json";
 import * as en from "../i18n/en.json";
 import * as no from "../i18n/no.json";
+import * as il from "../i18n/il.json";
 import { PreferenceService } from "./preference";
 
 @translation("de", de)
 @translation("en", en)
 @translation("no", no)
+@translation("il", il)
 @injectable
 export class I18nService {
 
@@ -30,6 +32,11 @@ export class I18nService {
             key: "no",
             name: "Norsk",
             icon: "https://www.countryflags.io/no/flat/32.png"
+        },
+        {
+            key: "il",
+            name: "עברית",
+            icon: "https://www.countryflags.io/il/flat/32.png"
         }
     ];
 
@@ -57,6 +64,10 @@ export class I18nService {
         // navigator.language usually "de-DE", "en_US" etc.
         const autoDetectedLanguage = navigator.language.split(/[-_]/)[0];
         const languagePreference = this.preferenceService.getLanguage();
+
+        if (autoDetectedLanguage === "il" || languagePreference === "il") {
+            document.body.setAttribute("dir", "rtl");
+        }
 
         console.log('languagePreference', languagePreference);
         if (languagePreference) {
