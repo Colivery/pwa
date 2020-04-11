@@ -99,11 +99,11 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
             this.renderPartial(
                 <Center>
                     <h6>
-                        <strong>{st.t("Do you need help with shopping?")}</strong><br />
+                        <strong>{st.t("Do you need help with your shopping?")}</strong><br />
                         {st.t("Press the button: \"New Request\".")}
                         <br /><br />
-                        <strong>{st.t("Would you rather want to help?")}</strong> <br />
-                        {st.t("Press on the menu on the top left and")} <br />
+                        <strong>{st.t("Would you like to help?")}</strong> <br />
+                        {st.t("Press top left menu and")} <br />
                         {st.t("change to the driver mode.")}
                         <br /><br />
                     </h6>
@@ -239,7 +239,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                 </span>
             </h5>
 
-                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at most")} {union.order.max_price} (€) {st.t("/verb/cost.")}</strong></p></fragment> : ''}
+                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {union.order.max_price} (€) {st.t("/verb/cost.")}</strong></p></fragment> : ''}
 
         </div>, this.myOrderDetailsContainer);
 

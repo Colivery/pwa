@@ -34,7 +34,7 @@ export default (component: ResetPasswordPage) => (
                             'min-length': st.t("Passwords consist of atleast 7 characters")
                         }}>
                     </MatInput>
-                    
+
                     <MatInput name="newPasswordAgain" ref={{ newPasswordAgainRef: component }} label={st.t("Repeat new password")} type="password"
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
                         helperText={st.t("Confirm your password")}
@@ -61,6 +61,14 @@ export default (component: ResetPasswordPage) => (
                         <a class={['waves-effect', 'waves-light', 'btn', 'login-button', 'mat-align-middle']}
                             ref={{ changePasswordButtonRef: component }}
                             onClick={component.onNextClick}>{st.t("Change password")}</a>
+                    </Center>
+                </div>
+                <div class="row" ref={{ loginButtonContainer: component }}>
+                    <Center class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
+
+                        <a class={['waves-effect', 'waves-light', 'btn', 'login-button', 'mat-align-middle']}
+                            ref={{ changePasswordButtonRef: component }}
+                            onClick={ component.onBackButtonClick }>{st.t("Back")}</a>
                     </Center>
                 </div>
             </MatForm>

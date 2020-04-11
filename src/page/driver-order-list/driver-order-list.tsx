@@ -185,7 +185,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
         if (this.openOrdersDisplayData.length === 0) {
             this.renderPartial(
                 <p>
-                    <Center><strong>{st.t("Great, there is nothing todo")} 👍</strong></Center>
+                    <Center><strong>{st.t("Great, there is nothing to do")} 👍</strong></Center>
                 </p>,
                 this.openOrdersScrollContainer
             );
@@ -197,7 +197,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
                 <div class="order-card">
                     <div class="order-card-inner">
                         <div class="order-header">
-                            {st.t("Driver is searched for:")}
+                            {st.t("Driver wanted for:")}
                         </div>
                         <h4 class="order-title truncate">
                             {/*order.shop_name*/}
@@ -238,7 +238,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
         const currentPosition = await this.geoService.getCurrentLocation();
 
         if (this.myOrdersDisplayData.length === 0) {
-            this.renderPartial(<p><Center><strong>{st.t("You do not have any driver requests yet.")}</strong></Center></p>, this.myOrdersScrollContainer);
+            this.renderPartial(<p><Center><strong>{st.t("You do not have any requests yet.")}</strong></Center></p>, this.myOrdersScrollContainer);
             return;
         }
 
@@ -356,7 +356,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
                     </span>
                 </h5>
 
-                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at most")} {orderUnion.order.max_price} (€) {st.t("/verb/cost.")}</strong></p>
+                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {orderUnion.order.max_price} (€) {st.t("/verb/cost.")}</strong></p>
             </fragment> : ''}
 
         </div>, this.myOrderDetailsContainer);
@@ -504,9 +504,9 @@ export class DriverOrderList extends st.component implements ILifecycle {
                     </h5>
                 </Center>
                 <br />
-                {st.t("Are you sure, you want to accept this request? It is very frustrating for the other person, if it doesn't work out.")}
+                {st.t("Are you sure, you are able to complete this request? It is very frustrating for the other person, if it doesn't work out.")}
 
-                {st.t("The following would have to be bought for the person:")}
+                {st.t("Shopping list:")}
 
                 <h5><span class="material-align-middle">
                     <i class="material-icons order-card-icon">shopping_cart</i>&nbsp;{st.t("Items")}
@@ -535,7 +535,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
                 </span>
                 </h5>
 
-                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at most")} {orderUnion.order.max_price} (€) {st.t("/verb/cost.")}.</strong></p></fragment> : ''}
+                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {orderUnion.order.max_price} (€) {st.t("/verb/cost.")}.</strong></p></fragment> : ''}
 
             </fragment>, this.confirmOrderItemListContainer);
 

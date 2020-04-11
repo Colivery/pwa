@@ -16,7 +16,7 @@ import { tsx } from "springtype/web/vdom";
 import { MatInput } from "st-materialize";
 import { required, email } from "springtype/core/validate";
 import { LoginPage } from "../login/login";
-import { SupportedLanguages, I18nService } from "../../service/i18n";
+import { I18nService } from "../../service/i18n";
 import { SplashscreenService } from "../../service/splashscreen";
 import { Center } from "../../component/center/center";
 
@@ -120,13 +120,6 @@ export class UserProfilePage extends st.component implements ILifecycle {
         }
     }
 
-    setLanguage = (language: SupportedLanguages) => {
-
-        this.splashscreenService.show();
-
-        setTimeout(() => this.i18nService.setLanguage(language), 100);
-    }
-
     addressValidator = () => {
         return address(this.geoService, this, async (geolocation: any, address: string) => {
 
@@ -227,7 +220,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
             </MatInput>
             <MatInput name="phone" label={st.t("Phone number")}
                 class={['col', 's12', 'm6']}
-                helperText={st.t("Enter your phone number here")}
+                helperText={st.t("Please enter your phone number here")}
                 validators={[required]}
                 value={this.state.phone}
                 validationErrorMessages={{
@@ -237,18 +230,18 @@ export class UserProfilePage extends st.component implements ILifecycle {
             <MatTextArea name="address" label={st.t("Home/Delivery address")}
                 class={['col', 's12', 'm6']}
                 rows={2}
-                helperText={st.t("Where goods should be delivered")}
+                helperText={st.t("Where should the purchases be delivered to?")}
                 validators={[required, this.addressValidator()]}
                 value={this.state.address}
                 validationErrorMessages={{
                     required: st.t("This is a required field"),
-                    address: st.t("This address does not seem valid")
+                    address: st.t("This address doesn't seem to be valid")
                 }}>
             </MatTextArea>
             <div class={['col', 's12', 'hide']} ref={{ mapContainer: this }}>
 
                 <Center>
-                    <strong>{st.t("We understood this address:")}<br /></strong>
+                    <strong>{st.t("We recognized the following address:")}<br /></strong>
 
                     <span ref={{ addressField: this }}></span>
                     <img class="static-map" ref={{ staticMapImage: this }} />
@@ -273,5 +266,21 @@ export class UserProfilePage extends st.component implements ILifecycle {
         st.route = {
             path: LoginPage.ROUTE
         };
+    }
+
+    getLanguages = function () {
+        return this.i18nService.getSupportedLanguages();
+    }
+
+    onLanguageItemPress = function (item : object) {
+        this.splashscreenService.show();
+
+        window.setTimeout(function () {
+            this.i18nService.setLanguage(item.key);
+        }.bind(this), 100);
+    }
+
+    getSelectedLanguage = function () {
+        return this.i18nService.getLanguage();
     }
 }

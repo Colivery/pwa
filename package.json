@@ -42,6 +42,6 @@
     "libsodium-wrappers": "^0.7.6",
     "materialize-css": "^1.0.0",
     "springtype": "springtype@2.0.0-beta.72",
-    "st-materialize": "1.0.0-beta.19"
+    "st-materialize": "1.0.0-beta.21"
   }
 }

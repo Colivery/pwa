@@ -8232,10 +8232,10 @@ st-cp@^2.0.0-alpha.4:
   dependencies:
     chalk "^2.4.2"
 
-st-materialize@1.0.0-beta.19:
-  version "1.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/st-materialize/-/st-materialize-1.0.0-beta.19.tgz#8e94855aa5e2d6f1536800bc2ab240876d030379"
-  integrity sha512-7dcGCkLk8TSMJHKXr/eTc1vcsVQoOnOwt7fYAUQfFB4kflBLksC9Ls6mMbBHhhUKxcinQBXTTG1USjMAMseYUw==
+st-materialize@1.0.0-beta.21:
+  version "1.0.0-beta.21"
+  resolved "https://registry.yarnpkg.com/st-materialize/-/st-materialize-1.0.0-beta.21.tgz#bd272ff0f1970db2a823c89741d1dc67b827ff1c"
+  integrity sha512-8QUFQW0Bp+2L0nC2+B5cuvoHnEiGJrCUZJfD0Okl4kw0Xg0ou6dWV06TSNLyPiKXWpFUjyXI5LmOvWli7K5eqA==
 
 st-mkdir@^1.0.0-alpha.4, st-mkdir@^1.0.0-alpha.5:
   version "1.0.0-alpha.6"

@@ -7,6 +7,7 @@ import { ErrorMessage } from "../../component/error-message/error-message";
 import { ref } from "springtype/core/ref";
 import tpl from "./reset-password.tpl";
 import { MatForm, MatLoaderCircle, MatInput } from "st-materialize";
+import { LoginPage } from "../login/login";
 
 interface IResetPasswordFormState {
     newPassword: string;
@@ -51,14 +52,10 @@ export class ResetPasswordPage extends st.component implements ILifecycle {
 
         st.hide(this.errorMessageContainer);
 
-        if (await this.form.validate(true)) {
+        if (await this.form.validate()) {
 
-            console.log(
-'asdasd'
-            )
             this.changePasswordButtonRef.classList.add('disabled');
 
-            /*
             const formData = this.form.getState() as IResetPasswordFormState;
 
             const email = st.route.params.email as string;
@@ -70,7 +67,7 @@ export class ResetPasswordPage extends st.component implements ILifecycle {
                 await window.authService.confirmPasswordReset(actionCode, formData.newPassword);
                 await window.authService.login(email, formData.newPassword);
             } catch (e) {
-                
+
                 st.show(this.errorMessageContainer);
 
                 this.errorMessage.setMessage(e.message);
@@ -79,7 +76,12 @@ export class ResetPasswordPage extends st.component implements ILifecycle {
                 this.matLoaderCircleRef.setVisible(false);
                 this.changePasswordButtonRef.classList.remove('disabled');
             }
-            */
+        }
+    }
+
+    onBackButtonClick = () => {
+        st.route = {
+            path: LoginPage.ROUTE
         }
     }
 }
