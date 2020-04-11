@@ -7,6 +7,7 @@ import {ILifecycle} from "springtype/web/component/interface/ilifecycle";
 import tpl from "./register-choose-profile.tpl";
 import {PreferenceService} from "../../../service/preference";
 import {Profile} from "../../../datamodel/profile";
+import { LoginPage } from "../../login/login";
 
 @component({
     tpl
@@ -21,8 +22,14 @@ export class RegisterChooseProfile extends st.component implements ILifecycle {
 
     async onNextClick(profile: Profile) {
         this.preferenceService.setProfile(profile);
+
+        st.route = {
+            path: LoginPage.ROUTE
+        };
+        /*
         st.route = {
             path: profile + '-order-list'
         };
+        */
     }
 }

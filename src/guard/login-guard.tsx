@@ -10,6 +10,7 @@ import {LoginPage} from "../page/login/login";
 import {PreferenceService} from "../service/preference";
 import {RegisterChooseProfile} from "../page/register/register-choose-profile/register-choose-profile";
 import {UserService} from "../service/user";
+import { NotConfirmedPage } from "../page/not-confirmed/not-confirmed";
 
 @injectable
 export class LoginGuard {
@@ -35,6 +36,10 @@ export class LoginGuard {
 
             if (!await this.authService.isLoggedIn()) {
                 return LoginPage.ROUTE;
+            }
+
+            if (!this.authService.isVerified()) {
+                return NotConfirmedPage.ROUTE;
             }
 
             const userProfile = await this.userService.getUserProfile();

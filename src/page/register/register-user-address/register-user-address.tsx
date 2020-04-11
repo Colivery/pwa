@@ -13,7 +13,7 @@ import { address } from "../../../validators/address";
 import { UserService } from "../../../service/user";
 import { COLOR_COLIVERY_PRIMARY } from "../../../config/colors";
 import { calculateAvailableHeightPercent } from "../../../function/calculate-available-height-percent";
-import { Form, MatLoaderCircle } from "st-materialize";
+import { MatForm, MatLoaderCircle } from "st-materialize";
 
 @component({
     tpl
@@ -29,7 +29,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
     geoService: GeoService;
 
     @ref
-    formRef: Form;
+    formRef: MatForm;
 
     @ref
     errorMessage: ErrorMessage;
@@ -64,7 +64,6 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
         return address(this.geoService, this, async (geolocation: any, address: string) => {
             this.userGeoLocation = geolocation;
 
-            console.log('addressValidator called')
             // render/update static map image
             const mapSrc = this.geoService.getStaticMapImageSrc(address, {
                 ...geolocation,
@@ -103,6 +102,8 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
         try {
 
             if (await this.formRef.validate(true)) {
+
+                this.submitButton.classList.add('disabled');
 
                 await this.userService.upsertUserProfile(this.getDataToSave());
 

@@ -42,7 +42,7 @@ $primary-color-dark: darken($primary-color, 15%) !default;
 // custom SpringType light-blue
 $secondary-color: $colivery-orange !default;
 $success-color:  $colivery-green !default;
-$error-color: color("red", "base") !default;
+$error-color: color("red", "darken-2") !default;
 $link-color:  $colivery-blue !default;
 
 

@@ -23,6 +23,10 @@ import { UserProfilePage } from "./page/user-profile/user-profile";
 import { DriverOrderList } from "./page/driver-order-list/driver-order-list";
 import { GeoService } from "./service/geo";
 import { I18nService } from "./service/i18n";
+import { ForgotPasswordPage } from "./page/forgot-password/forgot-password";
+import { NotConfirmedPage } from "./page/not-confirmed/not-confirmed";
+import { EmailActionPage } from "./page/email-action/email-action";
+import { ResetPasswordPage } from "./page/reset-password/reset-password";
 
 @component
 export class App extends st.component implements ILifecycle {
@@ -43,6 +47,7 @@ export class App extends st.component implements ILifecycle {
         super();
 
         this.i18nService.init();
+
         /*
         console.log('geoService', this.geoService.haversine({
             latitude: 48.330713,
@@ -67,12 +72,27 @@ export class App extends st.component implements ILifecycle {
                         </template>
                         <SplashscreenPage />
                     </Route>
+
                     <Route cacheGroup="login" path={[LoginPage.ROUTE]} displayStyle={'inline'}
                         guard={this.loginGuard.autoLogin}>
                         <template slot={Route.SLOT_NAME_LOADING_COMPONENT}>
                             <MatLoadingIndicator />
                         </template>
                         <LoginPage />
+                    </Route>
+
+                    <Route cacheGroup="login" path={[ForgotPasswordPage.ROUTE]} displayStyle={'inline'}>
+                        <template slot={Route.SLOT_NAME_LOADING_COMPONENT}>
+                            <MatLoadingIndicator />
+                        </template>
+                        <ForgotPasswordPage />
+                    </Route>
+
+                    <Route cacheGroup="login" path={[ResetPasswordPage.ROUTE]} displayStyle={'inline'}>
+                        <template slot={Route.SLOT_NAME_LOADING_COMPONENT}>
+                            <MatLoadingIndicator />
+                        </template>
+                        <ResetPasswordPage />
                     </Route>
 
                     <Route path={[ConsumerOrderListPage.ROUTE]} displayStyle={'inline'}
@@ -89,6 +109,7 @@ export class App extends st.component implements ILifecycle {
                         </template>
                         <ConsumerOrderAddPage />
                     </Route>
+
                     <Route path={[UserProfilePage.ROUTE]} displayStyle={'inline'} guard={this.loginGuard.loggedIn}>
                         <template slot={Route.SLOT_NAME_LOADING_COMPONENT}>
                             <MatLoadingIndicator />
@@ -102,6 +123,21 @@ export class App extends st.component implements ILifecycle {
                         </template>
                         <DriverOrderList />
                     </Route>
+
+                    <Route path={[NotConfirmedPage.ROUTE]} displayStyle={'inline'}>
+                        <template slot={Route.SLOT_NAME_LOADING_COMPONENT}>
+                            <MatLoadingIndicator />
+                        </template>
+                        <NotConfirmedPage />
+                    </Route>
+
+                    <Route path={[EmailActionPage.ROUTE]} displayStyle={'inline'}>
+                        <template slot={Route.SLOT_NAME_LOADING_COMPONENT}>
+                            <MatLoadingIndicator />
+                        </template>
+                        <EmailActionPage />
+                    </Route>
+
 
                 </RouteList>
 

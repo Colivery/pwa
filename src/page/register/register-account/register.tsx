@@ -7,7 +7,7 @@ import tpl, { IRegisterFormState } from "./register.tpl";
 import { RegisterUserAddressPage } from "../register-user-address/register-user-address";
 import { ErrorMessage } from "../../../component/error-message/error-message";
 import { tsx } from "springtype/web/vdom";
-import { Form } from "st-materialize";
+import { MatForm } from "st-materialize";
 
 @component({
     tpl
@@ -16,10 +16,13 @@ export class RegisterPage extends st.component implements ILifecycle {
     static ROUTE = "register";
 
     @ref
-    formRef: Form;
+    formRef: MatForm;
 
     @ref
     errorMessage: HTMLElement;
+
+    @ref
+    nextButton: HTMLElement;
 
     class = ['wrapper', 'valign-wrapper'];
 
@@ -40,6 +43,9 @@ export class RegisterPage extends st.component implements ILifecycle {
             }
 
             if (await this.formRef.validate(true)) {
+                
+                this.nextButton.classList.add('disabled');
+
                 await window.authService.register(data.email, data.password);
                 delete data.password;
                 this.formRef.reset();

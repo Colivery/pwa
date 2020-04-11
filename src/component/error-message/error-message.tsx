@@ -1,7 +1,8 @@
 import { st } from "springtype/core";
 import { component, attr } from "springtype/web/component";
 import { tsx } from "springtype/web/vdom";
-import * as errorMessageStyles from "./error-message.tss.scss";
+import { ref } from "springtype/core/ref";
+import "./error-message.tss.scss";
 
 interface ErrorMessageAttrs {
   message?: string;
@@ -13,9 +14,16 @@ export class ErrorMessage extends st.component<ErrorMessageAttrs> {
   @attr
   message: string;
 
+  @ref
+  messageRef: HTMLElement;
+
+  setMessage(message: string) {
+    this.renderPartial(message, this.messageRef);
+  }
+
   render() {
     return this.message ? (
-      <p class={errorMessageStyles.errorMessage}>{this.message}</p>
+      <p ref={{ messageRef: this }}>{this.message}</p>
     ) : (
       <fragment />
     );

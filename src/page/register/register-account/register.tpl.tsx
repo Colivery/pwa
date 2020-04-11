@@ -5,6 +5,7 @@ import { RegisterPage } from "./register";
 import { LogoRow } from "../../../component/logo-row/logo-row";
 import { TERMS_OF_USE_URL, PRIVACY_STATEMENT_URL } from "../../../config/website-urls";
 import { st } from "springtype/core";
+import { T } from "springtype/web/i18n/t";
 
 export default (component: RegisterPage) => (
     <fragment>
@@ -50,11 +51,15 @@ export default (component: RegisterPage) => (
                 <div class="row" ref={{ errorMessage: component }}>
 
                 </div>
+
+                <T tag="p">
+                    Please note that for privacy reasons, your user account will be deleted after the end of the test phase.
+                </T>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's5', 'offset-m3', 'm2', 'offset-l3', 'l2']}
                         onClick={() => component.onBackClick()}>{st.t("Back")}</a>
                     <div class="col s2 m2 l2"></div>
-                    <a class={['waves-effect', 'waves-light', 'btn', 'col', 's5', 'm2', 'l2']}
+                    <a ref={{ nextButton: component }} class={['waves-effect', 'waves-light', 'btn', 'col', 's5', 'm2', 'l2']}
                         onClick={() => component.onNextClick()}>{st.t("Next")}</a>
                 </div>
             </Form>

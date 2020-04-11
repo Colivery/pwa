@@ -50,9 +50,11 @@ export default (component: ConsumerOrderListPage) => (
 
 
             <ModalMiddleContent>
-                <h3 class={'center'}>Einkauf</h3>
+                <Center>
+                    <h3>Einkauf</h3>
 
-                <div ref={{ myOrderDetailsContainer: component }}></div>
+                    <div ref={{ myOrderDetailsContainer: component }}></div>
+                </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
@@ -66,9 +68,11 @@ export default (component: ConsumerOrderListPage) => (
         <MatModal ref={{ cancelOrderModal: component }}>
 
             <ModalMiddleContent>
-                <h4 class={'center'}><i class="material-icons">cancel</i> {st.t("Cancel Request")}</h4>
+                <Center>
+                    <h4><i class="material-icons">cancel</i> {st.t("Cancel Request")}</h4>
 
-            {st.t("Are you sure you want to cancel this shopping request?")}
+                    {st.t("Are you sure you want to cancel this shopping request?")}
+                </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.cancelOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>

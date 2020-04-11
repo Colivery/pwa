@@ -6,7 +6,7 @@ import { inject } from "springtype/core/di";
 import { ref } from "springtype/core/ref";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { GeoService } from "../../service/geo";
-import { MatModal, MatLoadingIndicator, MatLoaderCircle, MatTextArea, Form } from "st-materialize";
+import { MatModal, MatLoadingIndicator, MatLoaderCircle, MatTextArea, MatForm } from "st-materialize";
 import { address } from "../../validators/address";
 import { UserService } from "../../service/user";
 import { IUserProfileResponse, UserProfile } from "../../datamodel/user";
@@ -40,13 +40,16 @@ export class UserProfilePage extends st.component implements ILifecycle {
     i18nService: I18nService;
 
     @ref
-    formRef: Form;
+    formRef: MatForm;
 
     @ref
     errorMessage: ErrorMessage;
 
     @ref
     afterSaveModal: MatModal;
+
+    @ref
+    beforeUserDeleteModal: MatModal;
 
     state: IUserProfileResponse;
 
@@ -66,6 +69,9 @@ export class UserProfilePage extends st.component implements ILifecycle {
     matLoaderCircle: MatLoaderCircle;
 
     @ref
+    matLoaderCirclePreFormLoad: MatLoaderCircle;
+
+    @ref
     submitButton: HTMLAnchorElement;
 
     @ref
@@ -81,14 +87,36 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
     validatedUserAddress: string;
 
-    onRouteEnter() {
-        this.loadData();
+    async onRouteEnter() {
+
+        await this.loadData();
+
+        if (this.matLoaderCirclePreFormLoad) {
+            this.matLoaderCirclePreFormLoad.setVisible(false);
+        }
+
+        this.activateSubmitButton();
     }
 
     onAfterRender(): void {
+
         this.loadingIndicator.toggle();
         if (this.state) {
+
+            this.activateSubmitButton();
+
             this.addressValidator()(this.state.address)
+        } else {
+            if (this.matLoaderCirclePreFormLoad) {
+                this.matLoaderCirclePreFormLoad.setVisible(true);
+            }
+        }
+    }
+
+    activateSubmitButton() {
+
+        if (this.submitButton) {
+            this.submitButton.classList.remove('disabled');
         }
     }
 
@@ -155,12 +183,10 @@ export class UserProfilePage extends st.component implements ILifecycle {
     private async loadData() {
         this.state = (await this.userService.getUserProfile(false)) as IUserProfileResponse;
 
-        console.log('after loadData UserProfile', this.state)
-
         this.renderPartial(
-            <Form ref={{ formRef: this }}>
+            <MatForm ref={{ formRef: this }}>
                 {this.getFormInputs()}
-            </Form>, this.formContainer);
+            </MatForm>, this.formContainer);
 
         setImmediate(() => {
             this.addressValidator()(this.state.address);
@@ -235,7 +261,10 @@ export class UserProfilePage extends st.component implements ILifecycle {
     }
 
     deleteUserProfile = async () => {
-        console.log('deleteUserProfile');
+        this.beforeUserDeleteModal.toggle();
+    }
+
+    reallyDeleteUser = async() => {
 
         this.loadingIndicator.setVisible(true);
 

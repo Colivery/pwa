@@ -175,7 +175,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             <div class="col s11 truncate" style={{ lineHeight: '30px' }}>
                 {orderItem.description}
             </div><div class="col s1">
-                <a class="btn-floating btn-small waves-effect waves-light red" style={{ left: '-20px' }} onClick={this.onOrderItemRemoveClick}><i class="material-icons">delete</i></a>
+                <a class="btn-floating btn-small waves-effect waves-light red  mat-align-middle" style={{ left: '-20px' }} onClick={this.onOrderItemRemoveClick}><i class="material-icons">delete</i></a>
             </div></div>) as any, this.orderListContainer);
     }
 

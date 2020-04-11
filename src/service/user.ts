@@ -21,7 +21,7 @@ export class UserService {
     async deleteOwnUser(): Promise<void> {
 
         try {
-            await fetch(`${SERVICE_API_ENDPOINT}/user/own`, {
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/user/own`, {
                 method: 'DELETE',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -35,10 +35,16 @@ export class UserService {
                 referrerPolicy: 'no-referrer', // no-referrer, *client
             });
 
+            if (response.status >= 400) {
+                throw(response);
+            }
+
         } catch (e) {
             st.error('error in deleting user profile', e);
             this.errorService.show();
         }
+        //await window.authService.deleteUser();
+        await window.authService.logout();
     }
 
     async getUserProfile(useCache: boolean = true): Promise<IUserProfileResponse> {
@@ -63,6 +69,11 @@ export class UserService {
                 redirect: 'follow',
                 referrerPolicy: 'no-referrer', // no-referrer, *client
             });
+
+            if (response.status >= 400) {
+                throw(response);
+            }
+
             this.userProfile = response.json();
             return this.userProfile;
 
@@ -81,7 +92,7 @@ export class UserService {
 
         try {
 
-            await fetch(`${SERVICE_API_ENDPOINT}/user`, {
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/user`, {
                 method: 'POST',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -95,6 +106,10 @@ export class UserService {
                 referrerPolicy: 'no-referrer', // no-referrer, *client
                 body: JSON.stringify(userProfileData) // body data type must match "Content-Type" header
             });
+
+            if (response.status >= 400) {
+                throw(response);
+            }
 
         } catch (e) {
             st.error('error in get user profile request', e);

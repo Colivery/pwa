@@ -4,21 +4,25 @@
 @import "./mat-modal";
 @import "./mat-button";
 
-html, body {
+html,
+body {
   height: 100%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background-color: $colivery-background;
 }
 
-.info-button, .info-button:hover {
+.info-button,
+.info-button:hover {
   background-color: $colivery-blue;
 }
 
-.cancel-button, .cancel-button:hover {
+.cancel-button,
+.cancel-button:hover {
   background-color: #cc0000;
 }
 
-.success-button, .success-button:hover {
+.success-button,
+.success-button:hover {
   background-color: $colivery-green;
 }
 
@@ -66,12 +70,47 @@ h3.slogan {
 .horizontal-scroll {
   width: 100%;
   display: block;
-  height: 100%; 
+  height: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
 }
 
+input.invalid:not(.browser-default),
+input.invalid:not(.browser-default):focus,
+textarea.materialize-textarea.invalid,
+textarea.materialize-textarea.invalid:focus,
+.select-wrapper.invalid > input.select-dropdown,
+.select-wrapper.invalid > input.select-dropdown:focus {
+  border: 2px solid $error-color !important;
+}
+
+input:not(.browser-default),
+input:not(.browser-default):focus,
+textarea.materialize-textarea,
+textarea.materialize-textarea:focus,
+.select-wrapper > input.select-dropdown,
+.select-wrapper > input.select-dropdown:focus {
+  border: 2px solid $colivery-orange !important;
+}
+
+input:not(.browser-default),
+textarea.materialize-textarea  {
+  background-color: #fff !important;
+  box-shadow: none !important;
+  border: 2px solid $input-border-color !important;
+  border-radius: 5px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  width: calc(100% - 20px) !important;
+}
+
+.input-field > label:not(.label-icon) {
+  transform: translateY(12px) translateX(10px);
+}
+.input-field > label:not(.label-icon).active {
+  transform: translateY(-20px) scale(0.8);
+}
 
 /* Mobile */
 @media screen and (max-width: 768px) {
@@ -159,9 +198,9 @@ h5 .order-card-icon {
 
 .order-line {
   padding-left: 10px;
-  padding-top: 4px;  
+  padding-top: 4px;
   padding-bottom: 4px;
-  line-height: 1.3rem;    
+  line-height: 1.3rem;
 }
 
 .material-align-middle {
@@ -194,14 +233,12 @@ h5 .order-card-icon {
   }
   color: $colivery-orange;
   text-decoration: underline;
-
 }
 
 .action-button {
   bottom: 14px !important;
   right: 14px !important;
 }
-
 
 /* webkit scrollbar */
 
@@ -212,7 +249,7 @@ h5 .order-card-icon {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   -webkit-border-radius: 10px;
   border-radius: 10px;
 }
@@ -221,9 +258,9 @@ h5 .order-card-icon {
 ::-webkit-scrollbar-thumb {
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  background: $colivery-orange; 
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+  background: $colivery-orange;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-  background: $colivery-orange; 
+  background: $colivery-orange;
 }

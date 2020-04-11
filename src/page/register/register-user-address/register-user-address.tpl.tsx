@@ -1,5 +1,5 @@
 import { tsx } from "springtype/web/vdom";
-import { MatInput, MatTextArea, MatLoaderCircle, Form } from "st-materialize";
+import { MatInput, MatTextArea, MatLoaderCircle, MatForm } from "st-materialize";
 import { required } from "springtype/core/validate";
 import { RegisterUserAddressPage } from "./register-user-address";
 import { LogoRow } from "../../../component/logo-row/logo-row";
@@ -10,7 +10,7 @@ import { Center } from "../../../component/center/center";
 export default (component: RegisterUserAddressPage) => (
     <fragment>
         <div class="container">
-            <Form ref={{ formRef: component }}>
+            <MatForm ref={{ formRef: component }}>
                 <LogoRow />
                 <div class="row">
 
@@ -66,10 +66,10 @@ export default (component: RegisterUserAddressPage) => (
                     <ErrorMessage ref={{ errorMessage: component }}
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
 
-                    <a ref={{ submitButton: component }} style={{ marginTop: '10px' }} class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
+                    <a ref={{ submitButton: component }} style={{ marginTop: '10px' }} class={['waves-effect', 'waves-light', 'btn', 'col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3', 'disabled']}
                         onClick={() => component.onNextClick()}>{st.t("Next")}</a>
                 </div>
-            </Form>
+            </MatForm>
         </div>
     </fragment>
 )

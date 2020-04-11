@@ -15,10 +15,19 @@ export class ErrorService extends st.component {
     modal: MatModal;
 
     show() {
+        console.log('aksdaksd')
         st.dom.removeChildren(document.body);
         st.render(this.render());
 
+
+        console.log('?!!')
         setImmediate(() => {
+
+            console.log('????')
+
+            console.log('this.modal.el.querySelent)', this.modal.el.querySelector('.modal-footer'));
+            // two button rows
+            (this.modal.el.querySelector('.modal-footer') as HTMLElement)!.style.height = '135px';
             this.modal.toggle();
         })
     }
@@ -41,6 +50,9 @@ export class ErrorService extends st.component {
 
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <Center>
+                    <T tag="a" href="javascript:" style={{ width: '100%' }} onclick={() => {
+                        window.authService.logout()
+                    }} class="modal-close waves-effect waves-red btn-flat">Logout</T>
                     <T tag="a" href="javascript:" style={{ width: '100%' }} onclick={() => {
                         document.location.reload()
                     }} class="modal-close waves-effect waves-red btn-flat">Reload</T>

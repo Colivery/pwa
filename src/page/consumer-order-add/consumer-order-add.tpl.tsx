@@ -4,6 +4,7 @@ import { NavHeader } from "../../component/nav-header/nav-header";
 import { MatInput, MatTextArea, MatModal } from "st-materialize";
 import { ModalMiddleContent } from "../../component/modal-middle-content/modal-middle-content";
 import { st } from "springtype/core";
+import { Center } from "../../component/center/center";
 
 export default (component: ConsumerOrderAddPage) => (
     <fragment>
@@ -155,7 +156,7 @@ export default (component: ConsumerOrderAddPage) => (
                         </MatTextArea>
 
                         <div class="col s1">
-                            <a class="btn-floating btn-small waves-effect waves-light red" style={{ left: '-20px', top: '25px' }} onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
+                            <a class="btn-floating btn-small waves-effect waves-light red mat-align-middle" style={{ left: '-20px', top: '25px' }} onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
                         </div>
 
                         <MatInput
@@ -193,15 +194,15 @@ export default (component: ConsumerOrderAddPage) => (
         </div>
 
         <MatModal ref={{ confirmCreateOrderModal: component }}>
-
             <ModalMiddleContent>
+                <Center>
+                    <h4>{st.t("Send Request")}</h4>
 
-                <h4 class={'center'}>{st.t("Send Request")}</h4>
+                    {st.t("Nearly finished! Now you only need to confirm. Did you check if you have enough cash at hand to pay the shopping request?")}
 
-                {st.t("Nearly finished! Now you only need to confirm. Did you check if you have enough cash at hand to pay the shopping request?")}
-
-                <br /><br />
-                {st.t("Please Note: If a driver accepts your request, the driver will be able to view your contact information and address, to deliver the items.")}
+                    <br /><br />
+                    {st.t("Please Note: If a driver accepts your request, the driver will be able to view your contact information and address, to deliver the items.")}
+                </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
@@ -211,17 +212,18 @@ export default (component: ConsumerOrderAddPage) => (
 
         <MatModal ref={{ warnAtLeastOneItemModal: component }}>
             <ModalMiddleContent>
-                <h4 class={'center'}>{st.t("Error")}</h4>
+                <Center>
+                    <h4 class={'center'}>{st.t("Error")}</h4>
 
-            {st.t("Please write at least one item on your shoppinglist. After that press the plus (+)-button.")}
+                    {st.t("Please write at least one item on your shoppinglist. After that press the plus (+)-button.")}
+                </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
                     component.warnAtLeastOneItemModal.toggle();
                 }} class="modal-close waves-effect waves-green btn success-button">{st.t("OK")}</a>
             </template>
+        </MatModal>
 
-        </MatModal >
-
-    </fragment >
+    </fragment>
 )

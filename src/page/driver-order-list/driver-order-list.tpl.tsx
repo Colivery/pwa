@@ -94,12 +94,13 @@ export default (component: DriverOrderList) => (
         <MatModal ref={{ confirmAcceptOrderModal: component }}>
 
             <ModalMiddleContent>
-                <h4 class={'center'}><i class="material-icons">done_all</i> {st.t("Accept request")}</h4>
+                <Center>
+                    <h4><i class="material-icons">done_all</i> {st.t("Accept request")}</h4>
 
-                <div ref={{ confirmOrderItemListContainer: component }}></div>
+                    <div ref={{ confirmOrderItemListContainer: component }}></div>
 
-                {st.t("* When you accept a request, your contact details, will be shared with the requestor.")}
-
+                    {st.t("* When you accept a request, your contact details, will be shared with the requestor.")}
+                </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={component.onCancelAccept} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
@@ -110,10 +111,12 @@ export default (component: DriverOrderList) => (
         <MatModal ref={{ markOrderDeliveredModal: component }}>
 
             <ModalMiddleContent>
-                <h4 class={'center'}><i class="material-icons">done_all</i> {st.t("Finish Request")}</h4>
+                <Center>
+                    <h4><i class="material-icons">done_all</i> {st.t("Finish Request")}</h4>
 
-                {st.t("Are you sure, you want to")} <strong>{st.t("finish")}</strong> {st.t("this request?")}
-                {st.t("You should have delivered the requested goods and have already received the money.")}
+                    {st.t("Are you sure, you want to")} <strong>{st.t("finish")}</strong> {st.t("this request?")}
+                    {st.t("You should have delivered the requested goods and have already received the money.")}
+                </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.markOrderDeliveredModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
@@ -124,9 +127,11 @@ export default (component: DriverOrderList) => (
         <MatModal ref={{ myOrderDetailsModal: component }}>
 
             <ModalMiddleContent>
-                <h3 class={'center'}>{st.t("Request")}</h3>
+                <Center>
+                    <h3>{st.t("Request")}</h3>
 
-                <div ref={{ myOrderDetailsContainer: component }}></div>
+                    <div ref={{ myOrderDetailsContainer: component }}></div>
+                </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
@@ -140,10 +145,11 @@ export default (component: DriverOrderList) => (
         <MatModal ref={{ declideOrderModal: component }}>
 
             <ModalMiddleContent>
-                <h4 class={'center'}><i class="material-icons">cancel</i> {st.t("Abort Request")}</h4>
+                <Center>
+                    <h4><i class="material-icons">cancel</i> {st.t("Abort Request")}</h4>
 
-                {st.t("Are you sure you want to abort this request?")}
-
+                    {st.t("Are you sure you want to abort this request?")}
+                </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => component.declideOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
