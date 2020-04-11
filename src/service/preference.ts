@@ -3,7 +3,6 @@ import { FirebaseService } from "./firebase";
 import { FIREBASE_CONFIG } from "../config/firebase";
 import { StorageService } from "./storage";
 import { Profile } from "../datamodel/profile";
-import { SupportedLanguages } from "./i18n";
 
 @injectable
 export class PreferenceService {
@@ -30,11 +29,11 @@ export class PreferenceService {
         // fetch localStorage
     }
 
-    setLanguage(language: SupportedLanguages) {
-        this.storageService.set(PreferenceService.PREFERENCE_LANGUAGE, language);
+    setLanguage(languageTag: string) {
+        this.storageService.set(PreferenceService.PREFERENCE_LANGUAGE, languageTag);
     }
 
-    getLanguage(): SupportedLanguages {
+    getLanguage(): string {
         return this.storageService.get(PreferenceService.PREFERENCE_LANGUAGE);
     }
 

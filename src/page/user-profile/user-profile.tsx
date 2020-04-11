@@ -16,7 +16,7 @@ import { tsx } from "springtype/web/vdom";
 import { MatInput } from "st-materialize";
 import { required, email } from "springtype/core/validate";
 import { LoginPage } from "../login/login";
-import { SupportedLanguages, I18nService } from "../../service/i18n";
+import { I18nService } from "../../service/i18n";
 import { SplashscreenService } from "../../service/splashscreen";
 import { Center } from "../../component/center/center";
 
@@ -90,13 +90,6 @@ export class UserProfilePage extends st.component implements ILifecycle {
         if (this.state) {
             this.addressValidator()(this.state.address)
         }
-    }
-
-    setLanguage = (language: SupportedLanguages) => {
-
-        this.splashscreenService.show();
-
-        setTimeout(() => this.i18nService.setLanguage(language), 100);
     }
 
     addressValidator = () => {
@@ -244,5 +237,21 @@ export class UserProfilePage extends st.component implements ILifecycle {
         st.route = {
             path: LoginPage.ROUTE
         };
+    }
+
+    getLanguages = function () {
+        return this.i18nService.getSupportedLanguages();
+    }
+
+    onLanguageItemPress = function (item : object) {
+        this.splashscreenService.show();
+
+        window.setTimeout(function () {
+            this.i18nService.setLanguage(item.key);
+        }.bind(this), 100);
+    }
+
+    getSelectedLanguage = function () {
+        return this.i18nService.getLanguage();
     }
 }

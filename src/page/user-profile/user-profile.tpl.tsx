@@ -7,9 +7,9 @@ import { ErrorMessage } from "../../component/error-message/error-message";
 import { MatModal, MatLoadingIndicator, MatCard } from "st-materialize";
 import { T } from "springtype/web/i18n/t";
 import { st } from "springtype/core";
-import { SupportedLanguages } from "../../service/i18n";
 import { ModalMiddleContent } from "../../component/modal-middle-content/modal-middle-content";
 import { Center } from "../../component/center/center";
+import { MySelect } from "../../component/select/select";
 
 export default (component: UserProfilePage) => (
     <fragment>
@@ -25,12 +25,7 @@ export default (component: UserProfilePage) => (
 
                         {st.t('Choose language:')}<br />
 
-                        <a href="javascript:" onClick={() => component.setLanguage(SupportedLanguages.DE)}>
-                            <img src="https://www.countryflags.io/de/flat/32.png" />
-                        </a>
-                        <a href="javascript:" onClick={() => component.setLanguage(SupportedLanguages.EN)}>
-                            <img src="https://www.countryflags.io/us/flat/32.png" />
-                        </a>
+                        <MySelect items={component.getLanguages()} onSelectionChanged={{call: component.onLanguageItemPress.bind(component)}} selectedItemKey={component.getSelectedLanguage()}/>
                     </Center>
                 </div>
 
