@@ -14,6 +14,7 @@ import { formatDate } from "../../function/formatDate";
 import { MatModal, MatLoadingIndicator } from "st-materialize";
 import { Order, OrderItem } from "../../datamodel/order";
 import { Center } from "../../component/center/center";
+import { RefreshButton } from "../../component/refresh-button/refresh-button";
 
 @component({
     tpl
@@ -46,7 +47,10 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
     cancelOrderModal: MatModal;
 
     @ref
-    refreshButton: HTMLElement;
+    refreshButton: RefreshButton;
+
+    @ref
+    scrollSwipeDisplayRef: Center;
 
     myOrdersDisplayData: OwnOrdersResponse = [];
     isLoading: boolean = true;
@@ -64,7 +68,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
     async updateMyOrdersList() {
 
         this.isLoading = true;
-        this.refreshButton.classList.add('disabled');
+        this.refreshButton.el.classList.add('disabled');
         this.loadingComponent.classList.remove('hide');
         this.myOrdersScrollContainer.classList.add('hide');
         this.loadingIndicator.setVisible(true);
@@ -75,7 +79,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
         this.myOrdersScrollContainer.classList.remove('hide');
         this.loadingIndicator.setVisible(false);
         this.loadingComponent.classList.add('hide');
-        this.refreshButton.classList.remove('disabled');
+        this.refreshButton.el.classList.remove('disabled');
         this.isLoading = false;
     }
 
@@ -96,6 +100,9 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
     renderMyOrders = () => {
 
         if (this.myOrdersDisplayData.length === 0) {
+
+            this.scrollSwipeDisplayRef.el.classList.add('hide');
+
             this.renderPartial(
                 <Center>
                     <h6>
@@ -110,6 +117,9 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                 </Center>,
                 this.myOrdersScrollContainer);
             return;
+        } else {
+
+            this.scrollSwipeDisplayRef.el.classList.remove('hide');
         }
 
         // filter-out user cancelled orders
@@ -153,8 +163,8 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                             </div>
                         </div>
                          */}
+                        {union.order.status === 'to_be_delivered' ? <a href="javascript:" data-index={index} onClick={this.onOrderCancel} class="btn material-align-middle btn-secondary"><i class="material-icons">cancel</i> &nbsp;{st.t("Cancel")}</a> : ''}
                         <a href="javascript:" data-index={index} onClick={this.onOrderShowDetails} class="btn material-align-middle info-button"><i class="material-icons">visibility</i> &nbsp;{st.t("Details")}</a>
-                        {union.order.status === 'to_be_delivered' ? <a href="javascript:" data-index={index} onClick={this.onOrderCancel} class="btn material-align-middle cancel-button"><i class="material-icons">cancel</i> &nbsp;{st.t("Cancel")}</a> : ''}
                     </div>
                 </div>
             </a>
@@ -191,12 +201,6 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
         this.renderPartial(<div class="container details-modal">
 
-            <Center>
-                <h5 class="material-align-middle">
-                    <i class="material-icons order-card-icon">fingerprint</i> <code>{union.order.id.substring(0, 6)}</code>
-                </h5>
-            </Center>
-
             <br />
 
             {union.order.status === 'accepted' || union.order.status === 'delivered' ? <fragment><h5><span class="material-align-middle"><i class="material-icons">time_to_leave</i>&nbsp;{st.t("Your driver")}</span></h5>
@@ -207,13 +211,13 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                         <span class="material-align-middle"><i class="material-icons">call</i>&nbsp;{union.driver.phone}</span>
                     </a><br />
                     <a href={`mailto:$${union.driver.email}`} target="_blank" style={{ marginTop: '10px' }} class="btn btn-small info-button">
-                        <span class="material-align-middle"><i class="material-icons">email</i>&nbsp;{union.driver.email}</span>
+                        <span class="material-align-middle"><i class="material-icons">email</i>&nbsp;{st.t('E-mail')}</span>
                     </a>
                 </div> </fragment> : ''}
 
             <h5><span class="material-align-middle">
                 <i class="material-icons order-card-icon">shopping_cart</i>&nbsp;{st.t("Items")}
-                </span>
+            </span>
             </h5>
 
             <div class="row">
@@ -224,9 +228,17 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                 </ul>
             </div>
 
-            {union.order.hint ? <fragment><h5><span class="material-align-middle">
+            {union.order.max_price ? <fragment><h5><span class="material-align-middle">
+                <i class="material-icons order-card-icon">monetization_on</i>&nbsp;{st.t("Maximum budget")}
+            </span>
+            </h5>
+
+                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {union.order.max_price} (€) {st.t("/verb/cost.")}</strong></p></fragment> : ''}
+
+
+            {union.order.hint ? <fragment><br /><h5><span class="material-align-middle">
                 <i class="material-icons order-card-icon">speaker_notes</i>&nbsp;{st.t("Notes")}
-                </span>
+            </span>
             </h5>
 
                 <div class="row">
@@ -234,12 +246,12 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                 </div>
             </fragment> : ''}
 
-            {union.order.max_price ? <fragment><h5><span class="material-align-middle">
-                <i class="material-icons order-card-icon">monetization_on</i>&nbsp;{st.t("Maximum budget")}
-                </span>
-            </h5>
 
-                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {union.order.max_price} (€) {st.t("/verb/cost.")}</strong></p></fragment> : ''}
+            <Center>
+                <h5 class="material-align-middle">
+                    <i class="material-icons order-card-icon">fingerprint</i> <code>{union.order.id.substring(0, 6)}</code>
+                </h5>
+            </Center>
 
         </div>, this.myOrderDetailsContainer);
 

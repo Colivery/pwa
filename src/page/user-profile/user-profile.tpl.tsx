@@ -4,12 +4,13 @@ import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { UserProfilePage } from "./user-profile";
 import { ErrorMessage } from "../../component/error-message/error-message";
-import { MatModal, MatLoadingIndicator, MatCard, MatLoaderCircle } from "st-materialize";
+import { MatModal, MatLoadingIndicator, MatCard, MatLoaderCircle, MatSelect, MatSelectItem } from "st-materialize";
 import { T } from "springtype/web/i18n/t";
 import { st } from "springtype/core";
 import { ModalMiddleContent } from "../../component/modal-middle-content/modal-middle-content";
 import { Center } from "../../component/center/center";
 import { MySelect } from "../../component/select/select";
+import { SupportedLanguage } from "../../service/i18n";
 
 export default (component: UserProfilePage) => (
     <fragment>
@@ -18,25 +19,29 @@ export default (component: UserProfilePage) => (
         <MatLoadingIndicator ref={{ loadingIndicator: component }} />
 
         <div class="container">
+
             <div class="row">
+
                 <div class={['col', 's12']}>
                     <Center>
                         <T tag="h5" class="header">My Profile</T>
 
                         {st.t('Choose language:')}<br />
 
-                        <MySelect items={component.getLanguages()} onSelectionChanged={{call: component.onLanguageItemPress.bind(component)}} selectedItemKey={component.getSelectedLanguage()}/>
+                        <MatSelect onSelectItem={component.onSelectLanguageItem}>
+                            {component.i18nService.getSupportedLanguages().map((supportedLanguage: SupportedLanguage) =>
+                                <MatSelectItem selected={supportedLanguage.key === component.i18nService.getLanguage()}
+                                    label={supportedLanguage.name} value={supportedLanguage.key}
+                                    item={supportedLanguage}></MatSelectItem>)}
+                        </MatSelect>
                     </Center>
                 </div>
-
-            </div>
-
-            <div class="row">
 
                 <MatLoaderCircle ref={{ matLoaderCirclePreFormLoad: component }} class={['col', 's12',]} />
 
                 <div ref={{ formContainer: component }}>
                 </div>
+
                 <ErrorMessage ref={{ errorMessage: component }}
                     class={['col', 's12', 'm6', 'offset-m3', 'l4', 'offset-l4']} />
 
@@ -46,12 +51,17 @@ export default (component: UserProfilePage) => (
             </div>
             <div class="row">
 
-                <MatCard>
+                <MatCard style={{ borderRadius: '20px' }}>
                     <Center>
-                        <T tag="h5">Attention</T>
-                        <T tag="p">
-                            Please note that for privacy reasons, your user account will be deleted after the end of the test phase.
-                        </T>
+
+                        <Center>
+                            <T tag="h5">Test Mode</T>
+                            <strong>
+                                <T tag="p">
+                                    Please note that Colivery runs in test mode right now. We will delete all user accounts and data at the end of the test mode timeframe.
+                    </T>
+                            </strong>
+                        </Center>
                         {/*
                         <br />
                         <br />
@@ -67,19 +77,20 @@ export default (component: UserProfilePage) => (
 
             <ModalMiddleContent>
                 <Center>
-                    <T tag="h4" class={'center'}>Profil updated</T>
+                    <T tag="h4" class={'center'}>Profile updated</T>
 
-                    <T tag="p">Your personal data was updated successfully.</T>
+                    <T tag="p">Your personal data has been updated successfully.</T>
                 </Center>
             </ModalMiddleContent>
 
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <T tag="a" href="javascript:" onclick={() => {
-                    component.afterSaveModal.toggle();
-                }} class="modal-close waves-effect waves-red btn-flat">Close</T>
+                    component.afterSaveModal.setVisible(false);
+                }} class="modal-close waves-effect waves-red btn-flat btn btn-full-width">Close</T>
             </template>
         </MatModal>
 
+        {/**
         <MatModal ref={{ beforeUserDeleteModal: component }}>
 
             <ModalMiddleContent>
@@ -96,7 +107,7 @@ export default (component: UserProfilePage) => (
                 <a href="javascript:" onclick={component.reallyDeleteUser} class="modal-close waves-effect btn waves-white material-align-middle cancel-button"><i class="material-icons">done_all</i> &nbsp;{st.t("Yes")}</a>
 
             </template>
-        </MatModal>
+        </MatModal> */}
     </fragment >
 )
 
@@ -105,7 +116,6 @@ export interface IUserProfileFromState {
     email: string
     first_name: string;
     last_name: string;
-    phone: string
-    address: string
-    accepted_support_inquiry: boolean;
+    phone: string;
+    address: string;
 }

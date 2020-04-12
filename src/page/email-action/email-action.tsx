@@ -12,6 +12,7 @@ import { FirebaseService } from "../../service/firebase";
 import { inject } from "springtype/core/di";
 import { ResetPasswordPage } from "../reset-password/reset-password";
 
+// https://firebase.google.com/docs/auth/custom-email-handler
 @component({
     tpl
 })
@@ -45,8 +46,6 @@ export class EmailActionPage extends st.component implements ILifecycle {
 
     onRouteEnter() {
 
-        console.log('params', this.getQueryParams());
-
         switch (this.getQueryParams().mode) {
             case "resetPassword":
                 this.doResetPasswordFlow();
@@ -59,16 +58,14 @@ export class EmailActionPage extends st.component implements ILifecycle {
 
     async doResetPasswordFlow() {
 
-        console.log('doResetPasswordFlow');
-
-        this.renderPartial(st.t('Forgot password'), this.headerRef);
+        this.renderPartial(st.t('Forgot Password'), this.headerRef);
 
         try {
             
             const email = await window.authService.firebaseService.auth().verifyPasswordResetCode(this.getQueryParams().oobCode);
 
-            this.errorMessageRef.el.style.color = '#00cc00';
-            this.errorMessageRef.setMessage(st.t("Your passwort reset request is valid, forwarding..."));
+            this.errorMessageRef.el.style.color = '#000';
+            this.errorMessageRef.setMessage(st.t("Resetting password..."));
 
             setTimeout(() => {
                 st.route = {
@@ -105,7 +102,7 @@ export class EmailActionPage extends st.component implements ILifecycle {
             
             await window.authService.firebaseService.auth().applyActionCode(this.getQueryParams().oobCode);
 
-            this.errorMessageRef.el.style.color = '#00cc00';
+            this.errorMessageRef.el.style.color = '#000';
             this.errorMessageRef.setMessage(st.t("We've activated your account and logging you in now..."));
 
             setTimeout(() => {

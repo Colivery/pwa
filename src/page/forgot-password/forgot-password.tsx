@@ -8,6 +8,7 @@ import { ref } from "springtype/core/ref";
 import tpl from "./forgot-password.tpl";
 import { MatForm, MatLoaderCircle } from "st-materialize";
 import { LoginPage } from "../login/login";
+import { Center } from "../../component/center/center";
 
 interface IForgotPasswordFormState {
     email: string;
@@ -35,6 +36,9 @@ export class ForgotPasswordPage extends st.component implements ILifecycle {
     @ref
     emailRow: HTMLElement;
 
+    @ref
+    backButtonContainerRef: Center;
+
     /*
     @ref
     codeRow: HTMLElement;
@@ -52,7 +56,19 @@ export class ForgotPasswordPage extends st.component implements ILifecycle {
     class = ['wrapper', 'valign-wrapper'];
 
     onAfterRender() {
-        st.dom.hide(this.errorMessageContainer);
+        st.hide(this.errorMessageContainer);
+    }
+
+    async onRouteEnter() {
+
+        await this.initiallyRendered();
+
+        this.errorMessage.setMessage('');
+        st.hide(this.errorMessageContainer);
+        this.emailNextButtonRef.classList.remove('hide');
+        this.backButtonContainerRef.el.classList.add('hide');
+        this.emailNextButtonRef.classList.remove('disabled');
+        this.emailRow.classList.remove('hide');
     }
 
     onNextClick = async () => {
@@ -76,7 +92,11 @@ export class ForgotPasswordPage extends st.component implements ILifecycle {
                 }, 3000);
 
             } catch (e) {
-                // TODO: show error message
+                this.errorMessage.setMessage(e.message);
+                st.show(this.errorMessageContainer);
+                this.emailNextButtonRef.classList.add('hide');
+                this.backButtonContainerRef.el.classList.remove('hide');
+
             } finally {
                 this.matLoaderCircleRef.setVisible(false);
 

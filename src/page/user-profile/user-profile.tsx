@@ -6,7 +6,7 @@ import { inject } from "springtype/core/di";
 import { ref } from "springtype/core/ref";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { GeoService } from "../../service/geo";
-import { MatModal, MatLoadingIndicator, MatLoaderCircle, MatTextArea, MatForm } from "st-materialize";
+import { MatModal, MatLoadingIndicator, MatLoaderCircle, MatForm, MatSelectItemDetail } from "st-materialize";
 import { address } from "../../validators/address";
 import { UserService } from "../../service/user";
 import { IUserProfileResponse, UserProfile } from "../../datamodel/user";
@@ -16,9 +16,10 @@ import { tsx } from "springtype/web/vdom";
 import { MatInput } from "st-materialize";
 import { required, email } from "springtype/core/validate";
 import { LoginPage } from "../login/login";
-import { I18nService } from "../../service/i18n";
+import { I18nService, SupportedLanguage } from "../../service/i18n";
 import { SplashscreenService } from "../../service/splashscreen";
 import { Center } from "../../component/center/center";
+import { IEvent } from "springtype/web/component/interface";
 
 @component({
     tpl
@@ -161,16 +162,23 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
     updateUserProfile = async () => {
         try {
-            this.loadingIndicator.toggle();
-            if (await this.formRef.validate(true)) {
+            this.loadingIndicator.setVisible(true);
+
+            const isValid = await this.formRef.validate();
+
+            console.log('isValid', isValid)
+            if (await this.formRef.validate()) {
 
                 await this.userService.upsertUserProfile(this.getDataToSave());
-                this.afterSaveModal.toggle();
+
+                this.afterSaveModal.setVisible(true);
             }
         } catch (e) {
             this.errorMessage.message = e.message;
+        } finally {
+
+            this.loadingIndicator.setVisible(false);
         }
-        this.loadingIndicator.toggle();
     };
 
     private async loadData() {
@@ -227,9 +235,8 @@ export class UserProfilePage extends st.component implements ILifecycle {
                     required: st.t("This is a required field")
                 }}>
             </MatInput>
-            <MatTextArea name="address" label={st.t("Home/Delivery address")}
+            <MatInput name="address" label={st.t("Home/Delivery address")}
                 class={['col', 's12', 'm6']}
-                rows={2}
                 helperText={st.t("Where should the purchases be delivered to?")}
                 validators={[required, this.addressValidator()]}
                 value={this.state.address}
@@ -237,14 +244,14 @@ export class UserProfilePage extends st.component implements ILifecycle {
                     required: st.t("This is a required field"),
                     address: st.t("This address doesn't seem to be valid")
                 }}>
-            </MatTextArea>
+            </MatInput>
             <div class={['col', 's12', 'hide']} ref={{ mapContainer: this }}>
 
                 <Center>
                     <strong>{st.t("We recognized the following address:")}<br /></strong>
 
                     <span ref={{ addressField: this }}></span>
-                    <img class="static-map" ref={{ staticMapImage: this }} />
+                    <img class="static-map" style={{ marginTop: '10px', marginBottom: '-20px' }} ref={{ staticMapImage: this }} />
                 </Center>
 
             </div>
@@ -257,7 +264,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
         this.beforeUserDeleteModal.toggle();
     }
 
-    reallyDeleteUser = async() => {
+    reallyDeleteUser = async () => {
 
         this.loadingIndicator.setVisible(true);
 
@@ -268,19 +275,14 @@ export class UserProfilePage extends st.component implements ILifecycle {
         };
     }
 
-    getLanguages = function () {
-        return this.i18nService.getSupportedLanguages();
-    }
+    onSelectLanguageItem = (evt: IEvent<MatSelectItemDetail>) => {
 
-    onLanguageItemPress = function (item : object) {
+        const language = evt.detail.value;
+
         this.splashscreenService.show();
 
-        window.setTimeout(function () {
-            this.i18nService.setLanguage(item.key);
-        }.bind(this), 100);
-    }
-
-    getSelectedLanguage = function () {
-        return this.i18nService.getLanguage();
+        window.setTimeout(() => {
+            this.i18nService.setLanguage(language);
+        }, 100);
     }
 }

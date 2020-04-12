@@ -12,6 +12,10 @@
     "Sign up": "Sign up",
     "Forgot Password": "Forgot Password",
 
+    "-- Forgot Password --": null,
+    "We have sent you an email. Please check your inbox.": "We have sent you an email. Please check your inbox.",
+    "Resetting password...": "Resetting password...",
+
     "-- Register Page --": null,
     "Choose your password": "Choose your password",
     "Password confirmation": "Password confirmation",
@@ -23,6 +27,8 @@
     "Back": "Back",
     "Next": "Next",
     "Passwords do not match": "Passwords do not match",
+    "Test Mode": "Testbetrieb",
+    "Please note that Colivery runs in test mode right now. We will delete all user accounts and data at the end of the test mode timeframe.": "Bitte beachte, dass Colivery momentan im Testbetrieb läuft. Am Ende des Testbetriebs werden wir alle Benutzerdaten löschen.",
 
     "-- Register User Address Page --": null,
     "Firstname": "Firstname",
@@ -53,7 +59,7 @@
     "This action cannot be undone.": "This action cannot be undone.",
     "Delete user account": "Delete user account",
     "Choose language:": "Choose language:",
-
+    
     "-- Driver Order List Page -- ": null,
     "Open Requests": "Open Requests",
     "My Requests": "My Requests",
@@ -62,7 +68,7 @@
     "scroll / swipe": "scroll / swipe",
     "One moment, we are searching for open requests": "One moment, we are searching for open requests",
     "in your area ...": "in your area ...",
-    "One moment, we are searching for your requests ...": "One moment, we are searching for your requests ...",
+    "One moment, we are searching for your requests": "One moment, we are searching for your requests",
     "Accept request": "Accept request",
     "* When you accept a request, your contact details, will be shared with the requestor.": "* When you accept a request, your contact details, will be shared with the requestor.",
     "No": "No",
@@ -96,6 +102,7 @@
     "/verb/cost.": ".",
     "Are you sure, you are able to complete this request? It is very frustrating for the other person, if it doesn't work out.": "Are you sure, you are able to complete this request? It is very frustrating for the other person, if it doesn't work out.",
     "Shopping list:": "Shopping list:",
+    "Navigate": "Navigate",
 
     "-- Consumer Order Add Page -- ": null,
     "What do you need?": "What do you need?",
@@ -112,9 +119,9 @@
     "Type the name of the store here: i.e. Tesco": "Type the name of the store here: i.e. Tesco",
     "New shopping list": "New shopping list",
     "Write down what you need. You can describe, how much, wich brand and what store you would like it from.": "Write down what you need. You can describe, how much, wich brand and what store you would like it from.",
-    "i. e. 300g organic tomatoes or 2L oatly oat milk": "i. e. 300g organic tomatoes or 2L oatly oat milk",
+    "i. e. 300g organic tomatoes or 2L oatly oat milk": "e.g. 300g organic tomatoes or 2L oatly oat milk",
     "What is the maximum cost of your purchase? (€)": "What is the maximum cost of your purchase? (€)",
-    "i. e. Please call 5 minutes before arrival.": "i. e. Please call 5 minutes before arrival.",
+    "i. e. Please call 5 minutes before arrival.": "e.g. Please call 5 minutes before arrival.",
     "Is there anything else you would like to tell the driver?": "Is there anything else you would like to tell the driver?",
     "Note that you cannot change a request, after a driver has accepted your request. Payment is cash on delivery.": "Note that you cannot change a request, after a driver has accepted your request. Payment is cash on delivery.",
     "Send Request": "Send Request",
@@ -136,13 +143,18 @@
     "change to the driver mode.": "change to the driver mode.",
     "Requested at:": "Requested at:",
     "Your driver": "Your driver",
+    "Refresh list": "Refresh list",
+    "In delivery": "In delivery",
+    "No driver yet": "No driver yet",
+    "Delivered successfully": "Delivered successfully",
+    "Cancelled by user": "Cancelled by user",
 
     "-- Error Screen --": null,
     "Something went wrong. Please reload the app.": "Something went wrong. Please reload the app.",
     "Reload": "Reload",
 
     "-- Menu Entries --": null,
-    "Contact Details": "Contact Details",
+    "Contact Details": "Legal Notice",
     "Logout": "Logout",
     "Request Mode": "Request Mode",
     "Driver Mode": "Driver Mode",

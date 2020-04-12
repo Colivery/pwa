@@ -3,21 +3,27 @@ import { st } from "springtype/core";
 import { translation } from "springtype/core/i18n";
 import * as de from "../i18n/de.json";
 import * as en from "../i18n/en.json";
-import * as no from "../i18n/no.json";
-import * as il from "../i18n/il.json";
+import * as nn from "../i18n/nn.json";
+import * as he from "../i18n/he.json";
 import { PreferenceService } from "./preference";
+
+export interface SupportedLanguage {
+    key: string;
+    name: string;
+    icon: string;
+}
 
 @translation("de", de)
 @translation("en", en)
-@translation("no", no)
-@translation("il", il)
+@translation("nn", nn)
+@translation("he", he)
 @injectable
 export class I18nService {
 
     @inject(PreferenceService)
     preferenceService: PreferenceService;
 
-    aSupportedLanguages = [
+    supportedLanguages: Array<SupportedLanguage> = [
         {
             key: "de",
             name: "Deutsch",
@@ -25,16 +31,16 @@ export class I18nService {
         },
         {
             key: "en",
-            name: "Engish",
+            name: "English",
             icon: "https://www.countryflags.io/gb/flat/32.png"
         },
         {
-            key: "no",
+            key: "nn",
             name: "Norsk",
             icon: "https://www.countryflags.io/no/flat/32.png"
         },
         {
-            key: "il",
+            key: "he",
             name: "עברית",
             icon: "https://www.countryflags.io/il/flat/32.png"
         }
@@ -42,21 +48,22 @@ export class I18nService {
 
     setLanguage(languageKey: string) {
         st.i18n.setLanguage(languageKey);
+
         this.preferenceService.setLanguage(languageKey);
         document.location.reload();
     }
 
-    getSupportedLanguages() : object[] {
-        return this.aSupportedLanguages;
+    getSupportedLanguages(): Array<SupportedLanguage> {
+        return this.supportedLanguages;
     }
 
-    getLanguageByTag(languageKey : String) : object {
-        return this.aSupportedLanguages.find(function (languageItem: object) {
+    getLanguageByTag(languageKey: String): object {
+        return this.supportedLanguages.find((languageItem: SupportedLanguage) => {
             return languageKey === languageItem.key;
         });
     }
 
-    getLanguage() : string {
+    getLanguage(): string {
         return this.preferenceService.getLanguage();
     }
 
@@ -65,7 +72,7 @@ export class I18nService {
         const autoDetectedLanguage = navigator.language.split(/[-_]/)[0];
         const languagePreference = this.preferenceService.getLanguage();
 
-        if (autoDetectedLanguage === "il" || languagePreference === "il") {
+        if (autoDetectedLanguage === "he" || languagePreference === "he") {
             document.body.setAttribute("dir", "rtl");
         }
 
@@ -76,8 +83,8 @@ export class I18nService {
         }
 
         var sLanguagKey = "en";
-        for (var i = 0; i < this.aSupportedLanguages.length; i++) {
-            if (this.aSupportedLanguages[i].key === autoDetectedLanguage) {
+        for (var i = 0; i < this.supportedLanguages.length; i++) {
+            if (this.supportedLanguages[i].key === autoDetectedLanguage) {
                 sLanguagKey = autoDetectedLanguage;
             }
         }

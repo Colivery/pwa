@@ -1,5 +1,4 @@
 import { st } from "springtype/core";
-import { event } from "springtype/web/component/decorator/event";
 import { attr, component } from "springtype/web/component";
 import { tsx } from "springtype/web/vdom";
 import "./nav-header.scss";
@@ -10,6 +9,7 @@ import { PreferenceService } from "../../service/preference";
 import { ConsumerOrderListPage } from "../../page/consumer-order-list/consumer-order-list";
 import { DriverOrderList } from "../../page/driver-order-list/driver-order-list";
 import { TERMS_OF_USE_URL, PRIVACY_STATEMENT_URL, LEGAL_NOTICE_URL } from "../../config/website-urls";
+import { Center } from "../center/center";
 
 export interface NavHeaderProps {
     showBackButton?: boolean;
@@ -78,10 +78,11 @@ export class NavHeader extends st.component<NavHeaderProps> {
                     </div>
 
                     {this.showBackButton ?
-                        <a class='left-btn-position btn btn-flat btn-small' href='javascript:' onClick={() => {
+                        <a class='btn btn-flat btn-small menu left-btn-position back-button' href='javascript:' onClick={() => {
                             this.onBackButtonClick()
                         }}>
-                            <i class="material-icons">arrow_back_ios</i>
+                            <span class="menu-circle"></span>
+                            <i class="material-icons back-button-icon">arrow_back_ios</i>
                         </a> : <div class="menu left-btn-position" ref={{ menuIcon: this }}>
                             <span class="menu-circle"></span>
                             <a href="javascript:" onclick={this.toggleMenu} class="menu-link">
@@ -102,43 +103,46 @@ export class NavHeader extends st.component<NavHeaderProps> {
 
     renderMenuItems = () => {
 
-        this.renderPartial(<fragment>
-            <a href="javascript:" onClick={() => {
-                this.onUserProfileClick()
-            }}>
-                <div class="material-align-middle">
-                    <i class="material-icons">account_circle</i> {st.t("My Profile")}
-                    </div>
-            </a>
-            {this.getActiveProfile()}
+        this.renderPartial(
+            <div class="row">
+                <div class="col s12 m9 l6 offset-l4 offset-m4">
+                    <a href="javascript:" onClick={() => {
+                        this.onUserProfileClick()
+                    }}>
+                        <div class="material-align-middle">
+                            <i class="material-icons">account_circle</i> {st.t("My Profile")}
+                        </div>
+                    </a>
+                    {this.getActiveProfile()}
 
-            <a href={TERMS_OF_USE_URL} target="_blank">
-                <div class="material-align-middle">
-                    <i class="material-icons">description</i> {st.t("Terms of Use")}
-                    </div>
-            </a>
+                    <a href={TERMS_OF_USE_URL} target="_blank">
+                        <div class="material-align-middle">
+                            <i class="material-icons">description</i> {st.t("Terms of Use")}
+                        </div>
+                    </a>
 
-            <a href={PRIVACY_STATEMENT_URL} target="_blank">
-                <div class="material-align-middle">
-                    <i class="material-icons">security</i> {st.t("Privacy Statement")}
-                    </div>
-            </a>
+                    <a href={PRIVACY_STATEMENT_URL} target="_blank">
+                        <div class="material-align-middle">
+                            <i class="material-icons">security</i> {st.t("Privacy Statement")}
+                        </div>
+                    </a>
 
 
-            <a href={LEGAL_NOTICE_URL} target="_blank">
-                <div class="material-align-middle">
-                    <i class="material-icons">policy</i> {st.t("Contact Details")}
-                    </div>
-            </a>
+                    <a href={LEGAL_NOTICE_URL} target="_blank">
+                        <div class="material-align-middle">
+                            <i class="material-icons">policy</i> {st.t("Contact Details")}
+                        </div>
+                    </a>
 
-            <a href="javascript:" onclick={() => {
-                this.onLogoutClick()
-            }}>
-                <div class="material-align-middle">
-                    <i class="material-icons">directions_run</i> {st.t("Logout")}
-                    </div>
-            </a>
-        </fragment>, this.menuOverlay)
+                    <a href="javascript:" onclick={() => {
+                        this.onLogoutClick()
+                    }}>
+                        <div class="material-align-middle">
+                            <i class="material-icons">directions_run</i> {st.t("Logout")}
+                        </div>
+                    </a>
+                </div>
+            </div>, this.menuOverlay)
     }
 
     onUserProfileClick = () => {
@@ -165,7 +169,8 @@ export class NavHeader extends st.component<NavHeaderProps> {
     };
 
     private getActiveProfile() {
-        const isDriver = this.preferenceService.getProfile() === 'driver';
+        const isDriver = this.preferenceService.getProfile() !== 'consumer';
+        console.log('isDriver', isDriver, this.preferenceService.getProfile()); 
         return <fragment>
             <a href="javascript:" style={{ display: isDriver ? 'block' : 'none' }} onclick={() => {
                 this.onCustomerSwitch();

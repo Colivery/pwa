@@ -5,6 +5,7 @@ import { FIREBASE_CONFIG } from "../config/firebase";
 import { st } from "springtype/core";
 import { StorageService } from "./storage";
 import { ConsumerOrderListPage } from "../page/consumer-order-list/consumer-order-list";
+import { PreferenceService } from "./preference";
 
 export interface IUserContext {
     userId: string;
@@ -22,6 +23,9 @@ export class AuthService {
 
     @inject(StorageService)
     storageService: StorageService;
+
+    @inject(PreferenceService)
+    preferenceService: PreferenceService;
 
     @inject(FirebaseService, FIREBASE_CONFIG)
     firebaseService: FirebaseService; // leads to: new FirebaseService(FIREBASE_CONFIG)
@@ -101,7 +105,9 @@ export class AuthService {
     }
 
     async logout() {
+
         await this.firebaseService.logout();
+        this.preferenceService.setProfile('consumer');
         this.clearCredentialsCache();
 
         window.location.href = window.location.href.split('/')[0];

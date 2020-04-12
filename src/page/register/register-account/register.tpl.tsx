@@ -1,17 +1,18 @@
 import { tsx } from "springtype/web/vdom";
-import { MatInput, Form } from "st-materialize";
+import { MatInput, MatForm } from "st-materialize";
 import { email, minLength, required } from "springtype/core/validate";
 import { RegisterPage } from "./register";
 import { LogoRow } from "../../../component/logo-row/logo-row";
 import { TERMS_OF_USE_URL, PRIVACY_STATEMENT_URL } from "../../../config/website-urls";
 import { st } from "springtype/core";
 import { T } from "springtype/web/i18n/t";
+import { Center } from "../../../component/center/center";
 
 export default (component: RegisterPage) => (
     <fragment>
         <div class="container">
             <LogoRow />
-            <Form ref={{ formRef: component }} class="col s12">
+            <MatForm ref={{ formRef: component }} class="col s12">
                 <div class="row">
                     <MatInput name="email" label={st.t("E-mail")}
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
@@ -51,10 +52,16 @@ export default (component: RegisterPage) => (
                 <div class="row" ref={{ errorMessage: component }}>
 
                 </div>
-
-                <T tag="p">
-                    Please note that for privacy reasons, your user account will be deleted after the end of the test phase.
-                </T>
+                <div class="row">
+                <Center>
+                    <T tag="h5">Test Mode</T>
+                    <strong>
+                    <T tag="p" class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
+                        Please note that Colivery runs in test mode right now. We will delete all user accounts and data at the end of the test mode timeframe.
+                    </T>
+                    </strong>
+                </Center>
+                </div>
                 <div class="row">
                     <a class={['waves-effect', 'waves-light', 'btn', 'col', 's5', 'offset-m3', 'm2', 'offset-l3', 'l2']}
                         onClick={() => component.onBackClick()}>{st.t("Back")}</a>
@@ -62,7 +69,7 @@ export default (component: RegisterPage) => (
                     <a ref={{ nextButton: component }} class={['waves-effect', 'waves-light', 'btn', 'col', 's5', 'm2', 'l2']}
                         onClick={() => component.onNextClick()}>{st.t("Next")}</a>
                 </div>
-            </Form>
+            </MatForm>
         </div>
     </fragment>
 )

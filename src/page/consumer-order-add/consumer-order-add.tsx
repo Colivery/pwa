@@ -41,7 +41,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     loadingIndicator: MatLoadingIndicator;
 
     @ref
-    articleDescription: MatTextArea;
+    articleDescription: MatInput;
 
     @ref
     olMapRef: EsriMap;
@@ -154,54 +154,50 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
     onCreateOrderButtonClick = () => {
 
         // UX improvement: apply last written item
-        if (this.articleDescription.textAreaRef.value.length > 0) {
+        if (this.articleDescription.getValue().length > 0) {
             this.onOrderItemAddClick();
         }
 
-        if (this.orderItems.length === 0) {
+        if (this.orderItems.length === 0 || parseInt(this.maxPriceField.getValue(), 10) < 0) {
             this.warnAtLeastOneItemModal.toggle();
             return;
         }
 
-
-        console.log('confirmCreateOrderModal', this.confirmCreateOrderModal);
         // open modal
         this.confirmCreateOrderModal.toggle();
     }
 
     renderOrderListContainer() {
 
-        this.renderPartial(this.orderItems.map((orderItem, index) => <div data-index={index} class="row">
-            <div class="col s11 truncate" style={{ lineHeight: '30px' }}>
+        this.renderPartial(this.orderItems.map((orderItem, index) => <div data-index={index} class="row" style={{ marginBottom: '10px' }}>
+            <div class="col s10 truncate" style={{ lineHeight: '30px' }}>
                 {orderItem.description}
-            </div><div class="col s1">
-                <a class="btn-floating btn-small waves-effect waves-light red  mat-align-middle" style={{ left: '-20px' }} onClick={this.onOrderItemRemoveClick}><i class="material-icons">delete</i></a>
+            </div><div class="col s2">
+                <a class="btn-floating btn-small waves-effect waves-light red  mat-align-middle" style={{ left: '-6px' }} onClick={this.onOrderItemRemoveClick}><i class="material-icons">delete</i></a>
             </div></div>) as any, this.orderListContainer);
     }
 
     articleDescriptionKeyDown = (event: KeyboardEvent) => {
 
-        /*
         if (event.key === "Enter") {
             setTimeout(() => {
                 this.onOrderItemAddClick();
             }, 100)
         }
-        */
     }
 
     onOrderItemAddClick = () => {
 
         this.orderItems.push({
-            description: this.articleDescription.textAreaRef.value
+            description: this.articleDescription.getValue()
         });
 
         // reset value
-        this.articleDescription.textAreaRef.value = '';
+        this.articleDescription.setValue('');
 
         this.renderOrderListContainer();
 
-        this.articleDescription.textAreaRef.focus();
+        this.articleDescription.inputRef.focus();
     }
 
     onOrderItemRemoveClick = (evt: MouseEvent) => {
@@ -212,7 +208,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
         this.renderOrderListContainer();
 
-        this.articleDescription.textAreaRef.focus();
+        this.articleDescription.inputRef.focus();
     }
 
     onReallyCreateOrderClick = async () => {
@@ -272,9 +268,9 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
 
         this.orderItems = [];
         this.renderOrderListContainer();
-        (this.maxPriceField.inputRef).value = '';
-        (this.articleDescription.textAreaRef).value = '';
-        (this.hintField.textAreaRef).value = '';
+        this.maxPriceField.setValue('');
+        this.articleDescription.setValue('');
+        this.hintField.setValue('');
 
         st.route = {
             path: ConsumerOrderListPage.ROUTE

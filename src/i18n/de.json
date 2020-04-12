@@ -12,6 +12,10 @@
     "Sign up": "Registrieren",
     "Forgot Password": "Passwort vergessen",
 
+    "-- Forgot Password --": null,
+    "We have sent you an email. Please check your inbox.": "Wir haben dir eine E-Mail gesendet. Bitte prüfe deinen Posteingang.",
+    "Resetting password...": "Passwort wird zurückgesetzt",
+
     "-- Register Page --": null,
     "Choose your password": "Wähle Dein Passwort",
     "Password confirmation": "Passwort Wiederholung",
@@ -19,10 +23,12 @@
     "Please note our": "Bitte beachte unsere",
     "Terms of Use": "AGB",
     "and": "und",
-    "Privacy Statement": "Datenschutzerklärung",
+    "Privacy Statement": "Datenschutz",
     "Back": "Zurück",
     "Next": "Weiter",
     "Passwords do not match": "Passwörter stimmen nicht überein",
+    "Test Mode": "Testbetrieb",
+    "Please note that Colivery runs in test mode right now. We will delete all user accounts and data at the end of the test mode timeframe.": "Bitte beachte, dass Colivery momentan im Testbetrieb läuft. Am Ende des Testbetriebs werden wir alle Benutzerdaten löschen.",
 
     "-- Register User Address Page --": null,
     "Firstname": "Vorname",
@@ -62,7 +68,7 @@
     "scroll / swipe": "scrollen / swipen",
     "One moment, we are searching for open requests": "Einen Moment, wir suchen nach Fahrten für Dich",
     "in your area ...": "in Deiner Gegend ...",
-    "One moment, we are searching for your requests ...": "Einen Moment, wir suchen nach Deinen Fahrten ... ",
+    "One moment, we are searching for your requests": "Einen Moment, wir suchen nach Deinen Fahrten ... ",
     "Accept request": "Auftrag annehmen",
     "* When you accept a request, your contact details, will be shared with the requestor.": "* Wenn du einen Auftrag übernimmst, werden Deine Kontaktinformationen an die/den Auftraggeber*in übermittelt.",
     "No": "Nein",
@@ -70,6 +76,7 @@
     "Complete the request": "Auftrag abschließen",
     "Are you sure, you want to": "Bist Du Dir sicher, dass Du den Auftrag",
     "finish": "abschließen",
+    "Finish Request": "Auftrag abschließen",
     "this request?": "möchtest?",
     "You should have delivered the purchase and already received your money.": "Du solltest den Einkauf abgegeben und Dein Geld bereits erhalten haben.",
     "Request": "Auftrag",
@@ -96,6 +103,7 @@
     "/verb/cost.": "kosten.",
     "Are you sure, you are able to complete this request? It is very frustrating for the other person, if it doesn't work out.": "Bist Du Dir sicher, dass Du diese Fahrt übernehmen kannst? Es ist sehr frustrierend für die andere Person, wenn es doch nicht klappt.",
     "Shopping list:": "Einkaufsliste:",
+    "Navigate": "Route planen",
 
     "-- Consumer Order Add Page -- ": null,
     "What do you need?": "Was brauchst Du?",
@@ -114,7 +122,7 @@
     "Write down what you need. You can describe, how much, wich brand and what store you would like it from.": "Schreibe auf, was Du brauchst. Du kannst angeben, wie viel, von welcher Marke oder aus welchem Geschäft Dein Artikel sein soll.",
     "i. e. 300g organic tomatoes or 2L oatly oat milk": "z.B. 300g Bio Tomaten oder 2L Oatly Hafermilch",
     "What is the maximum cost of your purchase? (€)": "Was darf Dein Einkauf maximal kosten? (€)",
-    "i. e. Please call 5 minutes before arrival.": "Bitte rufen Sie mich an, wenn Sie vor der Haustüre stehen.",
+    "i. e. Please call 5 minutes before arrival.": "z.B. Bitte rufen Sie mich an, wenn Sie vor der Haustüre stehen.",
     "Is there anything else you would like to tell the driver?": "Gibt es noch etwas was Du dem/der Fahrer*in mitteilen möchtest?",
     "Note that you cannot change a request, after a driver has accepted your request. Payment is cash on delivery.": "Bitte beachte: Sobald ein/e Fahrer*in Deinen Auftrag angenommen hat, kannst Du ihn nicht mehr ändern. Die Bezahlung erfolgt in bar.",
     "Send Request": "Auftrag aufgeben",
@@ -125,7 +133,7 @@
     "OK": "OK",
 
     "-- Consumer Order List Page -- ": null,
-    "My Requests (Requestor)": "Meine Aufträge",
+    "My Requests (Requestor)": "Meine Einkaufszettel",
     "New Request": "Neuer Auftrag",
     "Cancel Request": "Auftrag abbrechen",
     "Are you sure you want to cancel this shopping request?": "Bist Du Dir sicher, dass Du diesen Auftrag abbrechen möchtest?",
@@ -136,6 +144,11 @@
     "change to the driver mode.": "wechsel in den Fahrer*in Modus.",
     "Requested at:": "Eingetragen:",
     "Your driver": "Dein*e Fahrer*in",
+    "Refresh list": "Liste aktualisieren",
+    "In delivery": "Auf dem Weg zu Dir",
+    "No driver yet": "Noch kein Fahrer",
+    "Delivered successfully": "Erfolgreich geliefert",
+    "Cancelled by user": "Abbruch durch dich",
 
     "-- Error Page --": null,
     "Something went wrong. Please reload the app.": "Etwas ist schief gelaufen. Bitte lade die Seite neu.",
@@ -144,8 +157,8 @@
     "-- Menu Entries --": null,
     "Contact Details": "Impressum",
     "Logout": "Ausloggen",
-    "Request Mode": "Auftraggeber*in Modus",
-    "Driver Mode": "Fahrer*in Modus",
+    "Request Mode": "Meine Einkaufszettel",
+    "Driver Mode": "Meine Fahrten",
 
     "-- Next Page -- ": null
 }

@@ -26,7 +26,7 @@ export class OrderService {
     @inject(ErrorService)
     errorService: ErrorService;
 
-    async declide(id: string) {
+    async decline(id: string) {
 
         try {
             const response = await fetch(`${SERVICE_API_ENDPOINT}/order/declide?order_id=${id}`, {

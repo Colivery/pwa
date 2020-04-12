@@ -14,7 +14,7 @@ export default (component: ForgotPasswordPage) => (
             <LogoRow />
 
             <h3 class="slogan">
-                {st.t("Set new password")}
+                {st.t("Forgot Password")}
             </h3>
 
             <MatForm ref={{ form: component }}>
@@ -44,8 +44,10 @@ export default (component: ForgotPasswordPage) => (
                 <div class="row">
                     <MatLoaderCircle ref={{ matLoaderCircleRef: component }} class="hide" />
 
-                    <p class="hide" ref={{ resetEmailSentMessageRef: component }}>
-                        {st.t('We have sent you an email. Please check your inbox.')}
+                    <p class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3', 'hide']} ref={{ resetEmailSentMessageRef: component }}>
+                        <Center>
+                            {st.t('We have sent you an email. Please check your inbox.')}
+                        </Center>
                     </p>
                 </div>
                 {/*
@@ -65,11 +67,12 @@ export default (component: ForgotPasswordPage) => (
                 </div>
                  */}
                 <div class="row" ref={{ errorMessageContainer: component }}>
-                    <ErrorMessage ref={{ errorMessage: component }}
-                        class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
+                    <Center class={['col', 's12']}>
+                        <ErrorMessage ref={{ errorMessage: component }} />
+                    </Center>
                 </div>
-                <div class="row" ref={{ loginButtonContainer: component }}>
-                    <Center class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
+                <div class="row">
+                    <Center class={['col', 's12']}>
 
                         <a class={['waves-effect', 'waves-light', 'btn', 'login-button', 'mat-align-middle']}
                             ref={{ emailNextButtonRef: component }}
@@ -81,8 +84,13 @@ export default (component: ForgotPasswordPage) => (
                             onClick={component.onCodeNextClick}>{st.t("Next")}</a>
                         */}
                     </Center>
+                    <Center ref={{ backButtonContainerRef: component }} class={['col', 's12', 'hide']}>
+
+                        <a class={['waves-effect', 'waves-light', 'btn', 'login-button', 'mat-align-middle']}
+                            onClick={() => window.history.back()}>{st.t("Back")}</a>
+                    </Center>
                 </div>
             </MatForm>
         </div>
-    </fragment >
+    </fragment>
 );

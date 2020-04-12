@@ -146,41 +146,48 @@ export default (component: ConsumerOrderAddPage) => (
                     <div ref={{ orderListContainer: component }}></div>
 
                     <div class="row">
-                        <MatTextArea
+                        <MatInput
                             name="description"
+                            maxLength={150}
                             helperText={st.t("i. e. 300g organic tomatoes or 2L oatly oat milk")}
                             ref={{ articleDescription: component }}
                             label={st.t("What do you need?")}
                             onKeyDown={component.articleDescriptionKeyDown}
-                            class={['col', 's11']}>
-                        </MatTextArea>
+                            class={['col', 's10']}>
+                        </MatInput>
 
-                        <div class="col s1">
-                            <a class="btn-floating btn-small waves-effect waves-light red mat-align-middle" style={{ left: '-20px', top: '25px' }} onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
+                        <div class="col s2">
+                            <a class="btn-floating btn-small waves-effect waves-light red mat-align-middle" style={{ left: '-6px', top: '22px' }} onClick={component.onOrderItemAddClick}><i class="material-icons">add</i></a>
+                        </div>
+
+                        <div class="col s12">
+                            <strong>{st.t("What is the maximum cost of your purchase? (€)")}</strong>
                         </div>
 
                         <MatInput
                             name="maxPrice"
                             type="number"
                             ref={{ maxPriceField: component }}
-                            label={st.t("What is the maximum cost of your purchase? (€)")}
                             class={['col', 's12']}>
                         </MatInput>
                     </div>
 
-                    <h5 class="header" style={{ marginTop: 0, marginBottom: 0 }}>{st.t("Notes")}</h5>
+                    <h5 class="header" style={{ marginTop: '-20px' }}>{st.t("Notes")}</h5>
 
                     <div class="row">
+                        <div class="col s12">
+                            {st.t("Is there anything else you would like to tell the driver?")}
+                        </div>
                         <MatTextArea
                             ref={{ hintField: component }}
                             name="hint"
+                            rows={5}
                             helperText={st.t("i. e. Please call 5 minutes before arrival.")}
-                            label={st.t("Is there anything else you would like to tell the driver?")}
                             class={['col', 's12']}>
                         </MatTextArea>
                     </div>
 
-                    <div class="card green darken-2">
+                    <div class="card green darken-2" style={{ borderRadius: '20px' }}>
                         <div class="card-content white-text">
                             <p>{st.t("Note that you cannot change a request, after a driver has accepted your request. Payment is cash on delivery.")}</p>
                         </div>
@@ -205,8 +212,8 @@ export default (component: ConsumerOrderAddPage) => (
                 </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
-                <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect btn-footer-secondary waves-white btn material-align-middle"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
-                <a href="javascript:" ref={{ addOrderButton: component }} onclick={component.onReallyCreateOrderClick} class="modal-close waves-effect waves-green btn success-button material-align-middle"><i class="material-icons">done_all</i>&nbsp;{st.t("Yes")}</a>
+                <a href="javascript:" onclick={() => component.confirmCreateOrderModal.toggle()} class="modal-close waves-effect waves-white btn material-align-middle left"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
+                <a href="javascript:" ref={{ addOrderButton: component }} onclick={component.onReallyCreateOrderClick} class="modal-close waves-effect waves-green btn btn-flat material-align-middle"><i class="material-icons">done_all</i>&nbsp;{st.t("Yes")}</a>
             </template>
         </MatModal>
 
@@ -221,7 +228,7 @@ export default (component: ConsumerOrderAddPage) => (
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
                     component.warnAtLeastOneItemModal.toggle();
-                }} class="modal-close waves-effect waves-green btn success-button">{st.t("OK")}</a>
+                }} class="modal-close waves-effect waves-green btn btn-flat btn-full-width">{st.t("OK")}</a>
             </template>
         </MatModal>
 

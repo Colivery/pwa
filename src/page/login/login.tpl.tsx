@@ -42,7 +42,7 @@ export default (component: LoginPage) => (
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
                 </div>
                 <div class="row" ref={{ loginButtonContainer: component }}>
-                    <Center class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
+                    <Center class={['col', 's12']}>
                         <a ref={{ loginButton: component }} class={['waves-effect', 'waves-light', 'btn', 'login-button', 'mat-align-middle']}
                             onClick={component.onLoginClick}><i class="material-icons">meeting_room</i> {st.t("Login")}</a>
 
@@ -51,7 +51,7 @@ export default (component: LoginPage) => (
                         <br />
 
                         <a href="javascript:" class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}
-                            onClick={component.onForgotPasswordLinkClick}>{st.t("I forgot my password")}</a>
+                            onClick={component.onForgotPasswordLinkClick}>{st.t("Forgot Password")}</a>
                     </Center>
                 </div>
 
@@ -66,8 +66,8 @@ export default (component: LoginPage) => (
                             Ich habe noch keinen Account und möchte mich gerne registrieren:
                         </Center>
                         <br />
-                        <div class="row center-align">
-                            <Center class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
+                        <div class="row">
+                            <Center class={['col', 's12']}>
                                 <a class={['waves-effect', 'waves-light', 'btn', 'mat-align-middle']}
                                     onClick={component.onRegisterClick}><i class="material-icons">create</i> {st.t("Sign up")}</a>
                             </Center>

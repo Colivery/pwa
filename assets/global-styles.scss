@@ -13,7 +13,7 @@ body {
 
 .info-button,
 .info-button:hover {
-  background-color: $colivery-blue;
+  background-color: $colivery-green;
 }
 
 .cancel-button,
@@ -24,6 +24,14 @@ body {
 .success-button,
 .success-button:hover {
   background-color: $colivery-green;
+}
+
+.materialize-textarea {
+  height: 100% !important;
+}
+
+.btn-full-width {
+  width: 100%;
 }
 
 .hint {
@@ -46,6 +54,11 @@ h3.slogan {
   i.material-icons {
     font-size: 0.85em;
   }
+}
+
+.btn-secondary {
+  background-color: $colivery-grey;
+  color: #fff;
 }
 
 .btn-footer-secondary {
@@ -102,7 +115,14 @@ textarea.materialize-textarea  {
   border-radius: 5px !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
+}
+
+input:not(.browser-default) {
   width: calc(100% - 20px) !important;
+}
+
+input[type=range] {
+  width: 100% !important;
 }
 
 .input-field > label:not(.label-icon) {
