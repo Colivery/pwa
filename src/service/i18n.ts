@@ -5,6 +5,7 @@ import * as de from "../i18n/de.json";
 import * as en from "../i18n/en.json";
 import * as nn from "../i18n/nn.json";
 import * as he from "../i18n/he.json";
+import * as hi from "../i18n/hi.json";
 import { PreferenceService } from "./preference";
 
 export interface SupportedLanguage {
@@ -17,6 +18,7 @@ export interface SupportedLanguage {
 @translation("en", en)
 @translation("nn", nn)
 @translation("he", he)
+@translation("hi", hi)
 @injectable
 export class I18nService {
 
@@ -43,8 +45,17 @@ export class I18nService {
             key: "he",
             name: "עברית",
             icon: "https://www.countryflags.io/il/flat/32.png"
+        },
+        {
+            key: "hi",
+            name: "भारतीय",
+            icon: "https://www.countryflags.io/il/flat/32.png"
         }
     ];
+
+    constructor() {
+        st.i18n.setFallbackLanguage('en');
+    }
 
     setLanguage(languageKey: string) {
         st.i18n.setLanguage(languageKey);

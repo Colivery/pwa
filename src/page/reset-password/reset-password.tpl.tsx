@@ -44,7 +44,7 @@ export default (component: ResetPasswordPage) => (
                         validationErrorMessages={{
                             required: st.t("This is a required field"),
                             'min-length': st.t("Passwords consist of atleast 7 characters"),
-                            same: st.t('Both passwords have to match')
+                            same: st.t('Passwords do not match')
                         }}>
                     </MatInput>
                 </div>
@@ -56,7 +56,7 @@ export default (component: ResetPasswordPage) => (
                         class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
                 </div>
                 <div class="row" ref={{ loginButtonContainer: component }}>
-                    <Center class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
+                    <Center class={['col', 's12']}>
 
                         <a class={['waves-effect', 'waves-light', 'btn', 'login-button', 'mat-align-middle']}
                             ref={{ changePasswordButtonRef: component }}
@@ -64,7 +64,7 @@ export default (component: ResetPasswordPage) => (
                     </Center>
                 </div>
                 <div class="row" ref={{ loginButtonContainer: component }}>
-                    <Center class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
+                    <Center class={['col', 's12']}>
 
                         <a class={['waves-effect', 'waves-light', 'btn', 'login-button', 'mat-align-middle']}
                             ref={{ changePasswordButtonRef: component }}

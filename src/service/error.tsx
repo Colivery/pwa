@@ -45,10 +45,10 @@ export class ErrorService extends st.component {
                 <Center>
                     <T tag="a" href="javascript:" onclick={() => {
                         window.authService.logout()
-                    }} class="modal-close waves-effect waves-red btn-flat btn-full-width">Logout</T>
+                    }} class="modal-close waves-effect waves-green btn-flat btn-full-width">Logout</T>
                     <T tag="a" href="javascript:" onclick={() => {
                         document.location.reload()
-                    }} class="modal-close waves-effect waves-red btn-flat btn-full-width">Reload</T>
+                    }} class="modal-close waves-effect waves-green btn-flat btn-full-width">Reload</T>
                 </Center>
             </template>
         </MatModal>

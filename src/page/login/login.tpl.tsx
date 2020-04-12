@@ -7,6 +7,7 @@ import { LogoRow } from "../../component/logo-row/logo-row";
 import { st } from "springtype/core";
 import { Center } from "../../component/center/center";
 import { T } from "springtype/web/i18n/t";
+import { LanguageSelector } from "../../component/language-selector/language-selector";
 
 export default (component: LoginPage) => (
     <fragment>
@@ -36,6 +37,7 @@ export default (component: LoginPage) => (
                             'min-length': st.t("Your password must consist of at least 7 characters")
                         }}>
                     </MatInput>
+                    <LanguageSelector class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']} />
                 </div>
                 <div class="row" ref={{ errorMessageContainer: component }}>
                     <ErrorMessage ref={{ errorMessage: component }}
@@ -63,7 +65,7 @@ export default (component: LoginPage) => (
                         <hr />
                         <br />
                         <Center>
-                            Ich habe noch keinen Account und möchte mich gerne registrieren:
+                            <T>I have no account and would like to register</T>
                         </Center>
                         <br />
                         <div class="row">

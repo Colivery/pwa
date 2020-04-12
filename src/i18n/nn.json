@@ -11,6 +11,16 @@
     "Login": "Registrer",
     "Sign up": "Sign up",
     "Forgot Password": "Glemt passord",
+    "I have no account and would like to register": "Jeg har ingen konto og vil registrere meg",
+
+    "-- Forgot Password --": null,
+    "We have sent you an email. Please check your inbox.": "Vi har sendt deg en e-post. Vennligst sjekk innboksen.",
+    "Resetting password...": "Tilbakestiller passord ...",
+
+    "-- Reset Password --": null,
+    "New password": "Nytt passord",
+    "Repeat new password": "Gjenta nytt passord",
+    "Change password": "Skift passord",
 
     "-- Register Page --": null,
     "Choose your password": "Velg ditt passord",

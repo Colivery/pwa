@@ -11,10 +11,16 @@
     "Login": "Einloggen",
     "Sign up": "Registrieren",
     "Forgot Password": "Passwort vergessen",
+    "I have no account and would like to register": "Ich habe noch keinen Account und möchte mich gerne registrieren",
 
     "-- Forgot Password --": null,
     "We have sent you an email. Please check your inbox.": "Wir haben dir eine E-Mail gesendet. Bitte prüfe deinen Posteingang.",
     "Resetting password...": "Passwort wird zurückgesetzt",
+
+    "-- Reset Password --": null,
+    "New password": "Neues Passwort",
+    "Repeat new password": "Neues Passwort wiederholen",
+    "Change password": "Passwort ändern",
 
     "-- Register Page --": null,
     "Choose your password": "Wähle Dein Passwort",
@@ -121,7 +127,7 @@
     "New shopping list": "Neuer Einkaufszettel",
     "Write down what you need. You can describe, how much, wich brand and what store you would like it from.": "Schreibe auf, was Du brauchst. Du kannst angeben, wie viel, von welcher Marke oder aus welchem Geschäft Dein Artikel sein soll.",
     "i. e. 300g organic tomatoes or 2L oatly oat milk": "z.B. 300g Bio Tomaten oder 2L Oatly Hafermilch",
-    "What is the maximum cost of your purchase? (€)": "Was darf Dein Einkauf maximal kosten? (€)",
+    "What is the maximum cost of your purchase? (€)": "Was darf der Einkauf maximal kosten? (€)",
     "i. e. Please call 5 minutes before arrival.": "z.B. Bitte rufen Sie mich an, wenn Sie vor der Haustüre stehen.",
     "Is there anything else you would like to tell the driver?": "Gibt es noch etwas was Du dem/der Fahrer*in mitteilen möchtest?",
     "Note that you cannot change a request, after a driver has accepted your request. Payment is cash on delivery.": "Bitte beachte: Sobald ein/e Fahrer*in Deinen Auftrag angenommen hat, kannst Du ihn nicht mehr ändern. Die Bezahlung erfolgt in bar.",

@@ -1,5 +1,5 @@
 import { formatRelative } from 'date-fns'
-import { de, enUS, nn, he } from 'date-fns/locale'
+import { de, enUS, nn, he, hi } from 'date-fns/locale'
 import { I18nService } from '../service/i18n';
 import { st } from 'springtype/core';
 
@@ -7,7 +7,8 @@ const locales = {
     'de': de,
     'en': enUS,
     'nn': nn,
-    'il': he
+    'il': he,
+    'hi': hi
 }
 
 export const formatDate = (date: Date) => {

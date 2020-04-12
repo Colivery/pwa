@@ -11,10 +11,16 @@
     "Login": "Login",
     "Sign up": "Sign up",
     "Forgot Password": "Forgot Password",
+    "I have no account and would like to register": "I have no account and would like to register",
 
     "-- Forgot Password --": null,
     "We have sent you an email. Please check your inbox.": "We have sent you an email. Please check your inbox.",
     "Resetting password...": "Resetting password...",
+
+    "-- Reset Password --": null,
+    "New password": "New password",
+    "Repeat new password": "Repeat new password",
+    "Change password": "Change password",
 
     "-- Register Page --": null,
     "Choose your password": "Choose your password",
@@ -59,7 +65,7 @@
     "This action cannot be undone.": "This action cannot be undone.",
     "Delete user account": "Delete user account",
     "Choose language:": "Choose language:",
-    
+
     "-- Driver Order List Page -- ": null,
     "Open Requests": "Open Requests",
     "My Requests": "My Requests",

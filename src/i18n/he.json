@@ -11,6 +11,16 @@
     "Login": "כניסה למערכת",
     "Sign up": "הירשם",
     "Forgot Password": "שכחת ססמא",
+    "I have no account and would like to register": "אין לי חשבון והייתי רוצה להירשם",
+
+    "-- Forgot Password --": null,
+    "We have sent you an email. Please check your inbox.": "שלחנו לך דוא\"ל. אנא בדוק את תיבת הדואר הנכנס שלך.",
+    "Resetting password...": "מאפס סיסמא ...",
+
+    "-- Reset Password --": null,
+    "New password": "סיסמה חדשה",
+    "Repeat new password": "הזן את הסיסמה חדשה שנית",
+    "Change password": "תחליפ את הסיסמתך",
 
     "-- Register Page --": null,
     "Choose your password": "בחר את הסיסמה שלך",

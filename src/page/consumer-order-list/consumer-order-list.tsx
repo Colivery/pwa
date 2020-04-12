@@ -10,7 +10,7 @@ import { OrderService, OwnOrdersResponse, OwnOrderUnion } from "../../service/or
 import { tsx } from "springtype/web/vdom";
 import { IVirtualNode } from "springtype/web/vdom/interface";
 import { getOrderStatusText } from "../../function/get-order-status-text";
-import { formatDate } from "../../function/formatDate";
+import { formatDate } from "../../function/format-date";
 import { MatModal, MatLoadingIndicator } from "st-materialize";
 import { Order, OrderItem } from "../../datamodel/order";
 import { Center } from "../../component/center/center";
@@ -207,13 +207,14 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
                 <div class="row">
                     <strong>{union.driver.first_name} {union.driver.last_name}</strong><br />
-                    <a href={`tel:${union.driver.phone}`} target="_blank" style={{ marginTop: '10px' }} class="btn btn-small info-button">
+                    <a href={`tel:${union.driver.phone}`} target="_blank" style={{ marginTop: '10px' }} class="btn btn-small btn-flat">
                         <span class="material-align-middle"><i class="material-icons">call</i>&nbsp;{union.driver.phone}</span>
                     </a><br />
-                    <a href={`mailto:$${union.driver.email}`} target="_blank" style={{ marginTop: '10px' }} class="btn btn-small info-button">
+                    <a href={`mailto:$${union.driver.email}`} target="_blank" style={{ marginTop: '10px' }} class="btn btn-small btn-flat">
                         <span class="material-align-middle"><i class="material-icons">email</i>&nbsp;{st.t('E-mail')}</span>
                     </a>
-                </div> </fragment> : ''}
+                </div>
+                <br /></fragment> : ''}
 
             <h5><span class="material-align-middle">
                 <i class="material-icons order-card-icon">shopping_cart</i>&nbsp;{st.t("Items")}

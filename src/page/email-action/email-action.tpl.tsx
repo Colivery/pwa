@@ -4,6 +4,7 @@ import { st } from "springtype/core";
 import { EmailActionPage } from "./email-action";
 import { MatLoaderCircle } from "st-materialize";
 import { ErrorMessage } from "../../component/error-message/error-message";
+import { Center } from "../../component/center/center";
 
 export default (component: EmailActionPage) => (
     <fragment>
@@ -19,7 +20,7 @@ export default (component: EmailActionPage) => (
 
                     <MatLoaderCircle ref={{ matLoaderCircleRef: component }} />
 
-                    <ErrorMessage ref={{ errorMessageRef: component }} />
+                    <Center><ErrorMessage ref={{ errorMessageRef: component }} /></Center>
                 </div>
             </div>
 

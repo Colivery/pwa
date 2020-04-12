@@ -13,7 +13,7 @@ import { OrderService, DriverOwnOrdersResponse, DriverOwnOrderUnion } from "../.
 import { UserService } from "../../service/user";
 import { tsx } from "springtype/web/vdom";
 import { IVirtualNode } from "springtype/web/vdom/interface";
-import { formatDate } from "../../function/formatDate";
+import { formatDate } from "../../function/format-date";
 import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
 import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
 import { Order } from "../../datamodel/order";
@@ -321,11 +321,12 @@ export class DriverOrderList extends st.component implements ILifecycle {
             <div class="row">
                 <strong>{orderUnion.creator.first_name} {orderUnion.creator.last_name}</strong><br />
                 {orderUnion.creator.address} <br />
-                <a href={`geo://?q=${orderUnion.creator.address}`} target="_blank" style={{ marginTop: '10px' }} class="btn btn-small info-button">
+                <a href={`geo://?q=${orderUnion.creator.address}`} target="_blank" style={{ marginTop: '10px' }} class="btn btn-small btn-flat">
                     <span class="material-align-middle"><i class="material-icons">directions</i>&nbsp;{st.t("Navigate")}</span>
                 </a>
             </div>
 
+            <br />
             <h5><span class="material-align-middle"><i class="material-icons">perm_contact_calendar</i>&nbsp;{st.t("Contact")}</span></h5>
 
             <div class="row">
@@ -337,7 +338,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
                     <span class="material-align-middle"><i class="material-icons">email</i>&nbsp;{st.t('E-mail')}</span>
                 </a>
             </div>
-
+            <br />
             <h5><span class="material-align-middle">
                 <i class="material-icons order-card-icon">shopping_cart</i>&nbsp;{st.t("Items")}
             </span>
@@ -358,7 +359,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
                 </h5>
 
                 <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {orderUnion.order.max_price} (€) {st.t("/verb/cost.")}</strong></p>
-            </fragment> : ''}
+            <br /></fragment> : ''}
 
             {orderUnion.order.hint.trim() ? <fragment>
                 <h5><span class="material-align-middle">

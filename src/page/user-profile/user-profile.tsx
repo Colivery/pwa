@@ -6,7 +6,7 @@ import { inject } from "springtype/core/di";
 import { ref } from "springtype/core/ref";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { GeoService } from "../../service/geo";
-import { MatModal, MatLoadingIndicator, MatLoaderCircle, MatForm, MatSelectItemDetail } from "st-materialize";
+import { MatModal, MatLoadingIndicator, MatLoaderCircle, MatForm } from "st-materialize";
 import { address } from "../../validators/address";
 import { UserService } from "../../service/user";
 import { IUserProfileResponse, UserProfile } from "../../datamodel/user";
@@ -16,10 +16,7 @@ import { tsx } from "springtype/web/vdom";
 import { MatInput } from "st-materialize";
 import { required, email } from "springtype/core/validate";
 import { LoginPage } from "../login/login";
-import { I18nService, SupportedLanguage } from "../../service/i18n";
-import { SplashscreenService } from "../../service/splashscreen";
 import { Center } from "../../component/center/center";
-import { IEvent } from "springtype/web/component/interface";
 
 @component({
     tpl
@@ -28,17 +25,12 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
     static ROUTE = "user-profile";
 
-    @inject(SplashscreenService)
-    splashscreenService: SplashscreenService;
 
     @inject(UserService)
     userService: UserService;
 
     @inject(GeoService)
     geoService: GeoService;
-
-    @inject(I18nService)
-    i18nService: I18nService;
 
     @ref
     formRef: MatForm;
@@ -273,16 +265,5 @@ export class UserProfilePage extends st.component implements ILifecycle {
         st.route = {
             path: LoginPage.ROUTE
         };
-    }
-
-    onSelectLanguageItem = (evt: IEvent<MatSelectItemDetail>) => {
-
-        const language = evt.detail.value;
-
-        this.splashscreenService.show();
-
-        window.setTimeout(() => {
-            this.i18nService.setLanguage(language);
-        }, 100);
     }
 }

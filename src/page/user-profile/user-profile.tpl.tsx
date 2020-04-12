@@ -4,13 +4,12 @@ import { tsx } from "springtype/web/vdom";
 import { NavHeader } from "../../component/nav-header/nav-header";
 import { UserProfilePage } from "./user-profile";
 import { ErrorMessage } from "../../component/error-message/error-message";
-import { MatModal, MatLoadingIndicator, MatCard, MatLoaderCircle, MatSelect, MatSelectItem } from "st-materialize";
+import { MatModal, MatLoadingIndicator, MatCard, MatLoaderCircle } from "st-materialize";
 import { T } from "springtype/web/i18n/t";
 import { st } from "springtype/core";
 import { ModalMiddleContent } from "../../component/modal-middle-content/modal-middle-content";
 import { Center } from "../../component/center/center";
-import { MySelect } from "../../component/select/select";
-import { SupportedLanguage } from "../../service/i18n";
+import { LanguageSelector } from "../../component/language-selector/language-selector";
 
 export default (component: UserProfilePage) => (
     <fragment>
@@ -28,12 +27,7 @@ export default (component: UserProfilePage) => (
 
                         {st.t('Choose language:')}<br />
 
-                        <MatSelect onSelectItem={component.onSelectLanguageItem}>
-                            {component.i18nService.getSupportedLanguages().map((supportedLanguage: SupportedLanguage) =>
-                                <MatSelectItem selected={supportedLanguage.key === component.i18nService.getLanguage()}
-                                    label={supportedLanguage.name} value={supportedLanguage.key}
-                                    item={supportedLanguage}></MatSelectItem>)}
-                        </MatSelect>
+                        <LanguageSelector />
                     </Center>
                 </div>
 
@@ -86,7 +80,7 @@ export default (component: UserProfilePage) => (
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <T tag="a" href="javascript:" onclick={() => {
                     component.afterSaveModal.setVisible(false);
-                }} class="modal-close waves-effect waves-red btn-flat btn btn-full-width">Close</T>
+                }} class="modal-close waves-effect waves-green btn-flat btn btn-full-width">OK</T>
             </template>
         </MatModal>
 

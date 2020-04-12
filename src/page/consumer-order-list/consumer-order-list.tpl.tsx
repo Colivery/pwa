@@ -56,7 +56,7 @@ export default (component: ConsumerOrderListPage) => (
 
             <ModalMiddleContent>
                 <Center style={{ height: '100%' }}>
-                    <h3>Einkauf</h3>
+                    <h3>{st.t('Shopping list:')}</h3>
 
                     <div ref={{ myOrderDetailsContainer: component }}></div>
                 </Center>
@@ -64,8 +64,8 @@ export default (component: ConsumerOrderListPage) => (
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
                 <a href="javascript:" onclick={() => {
                     component.myOrderDetailsModal.toggle();
-                }} class="modal-close waves-effect waves-red btn-flat btn btn-full-width">
-                    {st.t("Close")}
+                }} class="modal-close waves-effect waves-green btn-flat btn btn-full-width">
+                    {st.t("OK")}
                 </a>
             </template>
         </MatModal>
