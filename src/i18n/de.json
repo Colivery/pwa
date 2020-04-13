@@ -8,7 +8,10 @@
     "-- Not Confirmed page --": null,
     "Account not confirmed yet": "Account not nicht bestätigt",
     "Resend email": "Neue E-Mail senden",
-
+    "Account confirmation": "Account bestätigen",
+    "We've activated your account and logging you in now...": "Wir haben Deinen Account aktiviert und loggen Dich jetzt ein...",
+    "An error occurred while trying to verify your email address. Redirecting to login page...": "Es ist ein Fehler beim Verifizieren der E-Mail-Adresse aufgetreten. Leite weiter...",
+    
     "-- Login Page --": null,
     "Co-operated delivery!": "Gemeinsam besser versorgt!",
     "E-mail": "E-Mail",

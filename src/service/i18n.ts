@@ -46,17 +46,17 @@ export class I18nService {
         },
         {
             key: SupportedLocales.NN,
-            name: "Norsk",
+            name: "Norsk (beta)",
             icon: "https://www.countryflags.io/no/flat/32.png"
         },
         {
             key: SupportedLocales.HE,
-            name: "עברית",
+            name: "עברית (beta)",
             icon: "https://www.countryflags.io/il/flat/32.png"
         },
         {
             key: SupportedLocales.HI,
-            name: "हिन्दी",
+            name: "हिन्दी (beta)",
             icon: "https://www.countryflags.io/il/flat/32.png"
         }
     ];
