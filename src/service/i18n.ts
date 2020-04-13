@@ -49,7 +49,7 @@ export class I18nService {
         {
             key: "hi",
             name: "भारतीय",
-            icon: "https://www.countryflags.io/il/flat/32.png"
+            icon: "https://www.countryflags.io/in/flat/32.png"
         }
     ];
 
