@@ -17,16 +17,17 @@ export default (component: NotConfirmedPage) => (
             <div class="row">
                 <div class="col s12 m6 offset-m3 l6 offset-l3">
 
-                    <p ref={{ messageRef: component }}>
+                    <Center>
+                        <p ref={{ messageRef: component }}>
 
-                    </p>
+                        </p>
 
-                    <p ref={{ emailDisplayRef: component }}></p>
+                        <p ref={{ emailDisplayRef: component }}></p>
 
-                    <MatLoaderCircle ref={{ matLoaderCircle: component }} class="hide" />
+                        <MatLoaderCircle ref={{ matLoaderCircle: component }} class="hide" />
 
-                    <br />
-
+                        <br />
+                    </Center>
                     <Center>
                         <a href="javascript:" ref={{ resendVerificationButtonRef: component }} onclick={component.onReSendVerificationEmailClick} class="waves-effect waves-white btn material-align-middle">
                             <i class="material-icons">done</i> &nbsp;{st.t("Resend email")}</a>

@@ -48,7 +48,7 @@ export class NotConfirmedPage extends st.component implements ILifecycle {
         this.renderPartial(<Center><strong>{this.authService.getEmail()}</strong></Center>, this.emailDisplayRef);
 
         this.renderPartial(<Center>
-            {st.t("We've sent you an account confirmation email. Please check your email inbox and spam folder.")}
+            {st.t("We have sent you an email. Please check your inbox.")}
         </Center>, this.messageRef)
     }
 
@@ -71,9 +71,7 @@ export class NotConfirmedPage extends st.component implements ILifecycle {
 
         await this.authService.sendEmailVerification();
 
-        this.renderPartial(
-            st.t('Please check your email inbox again.')
-            , this.messageRef);
+        this.renderPartial(st.t('We have sent you an email. Please check your inbox.'), this.messageRef);
 
         this.nextButtonRef.classList.remove('hide');
 

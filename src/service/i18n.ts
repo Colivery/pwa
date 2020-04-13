@@ -14,11 +14,19 @@ export interface SupportedLanguage {
     icon: string;
 }
 
-@translation("de", de)
-@translation("en", en)
-@translation("nn", nn)
-@translation("he", he)
-@translation("hi", hi)
+export enum SupportedLocales {
+    DE = "de",
+    EN = "en",
+    NN = "nn",
+    HE = "he",
+    HI = "hi"
+}
+
+@translation(SupportedLocales.DE, de)
+@translation(SupportedLocales.EN, en)
+@translation(SupportedLocales.NN, nn)
+@translation(SupportedLocales.HE, he)
+@translation(SupportedLocales.HI, hi)
 @injectable
 export class I18nService {
 
@@ -27,34 +35,34 @@ export class I18nService {
 
     supportedLanguages: Array<SupportedLanguage> = [
         {
-            key: "de",
+            key: SupportedLocales.DE,
             name: "Deutsch",
             icon: "https://www.countryflags.io/de/flat/32.png"
         },
         {
-            key: "en",
+            key: SupportedLocales.EN,
             name: "English",
             icon: "https://www.countryflags.io/gb/flat/32.png"
         },
         {
-            key: "nn",
+            key: SupportedLocales.NN,
             name: "Norsk",
             icon: "https://www.countryflags.io/no/flat/32.png"
         },
         {
-            key: "he",
+            key: SupportedLocales.HE,
             name: "עברית",
             icon: "https://www.countryflags.io/il/flat/32.png"
         },
         {
-            key: "hi",
-            name: "भारतीय",
+            key: SupportedLocales.HI,
+            name: "हिन्दी",
             icon: "https://www.countryflags.io/il/flat/32.png"
         }
     ];
 
     constructor() {
-        st.i18n.setFallbackLanguage('en');
+        st.i18n.setFallbackLanguage(SupportedLocales.EN);
     }
 
     setLanguage(languageKey: string) {
@@ -75,30 +83,32 @@ export class I18nService {
     }
 
     getLanguage(): string {
-        return this.preferenceService.getLanguage();
+        return this.preferenceService.getLanguage() || this.autoDetectLanguage();;
+    }
+
+    autoDetectLanguage(): string {
+        return navigator.language.split(/[-_]/)[0];
     }
 
     init() {
         // navigator.language usually "de-DE", "en_US" etc.
-        const autoDetectedLanguage = navigator.language.split(/[-_]/)[0];
-        const languagePreference = this.preferenceService.getLanguage();
+        const languagePreference = this.getLanguage();
 
-        if (autoDetectedLanguage === "he" || languagePreference === "he") {
+        if (languagePreference === SupportedLocales.HE) {
             document.body.setAttribute("dir", "rtl");
         }
 
-        console.log('languagePreference', languagePreference);
         if (languagePreference) {
             st.i18n.setLanguage(languagePreference);
             return;
         }
 
-        var sLanguagKey = "en";
+        let languagKey: string = SupportedLocales.EN;
         for (var i = 0; i < this.supportedLanguages.length; i++) {
-            if (this.supportedLanguages[i].key === autoDetectedLanguage) {
-                sLanguagKey = autoDetectedLanguage;
+            if (this.supportedLanguages[i].key === languagePreference) {
+                languagKey = languagePreference;
             }
         }
-        st.i18n.setLanguage(sLanguagKey);
+        st.i18n.setLanguage(languagKey);
     }
 }

@@ -6,7 +6,7 @@ import { ILifecycle } from "springtype/web/component/interface/ilifecycle";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { ref } from "springtype/core/ref";
 import tpl from "./login.tpl";
-import { MatForm } from "st-materialize";
+import { MatForm, MatLoadingIndicator } from "st-materialize";
 import { RegisterPage } from "../register/register-account/register";
 import { ForgotPasswordPage } from "../forgot-password/forgot-password";
 
@@ -29,6 +29,10 @@ export class LoginPage extends st.component implements ILifecycle {
     @ref
     loginButton: HTMLElement;
 
+    @ref
+    loadingIndicator: MatLoadingIndicator;
+
+
     class = ['wrapper', 'valign-wrapper'];
 
     onLoginClick = async () => {
@@ -37,6 +41,7 @@ export class LoginPage extends st.component implements ILifecycle {
 
     onAfterRender() {
         st.dom.hide(this.errorMessageContainer);
+        this.loadingIndicator.setVisible(false);
     }
 
     doLogin = async () => {
@@ -45,9 +50,13 @@ export class LoginPage extends st.component implements ILifecycle {
 
         try {
             if (await this.form.validate(true)) {
+
+                this.loadingIndicator.setVisible(true);
+
                 this.loginButton.classList.add('disabled');
                 const data = this.form.getState() as { email: string, password: string };
                 await window.authService.login(data.email, data.password);
+
             }
         } catch (e) {
 

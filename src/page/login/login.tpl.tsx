@@ -1,7 +1,7 @@
 import { LoginPage } from "./login";
 import { tsx } from "springtype/web/vdom";
 import { ErrorMessage } from "../../component/error-message/error-message";
-import { MatInput, MatForm } from "st-materialize";
+import { MatInput, MatForm, MatLoadingIndicator } from "st-materialize";
 import { email, minLength, required } from "springtype/core/validate";
 import { LogoRow } from "../../component/logo-row/logo-row";
 import { st } from "springtype/core";
@@ -11,7 +11,10 @@ import { LanguageSelector } from "../../component/language-selector/language-sel
 
 export default (component: LoginPage) => (
     <fragment>
+
         <div class="container">
+            <MatLoadingIndicator ref={{ loadingIndicator: component }} />
+
             <LogoRow />
 
             <T tag="h3" class="slogan">Co-operated delivery!</T>

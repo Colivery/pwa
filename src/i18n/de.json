@@ -1,4 +1,14 @@
 {
+    "-- App Update --": null,
+    "App Update": "App Update",
+    "A new version has been released. Do you want to update?": "Eine neue Version der App wurde veröffnetlicht. Möchtest du updaten?",
+    "Update": "Updaten",
+    "Dismiss": "Ignorieren",
+
+    "-- Not Confirmed page --": null,
+    "Account not confirmed yet": "Account not nicht bestätigt",
+    "Resend email": "Neue E-Mail senden",
+
     "-- Login Page --": null,
     "Co-operated delivery!": "Gemeinsam besser versorgt!",
     "E-mail": "E-Mail",

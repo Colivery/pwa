@@ -17,6 +17,23 @@ const isLocalhost = Boolean(
     )
 );
 
+/*
+self.addEventListener('activate', (event: any) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.filter((cacheName) => {
+                    
+                    console.log('Cache eviction: shall I evict:?', cacheName)
+                }).map((cacheName) => {
+                    return caches.delete(cacheName);
+                })
+            );
+        })
+    );
+});
+*/
+
 export function register(config?: any) {
     if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
 

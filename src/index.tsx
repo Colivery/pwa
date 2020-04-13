@@ -27,9 +27,13 @@ import { ForgotPasswordPage } from "./page/forgot-password/forgot-password";
 import { NotConfirmedPage } from "./page/not-confirmed/not-confirmed";
 import { EmailActionPage } from "./page/email-action/email-action";
 import { ResetPasswordPage } from "./page/reset-password/reset-password";
+import { UpdateService } from "./service/update";
 
 @component
 export class App extends st.component implements ILifecycle {
+
+    @inject(UpdateService)
+    updateService: UpdateService;
 
     @inject(I18nService)
     i18nService: I18nService;

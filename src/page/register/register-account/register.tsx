@@ -43,12 +43,16 @@ export class RegisterPage extends st.component implements ILifecycle {
             }
 
             if (await this.formRef.validate(true)) {
-                
+
                 this.nextButton.classList.add('disabled');
 
-                await window.authService.register(data.email, data.password);
-                delete data.password;
-                this.formRef.reset();
+                try {
+                    await window.authService.register(data.email, data.password);
+                    delete data.password;
+                    this.formRef.reset();
+                } catch (e) {
+                    this.nextButton.classList.remove('disabled');
+                }
 
                 st.route = {
                     path: RegisterUserAddressPage.ROUTE
