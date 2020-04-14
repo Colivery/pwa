@@ -1,6 +1,6 @@
 {
   "name": "colivery-app",
-  "version": "1.0.0-alpha.13",
+  "version": "1.0.0-alpha.14",
   "description": "MVP PWA",
   "scripts": {
     "clean": "st-run st-rm-rf dist",

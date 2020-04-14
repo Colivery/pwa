@@ -54,7 +54,7 @@ export class UpdateService extends st.component {
 
         //console.log('current version', this.currentVersion, 'vs version installed', this.getInstalledVersion());
 
-        if (this.currentVersion !== this.getInstalledVersion() && this.currentVersion !== null) {
+        if (this.currentVersion && this.currentVersion !== this.getInstalledVersion()) {
             this.showUpdatePrompt();
         }
     }
