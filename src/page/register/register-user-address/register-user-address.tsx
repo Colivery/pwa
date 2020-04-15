@@ -105,7 +105,7 @@ export class RegisterUserAddressPage extends st.component implements ILifecycle 
 
                 this.submitButton.classList.add('disabled');
 
-                await this.userService.upsertUserProfile(this.getDataToSave());
+                await this.userService.createUserProfile(this.getDataToSave());
 
                 this.formRef.reset();
 

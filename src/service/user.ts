@@ -36,7 +36,7 @@ export class UserService {
             });
 
             if (response.status >= 400) {
-                throw(response);
+                throw (response);
             }
 
         } catch (e) {
@@ -71,7 +71,7 @@ export class UserService {
             });
 
             if (response.status >= 400) {
-                throw(response);
+                throw (response);
             }
 
             this.userProfile = response.json();
@@ -83,7 +83,7 @@ export class UserService {
         }
     }
 
-    async upsertUserProfile(userProfileData: UserProfile): Promise<void> {
+    async createUserProfile(userProfileData: UserProfile): Promise<void> {
 
         this.userProfile = {
             ...this.userProfile,
@@ -108,7 +108,7 @@ export class UserService {
             });
 
             if (response.status >= 400) {
-                throw(response);
+                throw (response);
             }
 
         } catch (e) {
@@ -116,4 +116,40 @@ export class UserService {
             this.errorService.show();
         }
     }
+
+    async updateUserProfile(userProfileData: UserProfile): Promise<void> {
+
+        this.userProfile = {
+            ...this.userProfile,
+            ...userProfileData
+        }
+
+        try {
+
+            // TODO: New backend: change to additional service method (PUT)
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/user`, {
+                method: 'POST',
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Accept": "application/json",
+                    'Authorization': `Bearer ${await window.authService.getIdToken()}`
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer', // no-referrer, *client
+                body: JSON.stringify(userProfileData) // body data type must match "Content-Type" header
+            });
+
+            if (response.status >= 400) {
+                throw (response);
+            }
+
+        } catch (e) {
+            st.error('error in get user profile request', e);
+            this.errorService.show();
+        }
+    }
+
 }

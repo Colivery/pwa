@@ -161,7 +161,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
             console.log('isValid', isValid)
             if (await this.formRef.validate()) {
 
-                await this.userService.upsertUserProfile(this.getDataToSave());
+                await this.userService.updateUserProfile(this.getDataToSave());
 
                 this.afterSaveModal.setVisible(true);
             }

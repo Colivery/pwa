@@ -6,7 +6,7 @@
     "Dismiss": "Ignorieren",
 
     "-- Not Confirmed page --": null,
-    "Account not confirmed yet": "Account not nicht bestätigt",
+    "Account not confirmed yet": "Account bestätigen",
     "Resend email": "Neue E-Mail senden",
     "Account confirmation": "Account bestätigen",
     "We've activated your account and logging you in now...": "Wir haben Deinen Account aktiviert und loggen Dich jetzt ein...",
@@ -27,7 +27,7 @@
     "I have no account and would like to register": "Ich habe noch keinen Account und möchte mich gerne registrieren",
 
     "-- Forgot Password --": null,
-    "We have sent you an email. Please check your inbox.": "Wir haben dir eine E-Mail gesendet. Bitte prüfe deinen Posteingang.",
+    "We have sent you an email. Please check your inbox.": "Wir haben dir eine E-Mail gesendet. Bitte klicke den Link in der E-Mail.",
     "Resetting password...": "Passwort wird zurückgesetzt",
 
     "-- Reset Password --": null,

@@ -1,6 +1,6 @@
 {
   "name": "colivery-app",
-  "version": "1.0.0-alpha.15",
+  "version": "1.0.0-alpha.16",
   "description": "MVP PWA",
   "scripts": {
     "clean": "st-run st-rm-rf dist",
@@ -13,6 +13,7 @@
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^9.7.1",
+    "chalk": "^4.0.0",
     "cross-env": "^6.0.3",
     "dts-css-modules-loader": "^1.0.1",
     "lost": "^8.3.1",
