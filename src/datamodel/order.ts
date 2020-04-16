@@ -1,33 +1,31 @@
-import {OrderItemStatus} from "./order-item-status";
-import { GPSLocation } from "./gps-location";
+import { OrderStatus } from "./order-status";
 
-export type OrderStatus = 'to_be_delivered' | 'accepted' | 'delivered' | 'consumer_canceled';
-
-export interface Order {
+export interface IOrder {
     id: string;
-    created: string;
-    updated: string;
+    createdAt: string;
+    updatedAt: string;
     hint: string;
-    pickup_address: string;
-    pickup_location_geohash: string;
-    pickup_location: GPSLocation;
-    dropoff_location_geohash: string;
-    dropoff_location: GPSLocation;
-    shop_name: string;
-    shop_type: string;
     status: OrderStatus;
-    user_id: string;
-    items: Array<OrderItem>;
-    driver_user_id?: string;
-    max_price: number;
+    userId: string;
+    items: Array<IOrderItem>;
+    driverUserId?: string;
+    maxPrice: number;
+    
 }
 
-export interface OrderItem {
+export interface IOrderItem {
     id: string;
     description: string;
-    status: OrderItemStatus;
-    created: string;
-    updated: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
+export interface IOrderRequest extends IOrder {
+}
 
+export interface IOrderResponse extends IOrder {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    firebaseUid: string;
+}

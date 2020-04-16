@@ -9,14 +9,12 @@ import { ref } from "springtype/core/ref";
 import { MatInput, MatModal, MatLoadingIndicator, MatTextArea } from "st-materialize";
 import { ConsumerOrderListPage } from "../consumer-order-list/consumer-order-list";
 import { OrderService } from "../../service/order";
-import { OrderStatus } from "../../datamodel/order-status";
-import { OrderItemStatus } from "../../datamodel/order-item-status";
 import { Shop } from "../../datamodel/shop";
 import { EsriMap } from "../../component/esri/EsriMap";
 import { tsx } from "springtype/web/vdom";
 import { UserService } from "../../service/user";
 import { GPSLocation } from "../../datamodel/gps-location";
-import { OrderItem } from "../../datamodel/order";
+import { IOrderItem } from "../../datamodel/order";
 
 @component({
     tpl
@@ -218,11 +216,13 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
         const localUserData = await this.userService.getUserProfile();
         const maxPrice = parseInt((this.el.querySelector('input[name=maxPrice]') as HTMLInputElement).value, 10);
 
+        /*
         // TODO: move to Service API
         const dropoffLocationGeohash = this.geoService.getGeoHash(
-            localUserData.geo_location.latitude, localUserData.geo_location.longitude, 5
+            localUserData.location.latitude, localUserData.location.longitude, 5
         );
-
+        */
+       
         let pickupAddress: string;
         let pickupLocation: GPSLocation;
         let shopName: string;
@@ -246,19 +246,18 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             "pickup_location_geohash": pickupLocationGeohash, // leer
             "shop_name": shopName, // leer
             */
-            "max_price": maxPrice,
-            "shop_type": this.selectedLocationType,
-            "status": OrderStatus.TO_BE_DELIVERED,
+            "maxPrice": maxPrice,
             "hint": this.hintField.textAreaRef.value,
-            "dropoff_location_geohash": dropoffLocationGeohash, // TODO: move to Service API
-            "dropoff_location": {
-                "latitude": localUserData.geo_location.latitude,
-                "longitude": localUserData.geo_location.longitude
+            //"dropoffLocation_geohash": dropoffLocationGeohash, // TODO: move to Service API
+            /*
+            "dropOffLocation": {
+                "latitude": localUserData.location.latitude,
+                "longitude": localUserData.location.longitude
             },
-            "items": this.orderItems.map((orderItem: OrderItem) => {
-                orderItem.status = OrderItemStatus.TODO;
+            */
+            "items": this.orderItems.map((orderItem: IOrderItem) => {
                 return orderItem;
-            }).filter((orderItem: OrderItem) => !!orderItem.description)
+            }).filter((orderItem: IOrderItem) => !!orderItem.description)
         });
 
         // close modal

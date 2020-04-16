@@ -12,9 +12,10 @@ import { IVirtualNode } from "springtype/web/vdom/interface";
 import { getOrderStatusText } from "../../function/get-order-status-text";
 import { formatDate } from "../../function/format-date";
 import { MatModal, MatLoadingIndicator } from "st-materialize";
-import { Order, OrderItem } from "../../datamodel/order";
+import { IOrder, IOrderItem } from "../../datamodel/order";
 import { Center } from "../../component/center/center";
 import { RefreshButton } from "../../component/refresh-button/refresh-button";
+import { OrderStatus } from "../../datamodel/order-status";
 
 @component({
     tpl
@@ -83,16 +84,16 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
         this.isLoading = false;
     }
 
-    getOrderHeaderClass = (order: Order): string => {
+    getOrderHeaderClass = (order: IOrder): string => {
 
         switch (order.status) {
-            case "accepted":
+            case OrderStatus.ACCEPTED:
                 return "order-header order-header-blue";
-            case "to_be_delivered":
+            case OrderStatus.TO_BE_DELIVERED:
                 return "order-header order-header-orange";
-            case "delivered":
+            case OrderStatus.DELIVERED:
                 return "order-header order-header-green";
-            case "consumer_canceled":
+            case OrderStatus.CUSTOMER_CANCELED:
                 return "order-header order-header-orange";
         }
     }
@@ -123,9 +124,9 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
         }
 
         // filter-out user cancelled orders
-        this.myOrdersDisplayData = this.myOrdersDisplayData.filter((union: OwnOrderUnion) => union.order.status !== 'consumer_canceled');
+        this.myOrdersDisplayData = this.myOrdersDisplayData.filter((union: OwnOrderUnion) => union.order.status !== OrderStatus.CUSTOMER_CANCELED);
 
-        this.myOrdersDisplayData.sort((unionA: OwnOrderUnion, unionB: OwnOrderUnion) => unionA.order.created < unionB.order.created ? 1 : -1);
+        this.myOrdersDisplayData.sort((unionA: OwnOrderUnion, unionB: OwnOrderUnion) => unionA.order.createdAt < unionB.order.createdAt ? 1 : -1);
 
         this.renderPartial(this.myOrdersDisplayData.map((union: OwnOrderUnion, index: number) =>
             <a href="javascript:" data-id={union.order.id}>
@@ -142,13 +143,13 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                         */}
 
                         <h4 class="order-title truncate">
-                            {union.order.shop_name}
+                            &ndash;
                             <br />
                         </h4>
 
                         <div class="order-line">
                             <div class="material-align-middle truncate">
-                                <i class="material-icons order-card-icon">create</i> {formatDate(new Date(union.order.created))}
+                                <i class="material-icons order-card-icon">create</i> {formatDate(new Date(union.order.createdAt))}
                             </div>
                         </div>
                         <div class="order-line">
@@ -163,7 +164,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                             </div>
                         </div>
                          */}
-                        {union.order.status === 'to_be_delivered' ? <a href="javascript:" data-index={index} onClick={this.onOrderCancel} class="btn material-align-middle btn-secondary"><i class="material-icons">cancel</i> &nbsp;{st.t("Cancel")}</a> : ''}
+                        {union.order.status === OrderStatus.TO_BE_DELIVERED ? <a href="javascript:" data-index={index} onClick={this.onOrderCancel} class="btn material-align-middle btn-secondary"><i class="material-icons">cancel</i> &nbsp;{st.t("Cancel")}</a> : ''}
                         <a href="javascript:" data-index={index} onClick={this.onOrderShowDetails} class="btn material-align-middle info-button"><i class="material-icons">visibility</i> &nbsp;{st.t("Details")}</a>
                     </div>
                 </div>
@@ -203,10 +204,10 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
             <br />
 
-            {union.order.status === 'accepted' || union.order.status === 'delivered' ? <fragment><h5><span class="material-align-middle"><i class="material-icons">time_to_leave</i>&nbsp;{st.t("Your driver")}</span></h5>
+            {union.order.status === OrderStatus.ACCEPTED || union.order.status === OrderStatus.DELIVERED ? <fragment><h5><span class="material-align-middle"><i class="material-icons">time_to_leave</i>&nbsp;{st.t("Your driver")}</span></h5>
 
                 <div class="row">
-                    <strong>{union.driver.first_name} {union.driver.last_name}</strong><br />
+                    <strong>{union.driver.firstName} {union.driver.lastName}</strong><br />
                     <a href={`tel:${union.driver.phone}`} target="_blank" style={{ marginTop: '10px' }} class="btn btn-small btn-flat">
                         <span class="material-align-middle"><i class="material-icons">call</i>&nbsp;{union.driver.phone}</span>
                     </a><br />
@@ -223,18 +224,18 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
 
             <div class="row">
                 <ul>
-                    {union.order.items.map((orderItem: OrderItem) => <li>
+                    {union.order.items.map((orderItem: IOrderItem) => <li>
                         &ndash; {orderItem.description}
                     </li>)}
                 </ul>
             </div>
 
-            {union.order.max_price ? <fragment><h5><span class="material-align-middle">
+            {union.order.maxPrice ? <fragment><h5><span class="material-align-middle">
                 <i class="material-icons order-card-icon">monetization_on</i>&nbsp;{st.t("Maximum budget")}
             </span>
             </h5>
 
-                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {union.order.max_price} (€) {st.t("/verb/cost.")}</strong></p></fragment> : ''}
+                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {union.order.maxPrice} (€) {st.t("/verb/cost.")}</strong></p></fragment> : ''}
 
 
             {union.order.hint ? <fragment><br /><h5><span class="material-align-middle">

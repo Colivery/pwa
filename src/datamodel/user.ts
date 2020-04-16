@@ -1,14 +1,23 @@
 import { GPSLocation } from "./gps-location";
 
-export interface UserProfile {
-    user_id?: string;
-    geo_location: GPSLocation,
+export interface IUserProfile {
+    location: GPSLocation,
     phone: string;
-    email?: string;
-    first_name: string;
-    last_name: string;
-    address: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    city: string;
+    street: string;
+    streetNo: string;
+    zipCode: string;
 }
 
-export interface IUserProfileResponse extends UserProfile {
+export interface IUserProfileRequest extends IUserProfile {
+}
+
+export interface IUserProfileResponse extends IUserProfile {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    firebaseUid: string;
 }

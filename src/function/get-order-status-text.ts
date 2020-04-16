@@ -1,15 +1,15 @@
-import { OrderStatus } from "../datamodel/order";
 import { st } from "springtype/core";
+import { OrderStatus } from "../datamodel/order-status";
 
 export const getOrderStatusText = (status: OrderStatus) => {
     switch (status) {
-        case "accepted":
+        case OrderStatus.ACCEPTED:
             return st.t("In delivery");
-        case "to_be_delivered":
+        case OrderStatus.TO_BE_DELIVERED:
             return st.t("No driver yet");
-        case "delivered":
+        case OrderStatus.DELIVERED:
             return st.t("Delivered successfully");
-        case "consumer_canceled":
+        case OrderStatus.CUSTOMER_CANCELED:
             return st.t("Cancelled by user");
     }
 }

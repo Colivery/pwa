@@ -1,10 +1,9 @@
 export const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyB_N6h4AgXYARY_Clmf7DZrmfsQ0yjobYI",
-  authDomain: "colivery-app.firebaseapp.com",
-  databaseURL: "https://colivery-app.firebaseio.com",
-  projectId: "colivery-app",
-  storageBucket: "colivery-app.appspot.com",
-  messagingSenderId: "645242671020",
-  appId: "1:645242671020:web:309c0c060e4e3b8a597409",
-  measurementId: "G-9GG0VE05NR"
+  apiKey: "AIzaSyBWZQUAdXoL9OK5ZVYlV3OSQLgdIJ83OwA",
+  authDomain: "colivery-de4a1.firebaseapp.com",
+  databaseURL: "https://colivery-de4a1.firebaseio.com",
+  projectId: "colivery-de4a1",
+  storageBucket: "colivery-de4a1.appspot.com",
+  messagingSenderId: "606144917229",
+  appId: "1:606144917229:web:2fe022726ae69d6496a6e4"
 };

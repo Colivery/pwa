@@ -1,24 +1,24 @@
 import { injectable, inject } from "springtype/core/di";
-import { SERVICE_API_ENDPOINT } from "../config/endpoints";
-import { Order } from "../datamodel/order";
-import { UserProfile } from "../datamodel/user";
+import { SERVICE_API_ENDPOINT, SERVICE_API_ENDPOINT_VERSION } from "../config/endpoints";
+import { IOrder, IOrderResponse } from "../datamodel/order";
+import { IUserProfileResponse } from "../datamodel/user";
 import { ErrorService } from "./error";
+import { OrderStatus } from "../datamodel/order-status";
 
 export interface OwnOrderUnion {
-    order: Order;
-    creator: UserProfile;
-    driver?: UserProfile;
+    order: IOrderResponse;
+    driver?: IUserProfileResponse;
 }
 
 export type OwnOrdersResponse = Array<OwnOrderUnion>;
 
 export interface DriverOwnOrderUnion {
-    order: Order;
-    creator?: UserProfile;
-    driver: UserProfile;
+    order: IOrderResponse;
+    consumer?: IUserProfileResponse;
 }
 
 export type DriverOwnOrdersResponse = Array<DriverOwnOrderUnion>
+
 
 @injectable
 export class OrderService {
@@ -26,11 +26,10 @@ export class OrderService {
     @inject(ErrorService)
     errorService: ErrorService;
 
-    async decline(id: string) {
-
+    async setOrderStatus(id: string, status: OrderStatus) {
         try {
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/order/declide?order_id=${id}`, {
-                method: 'POST',
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/order/${id}/status`, {
+                method: 'PATCH',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
@@ -39,7 +38,10 @@ export class OrderService {
                     'Authorization': `Bearer ${await window.authService.getIdToken()}`
                 },
                 redirect: 'follow',
-                referrerPolicy: 'no-referrer' // no-referrer, *client
+                referrerPolicy: 'no-referrer', // no-referrer, *client
+                body: JSON.stringify({
+                    status: status.toUpperCase()
+                }) // body data type must match "Content-Type" header
             });
 
             if (response.status >= 400) {
@@ -47,91 +49,31 @@ export class OrderService {
             }
             
         } catch (e) {
-            console.error('error deliding order', id, e);
+            console.error('error setting order status', id, status, e);
             this.errorService.show();
         }
+    }
+
+    async decline(id: string) {
+        return this.setOrderStatus(id, OrderStatus.DELIVERED);
     }
 
     async userCancelOrder(id: string) {
-        try {
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/order/update_order_status?order_id=${id}&status=consumer_canceled`, {
-                method: 'POST',
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${await window.authService.getIdToken()}`
-                },
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer' // no-referrer, *client
-            });
-
-            if (response.status >= 400) {
-                throw(response);
-            }
-
-        } catch (e) {
-            console.error('error updating order status', id, e);
-            this.errorService.show();
-        }
+        return this.setOrderStatus(id, OrderStatus.CUSTOMER_CANCELED);
     }
 
     async markOrderDelivered(id: string) {
-        try {
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/order/update_order_status?order_id=${id}&status=delivered`, {
-                method: 'POST',
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${await window.authService.getIdToken()}`
-                },
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer' // no-referrer, *client
-            });
-
-            if (response.status >= 400) {
-                throw(response);
-            }
-
-        } catch (e) {
-            console.error('error updating order status', id, e);
-            this.errorService.show();
-        }
+        return this.setOrderStatus(id, OrderStatus.DELIVERED);
     }
 
-    async accept(id: string): Promise<UserProfile> {
-        try {
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/order/accept?order_id=${id}`, {
-                method: 'POST',
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${await window.authService.getIdToken()}`
-                },
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer' // no-referrer, *client
-            });
-
-            if (response.status >= 400) {
-                throw(response);
-            }
-
-            return await response.json();
-        } catch (e) {
-            console.error('error accepting order', id, e);
-            this.errorService.show();
-        }
+    async accept(id: string) {
+        return this.setOrderStatus(id, OrderStatus.ACCEPTED);
     }
 
     async getOwnOrders(): Promise<OwnOrdersResponse> {
 
         try {
-            const response = (await fetch(`${SERVICE_API_ENDPOINT}/order/own`, {
+            const response = (await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/user/orders`, {
                 method: 'GET',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -158,7 +100,7 @@ export class OrderService {
     async getDriverOwnOrders(): Promise<DriverOwnOrdersResponse> {
 
         try {
-            const response = (await fetch(`${SERVICE_API_ENDPOINT}/order/driver/own`, {
+            const response = (await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/user/orders-accepted`, {
                 method: 'GET',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -181,10 +123,10 @@ export class OrderService {
         }
     }
 
-    async createOrder(order: any): Promise<Order> {
+    async createOrder(order: any): Promise<IOrder> {
 
         try {
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/order`, {
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/order`, {
                 method: 'POST',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

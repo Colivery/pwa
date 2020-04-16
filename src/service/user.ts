@@ -1,7 +1,7 @@
 import { injectable, inject } from "springtype/core/di";
 import { st } from "springtype/core";
-import { UserProfile, IUserProfileResponse } from "../datamodel/user";
-import { SERVICE_API_ENDPOINT } from "../config/endpoints";
+import { IUserProfileResponse, IUserProfileRequest } from "../datamodel/user";
+import { SERVICE_API_ENDPOINT, SERVICE_API_ENDPOINT_VERSION } from "../config/endpoints";
 import { StorageService } from "./storage";
 import { ErrorService } from "./error";
 
@@ -21,7 +21,7 @@ export class UserService {
     async deleteOwnUser(): Promise<void> {
 
         try {
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/user/own`, {
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/user`, {
                 method: 'DELETE',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -56,7 +56,8 @@ export class UserService {
         }
 
         try {
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/user`, {
+
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/user`, {
                 method: 'GET',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -83,7 +84,7 @@ export class UserService {
         }
     }
 
-    async createUserProfile(userProfileData: UserProfile): Promise<void> {
+    async createUserProfile(userProfileData: IUserProfileRequest): Promise<IUserProfileResponse> {
 
         this.userProfile = {
             ...this.userProfile,
@@ -92,7 +93,7 @@ export class UserService {
 
         try {
 
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/user`, {
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/user`, {
                 method: 'POST',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -110,6 +111,7 @@ export class UserService {
             if (response.status >= 400) {
                 throw (response);
             }
+            return response.json();
 
         } catch (e) {
             st.error('error in get user profile request', e);
@@ -117,7 +119,7 @@ export class UserService {
         }
     }
 
-    async updateUserProfile(userProfileData: UserProfile): Promise<void> {
+    async updateUserProfile(userProfileData: Partial<IUserProfileRequest>): Promise<IUserProfileResponse> {
 
         this.userProfile = {
             ...this.userProfile,
@@ -126,9 +128,8 @@ export class UserService {
 
         try {
 
-            // TODO: New backend: change to additional service method (PUT)
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/user`, {
-                method: 'POST',
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/user`, {
+                method: 'PUT',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
@@ -145,11 +146,11 @@ export class UserService {
             if (response.status >= 400) {
                 throw (response);
             }
+            return response.json();
 
         } catch (e) {
             st.error('error in get user profile request', e);
             this.errorService.show();
         }
     }
-
 }

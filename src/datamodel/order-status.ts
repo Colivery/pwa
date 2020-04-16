@@ -1,6 +1,6 @@
 export enum OrderStatus {
-    ACCEPTED = 'accepted',
-    TO_BE_DELIVERED = 'to_be_delivered',
-    DELIVERED = 'delivered',
-    CUSTOMER_CANCELED = 'consumer_canceled'
+    ACCEPTED = 'ACCEPTED',
+    TO_BE_DELIVERED = 'TO_BE_DELIVERED',
+    DELIVERED = 'DELIVERED',
+    CUSTOMER_CANCELED = 'CUSTOMER_CANCELED'
 }

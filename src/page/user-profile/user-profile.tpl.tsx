@@ -31,7 +31,7 @@ export default (component: UserProfilePage) => (
                     </Center>
                 </div>
 
-                <MatLoaderCircle ref={{ matLoaderCirclePreFormLoad: component }} class={['col', 's12',]} />
+                <MatLoaderCircle ref={{ matLoaderCirclePreFormLoad: component }} class={['col', 's12', ]} />
 
                 <div ref={{ formContainer: component }}>
                 </div>
@@ -108,8 +108,11 @@ export default (component: UserProfilePage) => (
 export interface IUserProfileFromState {
     id: string;
     email: string
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     phone: string;
-    address: string;
+    street: string;
+    streetNo: string;
+    zipCode: string;
+    city: string;
 }

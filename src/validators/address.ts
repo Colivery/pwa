@@ -2,7 +2,45 @@ import { validatorNameFactory } from "springtype/core/validate/function/validato
 import { GeoService } from "../service/geo";
 import { buffer } from "../function/buffer";
 
-export const address = (geoService: GeoService, instance: any, geoCallback: (geolocation: { lat: string; lon: string; }, address: string) => void) => {
+export interface IAddress {
+    city: string;
+    zipCode: string;
+    street: string;
+    streetNo: string;
+    country: string;
+    formatted: string;
+}
+
+const extractStreetAddress = (googleGeoCodeResponse: any): IAddress => {
+
+    const address: Partial<IAddress> = {};
+
+    for (const addressComponent of googleGeoCodeResponse.address_components) {
+
+        switch (addressComponent.types[0]) {
+            case "postal_code":
+                address.zipCode = addressComponent['long_name'];
+                break;
+            case "country":
+                address.country = addressComponent['long_name'];
+                break;
+            case "street_number":
+                address.streetNo = addressComponent['long_name'];
+                break;
+            case "route":
+                address.street = addressComponent['long_name'];
+                break;
+            case "locality":
+                address.city = addressComponent['long_name'];
+                break;
+        }
+    }
+    address.formatted = googleGeoCodeResponse.formatted_address;
+
+    return address as IAddress;
+}
+
+export const address = (geoService: GeoService, instance: any, geoCallback: (geolocation: { lat: string; lon: string; }, address: IAddress) => void) => {
 
     return validatorNameFactory(async (value: string) => {
 
@@ -18,7 +56,7 @@ export const address = (geoService: GeoService, instance: any, geoCallback: (geo
             const sanitizedValue = value.split('\n').join(' ');
 
             if (sanitizedValue.length === 0) {
-                await innerCallback(false); 
+                await innerCallback(false);
                 return;
             }
 
@@ -29,7 +67,7 @@ export const address = (geoService: GeoService, instance: any, geoCallback: (geo
                 const geoCodeResult = esriGeoCoordinates.results[0];
                 const userGeoLocation = geoCodeResult.geometry.location;
 
-                await geoCallback(userGeoLocation, geoCodeResult.formatted_address);
+                await geoCallback(userGeoLocation, extractStreetAddress(geoCodeResult));
                 instance.submitButton.classList.remove('disabled');
                 await innerCallback(true);
             } else {

@@ -1,11 +1,11 @@
-import { OrderStatus } from "../datamodel/order";
+import { OrderStatus } from "../datamodel/order-status";
 
 export const getOrderStatusTextColorClass = (status: OrderStatus) => {
     switch (status) {
         default:
-        case "accepted":
+        case OrderStatus.ACCEPTED:
             return "green-text";
-        case "to_be_delivered":
+        case OrderStatus.TO_BE_DELIVERED:
             return "red-text";
     }
 }

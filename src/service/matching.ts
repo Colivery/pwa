@@ -1,12 +1,22 @@
 import { injectable, inject } from "springtype/core/di";
-import { MATCHING_API_ENDPOINT } from "../config/endpoints";
-import { Order } from "../datamodel/order";
+import { SERVICE_API_ENDPOINT } from "../config/endpoints";
+import { IOrder } from "../datamodel/order";
 import { ErrorService } from "./error";
+import { GPSLocation } from "../datamodel/gps-location";
+
+export interface IAnonymizedUser {
+    zipCode: string;
+    location: GPSLocation;
+}
+
+export interface IMatchingOrder {
+    distance: number;
+    order: IOrder;
+    consumer: IAnonymizedUser;
+}
 
 export interface IMatchingResponse {
-    data: Promise<{
-        orders: Array<Order>
-    }>;
+    data: Promise<Array<IMatchingOrder>>;
     abortController: AbortController;
 }
 
@@ -19,18 +29,11 @@ export class MatchingService {
     async search(lat: number, lon: number, rangeKm: number): Promise<IMatchingResponse> {
 
         try {
-            const requestBody = {
-                "coordinate": {
-                    "latitude": lat,
-                    "longitude": lon
-                },
-                "range": rangeKm
-            };
 
             const abortController = new AbortController();
 
-            const response = (await fetch(`${MATCHING_API_ENDPOINT}/search/query`, {
-                method: 'POST',
+            const response = (await fetch(`${SERVICE_API_ENDPOINT}/order?latitude=${lat}&longitude=${lon}&range=${rangeKm}`, {
+                method: 'GET',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
@@ -39,7 +42,6 @@ export class MatchingService {
                 },
                 redirect: 'follow',
                 referrerPolicy: 'no-referrer',
-                body: JSON.stringify(requestBody),
                 signal: abortController.signal
             }));
             
@@ -54,7 +56,8 @@ export class MatchingService {
         } catch (e) {
 
             console.error('error finding matches', lat, lon, rangeKm);
-            this.errorService.show();
+            // TODO: re-enable after matching API has been re-implemented
+            //this.errorService.show();
         }
     }
 }

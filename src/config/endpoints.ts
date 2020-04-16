@@ -1,7 +1,8 @@
 
 // https://colivery-api.s0ra.de/api-docs/swagger-ui/index.html?url=/api-docs/api-docs&validatorUrl=#/
 export const SERVICE_API_ENDPOINT = process.env.ST_SERVICE_API_ENDPOINT;
-export const MATCHING_API_ENDPOINT = process.env.ST_MATCHING_API_ENDPOINT;
+export const SERVICE_API_ENDPOINT_VERSION = process.env.ST_SERVICE_API_ENDPOINT_VERSION;
+
 // temporary access token, expires: Apr 12 2020
 export const ESRI_API_TOKEN = '5S-CKwF1TuE5Lfh-WPEI34H0tDRlBNG8Cqk9pT-Wc3zu4paCFlWr8sQ8LM6ywfrVe5j2ApQA84Ru88ZW5WadxUAEAby9Ly4CHNfcSuUgXGGWs0P8hyCFifyAECaVZMpr29zl3E8b3ZsH-elOTr676_kjDXGr0hQopfy6h4ZVuohkIEUro1ulwIgK_kVtpKfHRdORsKl43CpjjByiSzVbYA..';
 export const REVERSE_GEOCODE_API_ENDPOINT = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode';

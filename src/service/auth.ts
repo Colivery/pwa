@@ -90,6 +90,9 @@ export class AuthService {
     async login(email: string, password: string) {
         const passwordHash = this.cryptoService.hash(password);
         const result = await this.firebaseService.auth().signInWithEmailAndPassword(email, passwordHash);
+
+        console.log('result', result);
+
         this.userContext = { userId: result.user.uid, email: email };
         this.storeCredentials(email, passwordHash);
 

@@ -7,9 +7,9 @@ import { ref } from "springtype/core/ref";
 import { ErrorMessage } from "../../component/error-message/error-message";
 import { GeoService } from "../../service/geo";
 import { MatModal, MatLoadingIndicator, MatLoaderCircle, MatForm } from "st-materialize";
-import { address } from "../../validators/address";
+import { address, IAddress } from "../../validators/address";
 import { UserService } from "../../service/user";
-import { IUserProfileResponse, UserProfile } from "../../datamodel/user";
+import { IUserProfileResponse, IUserProfileRequest } from "../../datamodel/user";
 import { calculateAvailableHeightPercent } from "../../function/calculate-available-height-percent";
 import { COLOR_COLIVERY_PRIMARY } from "../../config/colors";
 import { tsx } from "springtype/web/vdom";
@@ -17,6 +17,7 @@ import { MatInput } from "st-materialize";
 import { required, email } from "springtype/core/validate";
 import { LoginPage } from "../login/login";
 import { Center } from "../../component/center/center";
+import { formatAddress } from "../../function/format-address";
 
 @component({
     tpl
@@ -73,12 +74,21 @@ export class UserProfilePage extends st.component implements ILifecycle {
     @ref
     deleteButton: HTMLAnchorElement;
 
+    @ref
+    cityField: MatInput;
+    @ref
+    streetField: MatInput;
+    @ref
+    streetNoField: MatInput;
+    @ref
+    zipCodeField: MatInput;
+
     userGeoLocation: {
         lat: number;
         lng: number;
     };
 
-    validatedUserAddress: string;
+    validatedUserAddress: IAddress;
 
     async onRouteEnter() {
 
@@ -98,7 +108,6 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
             this.activateSubmitButton();
 
-            this.addressValidator()(this.state.address)
         } else {
             if (this.matLoaderCirclePreFormLoad) {
                 this.matLoaderCirclePreFormLoad.setVisible(true);
@@ -114,61 +123,71 @@ export class UserProfilePage extends st.component implements ILifecycle {
     }
 
     addressValidator = () => {
-        return address(this.geoService, this, async (geolocation: any, address: string) => {
+        return () => {
 
-            this.userGeoLocation = geolocation;
+            console.log('validate')
+            const fn = address(this.geoService, this, async (geolocation: any, address: IAddress) => {
 
-            // render/update static map image
-            const mapSrc = this.geoService.getStaticMapImageSrc(address, {
-                ...geolocation,
-                lable: st.t("You are here"),
-                color: COLOR_COLIVERY_PRIMARY
-            }, this.staticMapImage.closest('.row').clientWidth, calculateAvailableHeightPercent(20), 15);
+                this.userGeoLocation = geolocation;
 
-            this.staticMapImage.setAttribute('src', mapSrc);
+                // render/update static map image
+                const mapSrc = this.geoService.getStaticMapImageSrc(address.formatted, {
+                    ...geolocation,
+                    lable: st.t("You are here"),
+                    color: COLOR_COLIVERY_PRIMARY
+                }, this.staticMapImage.closest('.row').clientWidth, calculateAvailableHeightPercent(20), 15);
 
-            // render/update validated address display
-            this.validatedUserAddress = address;
+                this.staticMapImage.setAttribute('src', mapSrc);
 
-            this.renderPartial(this.validatedUserAddress, this.addressField);
+                // render/update validated address display
+                this.validatedUserAddress = address;
 
-            // hide loaders, show map
-            this.mapContainer.classList.remove('hide');
-            this.matLoaderCircle.setVisible(false);
-        });
+                this.renderPartial(this.validatedUserAddress.formatted, this.addressField);
+
+                setImmediate(() => {
+
+                    // hide loaders, show map
+                    this.mapContainer.classList.remove('hide');
+                    this.matLoaderCircle.setVisible(false);
+                });
+            });
+
+            return fn(formatAddress(this.getDataToSave()));
+        };
     };
 
-    getDataToSave = (): UserProfile => {
+    getDataToSave = (): Partial<IUserProfileRequest> => {
         const formState = this.formRef.getState() as any as IUserProfileFromState;
         return {
-            first_name: formState.first_name,
+            firstName: formState.firstName,
             phone: formState.phone,
-            last_name: formState.last_name,
-            address: this.validatedUserAddress,
-            geo_location: {
+            lastName: formState.lastName,
+            city: formState.city,
+            street: formState.street,
+            streetNo: formState.streetNo,
+            zipCode: formState.zipCode,
+            location: this.userGeoLocation ? {
                 latitude: this.userGeoLocation.lat,
                 longitude: this.userGeoLocation.lng
-            }
+            } : null
         }
     }
 
     updateUserProfile = async () => {
+
         try {
             this.loadingIndicator.setVisible(true);
 
-            const isValid = await this.formRef.validate();
-
-            console.log('isValid', isValid)
             if (await this.formRef.validate()) {
 
+                console.log('updateUserProfile');
                 await this.userService.updateUserProfile(this.getDataToSave());
 
                 this.afterSaveModal.setVisible(true);
             }
         } catch (e) {
-            this.errorMessage.message = e.message;
+            this.errorMessage.setMessage(e.message);
         } finally {
-
             this.loadingIndicator.setVisible(false);
         }
     };
@@ -180,10 +199,6 @@ export class UserProfilePage extends st.component implements ILifecycle {
             <MatForm ref={{ formRef: this }}>
                 {this.getFormInputs()}
             </MatForm>, this.formContainer);
-
-        setImmediate(() => {
-            this.addressValidator()(this.state.address);
-        })
     }
 
     getFormInputs() {
@@ -199,21 +214,21 @@ export class UserProfilePage extends st.component implements ILifecycle {
                     'email': st.t("Not a valid e-mail address")
                 }}>
             </MatInput>
-            <MatInput name="first_name" label={st.t("Firstname")}
+            <MatInput name="firstName" label={st.t("Firstname")}
                 class={['col', 's6', 'm3']}
                 helperText={st.t("i.e. John")}
                 validators={[required]}
-                value={this.state.first_name}
+                value={this.state.firstName}
                 validationErrorMessages={{
                     required: st.t("This is a required field")
                 }}>
             </MatInput>
 
-            <MatInput name="last_name" label={st.t("Lastname")}
+            <MatInput name="lastName" label={st.t("Lastname")}
                 class={['col', 's6', 'm3']}
                 helperText={st.t("i.e. Doe")}
                 validators={[required]}
-                value={this.state.last_name}
+                value={this.state.lastName}
                 validationErrorMessages={{
                     required: st.t("This is a required field")
                 }}>
@@ -227,11 +242,49 @@ export class UserProfilePage extends st.component implements ILifecycle {
                     required: st.t("This is a required field")
                 }}>
             </MatInput>
-            <MatInput name="address" label={st.t("Home/Delivery address")}
+            <MatInput name="street" ref={{ streetField: this }} label={st.t("Street")}
                 class={['col', 's12', 'm6']}
-                helperText={st.t("Where should the purchases be delivered to?")}
-                validators={[required, this.addressValidator()]}
-                value={this.state.address}
+                validators={[required]}
+                value={this.state.street}
+                onValidation={(evt: any) => {
+                    this.addressValidator()()
+                }}
+                validationErrorMessages={{
+                    required: st.t("This is a required field"),
+                    address: st.t("This address doesn't seem to be valid")
+                }}>
+            </MatInput>
+            <MatInput name="streetNo" ref={{ streetNoField: this }} label={st.t("Steet no")}
+                class={['col', 's12', 'm6']}
+                validators={[required]}
+                value={this.state.streetNo}
+                onValidation={(evt: any) => {
+                    this.addressValidator()()
+                }}
+                validationErrorMessages={{
+                    required: st.t("This is a required field"),
+                    address: st.t("This address doesn't seem to be valid")
+                }}>
+            </MatInput>
+            <MatInput name="zipCode" ref={{ streetField: this }} label={st.t("Zip code")}
+                class={['col', 's12', 'm6']}
+                validators={[required]}
+                onValidation={(evt: any) => {
+                    this.addressValidator()()
+                }}
+                value={this.state.zipCode}
+                validationErrorMessages={{
+                    required: st.t("This is a required field"),
+                    address: st.t("This address doesn't seem to be valid")
+                }}>
+            </MatInput>
+            <MatInput name="city" ref={{ cityField: this }} label={st.t("City")}
+                class={['col', 's12', 'm6']}
+                validators={[required]}
+                onValidation={(evt: any) => {
+                    this.addressValidator()()
+                }}
+                value={this.state.city}
                 validationErrorMessages={{
                     required: st.t("This is a required field"),
                     address: st.t("This address doesn't seem to be valid")
@@ -248,7 +301,7 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
             </div>
 
-            <MatLoaderCircle ref={{ matLoaderCircle: this }} class={['col', 's12',]} />
+            <MatLoaderCircle ref={{ matLoaderCircle: this }} class={['col', 's12', 'hide']} />
         </fragment>
     }
 

@@ -126,7 +126,7 @@ export class GeoService {
             return this.currentLocation;
         } catch (e) {
             const ownUserProfile = await this.userService.getUserProfile();
-            return ownUserProfile.geo_location;
+            return ownUserProfile.location;
         }
     }
 
