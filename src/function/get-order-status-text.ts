@@ -9,7 +9,7 @@ export const getOrderStatusText = (status: OrderStatus) => {
             return st.t("No driver yet");
         case OrderStatus.DELIVERED:
             return st.t("Delivered successfully");
-        case OrderStatus.CUSTOMER_CANCELED:
+        case OrderStatus.CONSUMER_CANCELLED:
             return st.t("Cancelled by user");
     }
 }

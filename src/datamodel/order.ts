@@ -1,9 +1,6 @@
 import { OrderStatus } from "./order-status";
 
 export interface IOrder {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
     hint: string;
     status: OrderStatus;
     userId: string;

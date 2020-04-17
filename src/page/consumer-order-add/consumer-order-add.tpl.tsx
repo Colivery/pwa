@@ -161,7 +161,7 @@ export default (component: ConsumerOrderAddPage) => (
                         </div>
 
                         <div class="col s12">
-                            <strong>{st.t("What is the maximum cost of your purchase? (€)")}</strong>
+                            <strong>{st.t("What is the maximum cost of your purchase?")}</strong>
                         </div>
 
                         <MatInput

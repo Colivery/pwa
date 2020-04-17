@@ -125,7 +125,6 @@ export class UserProfilePage extends st.component implements ILifecycle {
     addressValidator = () => {
         return () => {
 
-            console.log('validate')
             const fn = address(this.geoService, this, async (geolocation: any, address: IAddress) => {
 
                 this.userGeoLocation = geolocation;
@@ -180,8 +179,11 @@ export class UserProfilePage extends st.component implements ILifecycle {
 
             if (await this.formRef.validate()) {
 
-                console.log('updateUserProfile');
-                await this.userService.updateUserProfile(this.getDataToSave());
+                const dataToSave = this.getDataToSave();
+                if (!this.userGeoLocation) {
+                    dataToSave.location = await this.geoService.getGPSPositionForAddress(formatAddress(dataToSave));
+                }
+                await this.userService.updateUserProfile(dataToSave);
 
                 this.afterSaveModal.setVisible(true);
             }

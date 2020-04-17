@@ -49,6 +49,15 @@ export class GeoService {
         return await response.json();
     }
 
+    async getGPSPositionForAddress(address: string): Promise<GPSLocation> {
+        const coordinates = await this.geoCode(address);
+
+        if (coordinates.results.length) {
+            const geoCodeResult = coordinates.results[0];
+            return geoCodeResult.geometry.location;
+        }
+    }
+
     getStaticMapImageSrc(address: string, markerPosition: { lat: number, lng: number, lable: string, color: string }, width: number = 300, height: number = 200, zoomLevel: number = 13, mapType: 'roadmap' = 'roadmap') {
         // https://developers.google.com/maps/documentation/maps-static/intro
         return `${GOOGLE_MAPS_STATIC_API_ENDPOINT}?center=${address}&markers=color:${markerPosition.color.replace('#', '0x')}%7Clabel:${markerPosition.lable}%7C${markerPosition.lat},${markerPosition.lng}&size=${width.toFixed()}x${height.toFixed()}&zoom=${zoomLevel}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`;
@@ -122,7 +131,7 @@ export class GeoService {
                     timeout: 5000,
                     maximumAge: 0
                 });
-            }); 
+            });
             return this.currentLocation;
         } catch (e) {
             const ownUserProfile = await this.userService.getUserProfile();

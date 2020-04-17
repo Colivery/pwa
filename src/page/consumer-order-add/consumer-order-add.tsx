@@ -246,7 +246,7 @@ export class ConsumerOrderAddPage extends st.component implements ILifecycle {
             "pickup_location_geohash": pickupLocationGeohash, // leer
             "shop_name": shopName, // leer
             */
-            "maxPrice": maxPrice,
+            "maxPrice": maxPrice * 100,
             "hint": this.hintField.textAreaRef.value,
             //"dropoffLocation_geohash": dropoffLocationGeohash, // TODO: move to Service API
             /*

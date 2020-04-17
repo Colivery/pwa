@@ -1,6 +1,6 @@
 import { injectable, inject } from "springtype/core/di";
 import { SERVICE_API_ENDPOINT, SERVICE_API_ENDPOINT_VERSION } from "../config/endpoints";
-import { IOrder, IOrderResponse } from "../datamodel/order";
+import { IOrder, IOrderResponse, IOrderRequest } from "../datamodel/order";
 import { IUserProfileResponse } from "../datamodel/user";
 import { ErrorService } from "./error";
 import { OrderStatus } from "../datamodel/order-status";
@@ -59,7 +59,7 @@ export class OrderService {
     }
 
     async userCancelOrder(id: string) {
-        return this.setOrderStatus(id, OrderStatus.CUSTOMER_CANCELED);
+        return this.setOrderStatus(id, OrderStatus.CONSUMER_CANCELLED);
     }
 
     async markOrderDelivered(id: string) {
@@ -123,7 +123,7 @@ export class OrderService {
         }
     }
 
-    async createOrder(order: any): Promise<IOrder> {
+    async createOrder(order: Partial<IOrderRequest>): Promise<IOrder> {
 
         try {
             const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/order`, {

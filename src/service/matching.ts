@@ -1,6 +1,6 @@
 import { injectable, inject } from "springtype/core/di";
 import { SERVICE_API_ENDPOINT } from "../config/endpoints";
-import { IOrder } from "../datamodel/order";
+import { IOrder, IOrderResponse } from "../datamodel/order";
 import { ErrorService } from "./error";
 import { GPSLocation } from "../datamodel/gps-location";
 
@@ -11,7 +11,7 @@ export interface IAnonymizedUser {
 
 export interface IMatchingOrder {
     distance: number;
-    order: IOrder;
+    order: IOrderResponse;
     consumer: IAnonymizedUser;
 }
 

@@ -15,7 +15,6 @@ export class ErrorService extends st.component {
     modal: MatModal;
 
     show() {
-        st.dom.removeChildren(document.body);
         st.render(this.render());
 
         setImmediate(() => {

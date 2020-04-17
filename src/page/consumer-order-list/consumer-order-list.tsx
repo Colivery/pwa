@@ -16,6 +16,7 @@ import { IOrder, IOrderItem } from "../../datamodel/order";
 import { Center } from "../../component/center/center";
 import { RefreshButton } from "../../component/refresh-button/refresh-button";
 import { OrderStatus } from "../../datamodel/order-status";
+import { formatMaxPrice } from "../../function/format-max-price";
 
 @component({
     tpl
@@ -93,7 +94,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
                 return "order-header order-header-orange";
             case OrderStatus.DELIVERED:
                 return "order-header order-header-green";
-            case OrderStatus.CUSTOMER_CANCELED:
+            case OrderStatus.CONSUMER_CANCELLED:
                 return "order-header order-header-orange";
         }
     }
@@ -124,7 +125,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
         }
 
         // filter-out user cancelled orders
-        this.myOrdersDisplayData = this.myOrdersDisplayData.filter((union: OwnOrderUnion) => union.order.status !== OrderStatus.CUSTOMER_CANCELED);
+        this.myOrdersDisplayData = this.myOrdersDisplayData.filter((union: OwnOrderUnion) => union.order.status !== OrderStatus.CONSUMER_CANCELLED);
 
         this.myOrdersDisplayData.sort((unionA: OwnOrderUnion, unionB: OwnOrderUnion) => unionA.order.createdAt < unionB.order.createdAt ? 1 : -1);
 
@@ -235,7 +236,7 @@ export class ConsumerOrderListPage extends st.component implements ILifecycle {
             </span>
             </h5>
 
-                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {union.order.maxPrice} (€) {st.t("/verb/cost.")}</strong></p></fragment> : ''}
+                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {formatMaxPrice(union.order.maxPrice)} {st.t("/verb/cost.")}</strong></p></fragment> : ''}
 
 
             {union.order.hint ? <fragment><br /><h5><span class="material-align-middle">

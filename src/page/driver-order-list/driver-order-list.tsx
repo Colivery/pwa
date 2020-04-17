@@ -22,6 +22,7 @@ import { RefreshButton } from "../../component/refresh-button/refresh-button";
 import { IUserProfileResponse } from "../../datamodel/user";
 import { OrderStatus } from "../../datamodel/order-status";
 import { formatAddress } from "../../function/format-address";
+import { formatMaxPrice } from "../../function/format-max-price";
 
 export interface ILocation {
     latitude: number;
@@ -360,7 +361,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
                 </span>
                 </h5>
 
-                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {orderUnion.order.maxPrice} (€) {st.t("/verb/cost.")}</strong></p>
+                <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {formatMaxPrice(orderUnion.order.maxPrice)} {st.t("/verb/cost.")}</strong></p>
             <br /></fragment> : ''}
 
             {orderUnion.order.hint.trim() ? <fragment>
@@ -543,7 +544,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
                 </span>
                 </h5>
 
-                    <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {orderUnion.order.maxPrice} (€) {st.t("/verb/cost.")}.</strong></p></fragment> : ''}
+                    <p>{st.t("The request is allowed to cost")} <strong>{st.t("at max.")} {formatMaxPrice(orderUnion.order.maxPrice)} {st.t("/verb/cost.")}.</strong></p></fragment> : ''}
 
 
                 {orderUnion.order.hint.trim() ? <fragment>
