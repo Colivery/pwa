@@ -1,5 +1,5 @@
 import { injectable, inject } from "springtype/core/di";
-import { SERVICE_API_ENDPOINT } from "../config/endpoints";
+import { SERVICE_API_ENDPOINT, SERVICE_API_ENDPOINT_VERSION } from "../config/endpoints";
 import { IOrder, IOrderResponse } from "../datamodel/order";
 import { ErrorService } from "./error";
 import { GPSLocation } from "../datamodel/gps-location";
@@ -32,13 +32,14 @@ export class MatchingService {
 
             const abortController = new AbortController();
 
-            const response = (await fetch(`${SERVICE_API_ENDPOINT}/order?latitude=${lat}&longitude=${lon}&range=${rangeKm}`, {
+            const response = (await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/order?latitude=${lat}&longitude=${lon}&range=${rangeKm}`, {
                 method: 'GET',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                 credentials: 'same-origin', // include, *same-origin, omit
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${await window.authService.getIdToken()}`
                 },
                 redirect: 'follow',
                 referrerPolicy: 'no-referrer',
