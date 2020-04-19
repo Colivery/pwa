@@ -45,7 +45,7 @@ export default (component: RegisterPage) => (
 
                 <div class="row">
                     <div class={['col', 's12', 'm6', 'offset-m3', 'l6', 'offset-l3']}>
-                        {st.t("Please note our")} <a href={TERMS_OF_USE_URL} target="_blank">{st.t("Terms of Use")}</a> {st.t("and")} <a href={PRIVACY_STATEMENT_URL} target="_blank">{st.t("Privacy Statement")}</a>.
+                        {st.t("Please note our")} <a href={TERMS_OF_USE_URL} target="_blank">{st.t("Terms of Use")}</a> {st.t("and")} <a href={PRIVACY_STATEMENT_URL} target="_blank">{st.t("Privacy Statement")}</a> {st.t("/korean/special1")}
                     </div>
                 </div>
 

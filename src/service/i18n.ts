@@ -6,6 +6,7 @@ import * as en from "../i18n/en.json";
 import * as nn from "../i18n/nn.json";
 import * as he from "../i18n/he.json";
 import * as hi from "../i18n/hi.json";
+import * as ko from "../i18n/ko.json";
 import { PreferenceService } from "./preference";
 
 export interface SupportedLanguage {
@@ -19,7 +20,8 @@ export enum SupportedLocales {
     EN = "en",
     NN = "nn",
     HE = "he",
-    HI = "hi"
+    HI = "hi",
+    KO = "ko"
 }
 
 @translation(SupportedLocales.DE, de)
@@ -27,6 +29,7 @@ export enum SupportedLocales {
 @translation(SupportedLocales.NN, nn)
 @translation(SupportedLocales.HE, he)
 @translation(SupportedLocales.HI, hi)
+@translation(SupportedLocales.KO, ko)
 @injectable
 export class I18nService {
 
@@ -58,6 +61,11 @@ export class I18nService {
             key: SupportedLocales.HI,
             name: "हिन्दी (beta)",
             icon: "https://www.countryflags.io/il/flat/32.png"
+        },
+        {
+            key: SupportedLocales.KO,
+            name: "한국어를 (beta)",
+            icon: "https://www.countryflags.io/kr/flat/32.png"
         }
     ];
 
