@@ -156,7 +156,7 @@ export default (component: DriverOrderList) => (
             </template>
         </MatModal>
 
-        <MatModal ref={{ declineOrderModal: component }}>
+        <MatModal ref={{ abortOrderModal: component }}>
 
             <ModalMiddleContent>
                 <Center>
@@ -166,8 +166,8 @@ export default (component: DriverOrderList) => (
                 </Center>
             </ModalMiddleContent>
             <template slot={MatModal.MAT_MODAL_FOOTER_SLOT_NAME}>
-                <a href="javascript:" onclick={() => component.declineOrderModal.toggle()} class="modal-close waves-effect waves-white btn material-align-middle left"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
-                <a href="javascript:" onclick={component.onReallyDeclineOrder} class="modal-close waves-effect btn waves-green material-align-middle btn-flat"><i class="material-icons">done_all</i> &nbsp;{st.t("Yes")}</a>
+                <a href="javascript:" onclick={() => component.abortOrderModal.toggle()} class="modal-close waves-effect waves-white btn material-align-middle left"><i class="material-icons">highlight_off</i> &nbsp;{st.t("No")}</a>
+                <a href="javascript:" onclick={component.onReallyAbortOrder} class="modal-close waves-effect btn waves-green material-align-middle btn-flat"><i class="material-icons">done_all</i> &nbsp;{st.t("Yes")}</a>
             </template>
         </MatModal>
 

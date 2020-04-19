@@ -26,9 +26,10 @@ export class OrderService {
     @inject(ErrorService)
     errorService: ErrorService;
 
-    async setOrderStatus(id: string, status: OrderStatus) {
+    async setOrderStatus(id: string, status: OrderStatus, action: string) {
+
         try {
-            const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/order/${id}/status`, {
+            const response = await fetch(`${SERVICE_API_ENDPOINT}/${SERVICE_API_ENDPOINT_VERSION}/order/${id}/${action}`, {
                 method: 'PATCH',
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -45,29 +46,29 @@ export class OrderService {
             });
 
             if (response.status >= 400) {
-                throw(response);
+                throw (response);
             }
-            
+
         } catch (e) {
             console.error('error setting order status', id, status, e);
             this.errorService.show();
         }
     }
 
-    async decline(id: string) {
-        return this.setOrderStatus(id, OrderStatus.DELIVERED);
+    async abort(id: string) {
+        return this.setOrderStatus(id, OrderStatus.DELIVERED, 'abort');
     }
 
     async userCancelOrder(id: string) {
-        return this.setOrderStatus(id, OrderStatus.CONSUMER_CANCELLED);
+        return this.setOrderStatus(id, OrderStatus.CONSUMER_CANCELLED, 'cancel');
     }
 
     async markOrderDelivered(id: string) {
-        return this.setOrderStatus(id, OrderStatus.DELIVERED);
+        return this.setOrderStatus(id, OrderStatus.DELIVERED, 'deliver');
     }
 
     async accept(id: string) {
-        return this.setOrderStatus(id, OrderStatus.ACCEPTED);
+        return this.setOrderStatus(id, OrderStatus.ACCEPTED, 'accept');
     }
 
     async getOwnOrders(): Promise<OwnOrdersResponse> {
@@ -87,7 +88,7 @@ export class OrderService {
             }));
 
             if (response.status >= 400) {
-                throw(response);
+                throw (response);
             }
 
             return response.json();
@@ -114,7 +115,7 @@ export class OrderService {
             }));
 
             if (response.status >= 400) {
-                throw(response);
+                throw (response);
             }
             return response.json();
         } catch (e) {
@@ -141,7 +142,7 @@ export class OrderService {
             });
 
             if (response.status >= 400) {
-                throw(response);
+                throw (response);
             }
 
             return await response.json();

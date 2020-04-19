@@ -29,11 +29,11 @@ export default (component: NotConfirmedPage) => (
                         <br />
                     </Center>
                     <Center>
-                        <a href="javascript:" ref={{ resendVerificationButtonRef: component }} onclick={component.onReSendVerificationEmailClick} class="waves-effect waves-white btn material-align-middle">
-                            <i class="material-icons">done</i> &nbsp;{st.t("Resend email")}</a>
+                        <a href="javascript:" ref={{ resendVerificationButtonRef: component }} onclick={component.onReSendVerificationEmailClick} class="waves-effect waves-white btn btn-flat material-align-middle">
+                            <i class="material-icons">restore</i> &nbsp;{st.t("Resend email")}</a>
 
                         <a href="javascript:" ref={{ nextButtonRef: component }} onclick={component.onNextButtonClick} class="waves-effect waves-white btn material-align-middle hide">
-                            {st.t("Next")}</a>
+                            {st.t("OK")}</a>
                     </Center>
                 </div>
             </div>

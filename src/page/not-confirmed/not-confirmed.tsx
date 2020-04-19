@@ -79,7 +79,7 @@ export class NotConfirmedPage extends st.component implements ILifecycle {
     }
 
     onNextButtonClick = () => {
-        this.forwardToLogin();
+        document.location.reload();
     }
 
     forwardToLogin() {

@@ -102,7 +102,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
     myOrdersRefreshButton: RefreshButton;
 
     @ref
-    declineOrderModal: MatModal;
+    abortOrderModal: MatModal;
 
     @ref
     confirmOrderItemListContainer: HTMLElement;
@@ -301,7 +301,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
                                 <i class="material-icons order-card-icon">fingerprint</i> <code>{orderUnion.order.id.substring(0, 6)}</code>
                                 </div>
                         </div> */}
-                        {orderUnion.order.status !== OrderStatus.DELIVERED ? <a href="javascript:" data-index={index} onClick={this.onOrderDecline} class="btn material-align-middle btn-secondary"><i class="material-icons">cancel</i> &nbsp;{st.t("Cancel")}</a> : ''}
+                        {orderUnion.order.status !== OrderStatus.DELIVERED ? <a href="javascript:" data-index={index} onClick={this.onAbortOrder} class="btn material-align-middle btn-secondary"><i class="material-icons">cancel</i> &nbsp;{st.t("Cancel")}</a> : ''}
                         {orderUnion.order.status !== OrderStatus.DELIVERED ? <a href="javascript:" data-index={index} onClick={this.onOrderComplete} class="btn material-align-middle success-button"><i class="material-icons">done_all</i> &nbsp;{st.t("Finish")}</a> : ''}
                         <a href="javascript:" data-index={index} onClick={this.onOrderShowDetails} class="btn material-align-middle"><i class="material-icons">visibility</i> &nbsp;{st.t("Details")}</a>
                     </div>
@@ -401,15 +401,16 @@ export class DriverOrderList extends st.component implements ILifecycle {
         return this.myOrdersDisplayData[orderIndex];
     }
 
-    onOrderDecline = (evt: MouseEvent) => {
+    onAbortOrder = (evt: MouseEvent) => {
         this.mySelectedOrderUnion = this.getMyOrderUnionByEvent(evt);
-        this.declineOrderModal.toggle();
+        this.abortOrderModal.toggle();
     }
 
-    onReallyDeclineOrder = async () => {
-        await this.orderService.decline(this.mySelectedOrderUnion.order.id);
-        this.declineOrderModal.toggle();
+    onReallyAbortOrder = async () => {
+        await this.orderService.abort(this.mySelectedOrderUnion.order.id);
+        this.abortOrderModal.toggle();
         this.updateMyOrdersList();
+        this.updateOpenOrdersList();
     }
 
     activateOpenOrdersTab = () => {
