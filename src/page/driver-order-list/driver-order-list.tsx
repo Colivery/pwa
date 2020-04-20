@@ -472,18 +472,18 @@ export class DriverOrderList extends st.component implements ILifecycle {
         this.updateOpenOrdersList();
     };
 
-    toggleCardActivation(card: HTMLElement) {
+    toggleCardActivation(card: HTMLElement, value?: boolean) {
 
         if (!card.querySelector('a')) {
 
             // card is <a>
-            card.closest('.order-card').classList.toggle('active');
-            card.classList.toggle('inverted');
+            card.closest('.order-card').classList.toggle('active', value);
+            card.classList.toggle('inverted', value);
 
         } else {
 
-            card.querySelector('.order-card').classList.toggle('active');
-            card.querySelector('.order-card a').classList.toggle('inverted');
+            card.querySelector('.order-card').classList.toggle('active', value);
+            card.querySelector('.order-card a').classList.toggle('inverted', value);
         }
     }
 
@@ -507,6 +507,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
 
     onCancelAccept = () => {
         this.confirmAcceptOrderModal.toggle();
+        this.toggleCardActivation(this.activeCard, false);
     }
 
     onOrderAccept = () => {
@@ -577,7 +578,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
 
         // un-toggle previously activated card
         if (this.activeCard) {
-            this.toggleCardActivation(this.activeCard);
+            this.toggleCardActivation(this.activeCard, false);
         }
         this.activeCard = card;
 
@@ -598,7 +599,7 @@ export class DriverOrderList extends st.component implements ILifecycle {
         }
 
         // activate card
-        this.toggleCardActivation(card);
+        this.toggleCardActivation(card, true);
 
         // open modal for accept
         this.onOrderAccept();
